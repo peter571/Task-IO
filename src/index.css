@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    h1 {
+      @apply font-sans;
+    }
+    p {
+      @apply font-sans;
+    }
+  }
