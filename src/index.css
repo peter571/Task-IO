@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .task__input {
+    @apply rounded-sm ring-1 ring-gray-200 outline-none my-1 px-1 focus:ring-1 focus:ring-black placeholder:text-sm;
+  }
+  .btn {
+    @apply inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
+  }
+  .dialog__panel {
+    @apply w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all;
+  }
+}
+
 @layer base {
     h1 {
       @apply font-sans;
