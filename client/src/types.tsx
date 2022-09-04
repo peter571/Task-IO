@@ -6,6 +6,12 @@ export interface ChatProp {
   previewText: string;
 }
 
+export interface SpaceProp {
+  spaceImage: string
+  spaceName: string
+  spaceId: string
+}
+
 export interface TaskModalProp {
   id: string;
   taskId?: string;  

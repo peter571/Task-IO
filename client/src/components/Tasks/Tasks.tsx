@@ -56,7 +56,7 @@ export default function Tasks() {
         ))}
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 overflow-auto h-[80%]">
         {someTasks.map((task) => {
           if (currentId === tasks[0].id) {
             return (

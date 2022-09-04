@@ -8,10 +8,12 @@ export default function Chats() {
       <h1 className='font-bold'>Chats</h1>
       <div className='basis-1/4 flex flex-col gap-4'>
       <Chat profileImage={pic} userName={'Koecha'} previewText={'Hey Koecha'} />
-      <Chat profileImage={pic} userName={'Koecha'} previewText={'Hey Koecha'} />
-      <Chat profileImage={pic} userName={'Koecha'} previewText={'Hey Koecha'} />
-      <Chat profileImage={pic} userName={'Koecha'} previewText={'Hey Koecha'} />
-      <Chat profileImage={pic} userName={'Koecha'} previewText={'Hey Koecha'} />
+    </div>
+
+    <div>
+      <button className='btn'>
+        New user
+      </button>
     </div>
     </div>
   )

@@ -59,7 +59,7 @@ export default function TaskForm(props: TaskModalProp) {
                     name="title"
                     value={taskData.title}
                     onChange={handleChange}
-                    className="task__input"
+                    className="form__input"
                     placeholder="Task title"
                     type="text"
                     required
@@ -68,7 +68,7 @@ export default function TaskForm(props: TaskModalProp) {
                     name="description"
                     value={taskData.description}
                     onChange={handleChange}
-                    className="task__input"
+                    className="form__input"
                     placeholder="Task description..."
                     id="description"
                     cols={30}
@@ -79,7 +79,7 @@ export default function TaskForm(props: TaskModalProp) {
                     name="dateline"
                     value={taskData.dateline}
                     onChange={handleChange}
-                    className="task__input"
+                    className="form__input"
                     type="date"
                     required
                   />
