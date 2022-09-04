@@ -13,7 +13,7 @@ export interface SpaceProp {
 }
 
 export interface TaskModalProp {
-  id: string;
+  id?: string;
   taskId?: string;  
   isOpen: boolean;
   onClose: () => void;
@@ -26,4 +26,9 @@ export interface TaskProp {
   status: string;
   dateline: string;
   openModal?: MouseEventHandler<HTMLDivElement>
+}
+
+export interface ModalWrapperProp extends TaskModalProp {
+  children: React.ReactNode;
+  modalName?: string;  
 }

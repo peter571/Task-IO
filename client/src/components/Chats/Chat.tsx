@@ -3,7 +3,7 @@ import { ChatProp } from "../../types";
 
 export default function Chat(props: ChatProp) {
   return (
-    <div className="flex flex-row align-middle gap-2 cursor-pointer p-2 rounded-md hover:bg-gray-200">
+    <div className="flex flex-row align-middle gap-2 border cursor-pointer p-2 rounded-md hover:bg-gray-200">
       <img
         className="h-12 w-12 rounded-[50%]"
         src={props.profileImage}

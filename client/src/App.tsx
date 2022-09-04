@@ -5,19 +5,12 @@ import { Chats, Login, Messages, Tasks, Spaces } from "./components";
 const Main = () => {
   const navigate = useNavigate();
 
-  return (
-    <div className="flex flex-col gap-4 p-5 h-screen">
-      <div>
-        <h1 className="logo" onClick={() => navigate("/")}>
-          Task Manager
-        </h1>
-      </div>
-      <div className="flex flex-row gap-4">
+  return (    
+      <div className="flex flex-row p-5 gap-4 h-screen">
         <Chats />
         <Messages />
         <Tasks />
       </div>
-    </div>
   );
 };
 

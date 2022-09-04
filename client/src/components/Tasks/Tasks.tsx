@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Task from "./Task";
 import TaskForm from "./TaskForm";
-import TaskModal from "./TaskModal";
+import TaskModal from "./TaskUpdate";
 
 const tasks = [
   { id: "all", title: "All" },
@@ -37,7 +37,7 @@ export default function Tasks() {
   }
 
   return (
-    <div className="basis-1/4">
+    <div className="basis-1/4 h-screen">
       <button onClick={() => openModal(MODALS.taskform)} className="btn">
         Assign Task +
       </button>
