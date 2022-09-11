@@ -9,7 +9,7 @@ export default function TaskUpdate(props: TaskModalProp) {
   const task = someTasks.find((el) => el.id === props.taskId)!;
 
   function markComplete() {
-    task.status = "completed";
+    task.status = Status.COMPLETED;
   }
 
   return (

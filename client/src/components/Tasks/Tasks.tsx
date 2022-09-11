@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { MODALS } from "../../constants";
+import { ModalContext } from "../../context/ModalContext";
 import Task from "./Task";
 import TaskForm from "./TaskForm";
 import TaskModal from "./TaskUpdate";
@@ -9,32 +11,11 @@ const tasks = [
   { id: "completed", title: "Completed" },
 ];
 
-const MODALS = {
-  taskform: "task-form",
-  taskModal: "task-modal",
-};
-
 export default function Tasks() {
   const [currentId, setCurrentId] = useState(tasks[0].id);
-  const [taskFormIsOpen, setTaskFormIsOpen] = useState(false);
-  const [taskModalIsOpen, setTaskModalIsOpen] = useState(false);
-  const [currentTaskModal, setCurrentTaskModal] = useState('')
-
-  function closeModal(id: string) {
-    if (MODALS.taskModal === id) {
-      setTaskModalIsOpen(false);
-    } else {
-      setTaskFormIsOpen(false);
-    }
-  }
-
-  function openModal(id: string) {
-    if (MODALS.taskModal === id) {
-      setTaskModalIsOpen(true);
-    } else {
-      setTaskFormIsOpen(true);
-    }
-  }
+  const [currentTaskModal, setCurrentTaskModal] = useState("");
+  const { openModal, closeModal, taskFormIsOpen, taskModalIsOpen } =
+    useContext(ModalContext);
 
   return (
     <div className="basis-1/4 h-screen">
@@ -121,31 +102,31 @@ export default function Tasks() {
 
 export const someTasks = [
   {
-    id: '001',
+    id: "001",
     title: "UI",
     description: "Develop the design",
-    status: 'pending',
+    status: "pending",
     dateline: "11/04/2022",
   },
   {
-    id: '002',
+    id: "002",
     title: "React app",
     description: "Develop the react components",
-    status: 'completed',
+    status: "completed",
     dateline: "11/04/2022",
   },
   {
-    id: '003',
+    id: "003",
     title: "Node JS Server",
     description: "Develop the server side services",
-    status: 'pending',
+    status: "pending",
     dateline: "11/04/2022",
   },
   {
-    id: '004',
+    id: "004",
     title: "Mongo DB database",
     description: "Develop the database queries",
-    status: 'completed',
+    status: "completed",
     dateline: "11/04/2022",
-  }
-]
+  },
+];

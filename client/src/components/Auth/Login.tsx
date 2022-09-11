@@ -18,7 +18,7 @@ export default function Login() {
           type="password"
           placeholder="Password"
         />
-        <button onClick={() => navigate("/main")} className="btn">
+        <button onClick={() => navigate("/spaces")} className="btn">
           Sign In
         </button>
       </div>

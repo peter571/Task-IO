@@ -18,6 +18,12 @@
   .dialog__panel {
     @apply w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all;
   }
+  .screen-wrapper {
+    @apply flex align-middle items-center justify-center min-h-screen;
+  }
+  .div-container {
+    @apply flex flex-col gap-4 w-full sm:w-[70%] md:w-[50%] lg:w-[30%];
+  }
 }
 
 @layer base {
