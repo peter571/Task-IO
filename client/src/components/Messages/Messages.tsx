@@ -1,12 +1,14 @@
 import React from "react";
+import Message from "./Message";
 
 export default function Messages() {
   
   return (
     <div className="basis-1/2 h-screen relative">
       <h1>Conversations</h1>
-      <div id="messages-container" className="bg-gray-200 h-[80%] rounded-sm">
-
+      <div id="messages-container" className="grid p-5 h-[80%] overflow-auto rounded-sm">
+      <Message own={false} />
+      
       </div>
       <div className="absolute w-full bottom-0 flex flex-row gap-2 justify-between">
         <textarea

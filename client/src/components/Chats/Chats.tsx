@@ -26,7 +26,7 @@ export default function Chats() {
       </div>
 
       <div className="">
-        <button className="btn">New user</button>
+        <button className="btn">New member</button>
       </div>
     </div>
   );

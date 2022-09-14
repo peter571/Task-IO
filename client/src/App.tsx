@@ -1,9 +1,8 @@
 import React from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { Chats, Login, Messages, Tasks, Spaces } from "./components";
 
 const Main = () => {
-  const navigate = useNavigate();
 
   return (    
       <div className="flex flex-row p-5 gap-4 h-screen">
