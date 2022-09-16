@@ -1,4 +1,6 @@
 export const ROUTES = {
-    SIGNIN: 'auth/signin',
-    SIGNUP: 'auth/signup',
+    SIGNIN: '/signin',
+    SIGNUP: '/signup',
+    TASKS: '/',
+    TASKID: '/:id'
 } 

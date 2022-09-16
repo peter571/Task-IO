@@ -3,11 +3,19 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cors from 'cors';
 
+import authRoutes from './routes/auth';
+import taskRoutes from './routes/task';
+
 dotenv.config();
 const app = express();
 
+app.use(express.json())
 app.use(express.urlencoded({ limit: '30mb', extended: true }))
 // app.use(cors());
+
+//Use Routes
+app.use('/users', authRoutes);
+app.use('/tasks', taskRoutes);
 
 app.get('/', (req, res) => {
     res.send('Task manager API');

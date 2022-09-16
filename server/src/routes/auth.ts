@@ -59,4 +59,4 @@ router.post(ROUTES.SIGNUP, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
