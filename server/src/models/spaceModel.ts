@@ -9,7 +9,7 @@ interface ISpace {
 const spaceModel = new Schema<ISpace>({
     avatar: { type: String, required: true },
     title: { type: String, required: true },
-    members: { type: Array, required: true }
+    members: { type: [String], required: true }
 })
 
 export const Space = model<ISpace>('Space', spaceModel);

@@ -21,6 +21,8 @@ export interface TaskModalProp {
 
 export interface NewSpaceProp extends TaskModalProp {}
 
+export interface JoinSpaceProp extends TaskModalProp {}
+
 export interface TaskProp {
   id?: string;
   title: string;
@@ -53,4 +55,5 @@ export interface GlobalModalProp {
   taskFormIsOpen: boolean;
   taskModalIsOpen: boolean;
   newSpaceModal: boolean;
+  joinSpaceModal: boolean;
 }

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @layer components {
-  .login__form {
+  .auth__form {
     @apply flex flex-col min-h-screen align-middle justify-center items-center px-5;
   }
   .form__input {

@@ -8,6 +8,7 @@ export const ModalProvider = ({ children }: ModalProviderProp) => {
   const [taskFormIsOpen, setTaskFormIsOpen] = useState(false);
   const [taskModalIsOpen, setTaskModalIsOpen] = useState(false);
   const [newSpaceModal, setNewSpaceModalIsOpen] = useState(false);
+  const [joinSpaceModal, setJoinSpaceModal] = useState(false);
 
   const closeModal = (id: string) => {
     if (MODALS.taskModal === id) {
@@ -16,6 +17,8 @@ export const ModalProvider = ({ children }: ModalProviderProp) => {
       setTaskFormIsOpen(false);
     } else if (MODALS.newSpaceModal === id) {
       setNewSpaceModalIsOpen(false);
+    } else if (MODALS.joinSpaceModal === id) {
+      setJoinSpaceModal(false)
     }
   };
 
@@ -26,6 +29,8 @@ export const ModalProvider = ({ children }: ModalProviderProp) => {
       setTaskFormIsOpen(true);
     } else if (MODALS.newSpaceModal === id) {
       setNewSpaceModalIsOpen(true);
+    } else if (MODALS.joinSpaceModal === id) {
+      setJoinSpaceModal(true)
     }
   };
   return (
@@ -36,6 +41,7 @@ export const ModalProvider = ({ children }: ModalProviderProp) => {
         taskFormIsOpen,
         taskModalIsOpen,
         newSpaceModal,
+        joinSpaceModal
       }}
     >
       {children}
