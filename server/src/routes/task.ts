@@ -6,7 +6,7 @@ import * as mongoose from "mongoose";
 const router = express.Router();
 
 //Create new Task
-router.post('/', authenticateToken, async (req, res) => {
+router.post("/", authenticateToken, async (req, res) => {
   try {
     const newTask = new Task({ ...req.body });
     await newTask.save();
@@ -17,7 +17,7 @@ router.post('/', authenticateToken, async (req, res) => {
 });
 
 // Update Task
-router.patch('/:id', authenticateToken, async (req, res) => {
+router.patch("/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
   const task = req.body;
   if (!mongoose.Types.ObjectId.isValid(id))
@@ -29,7 +29,7 @@ router.patch('/:id', authenticateToken, async (req, res) => {
 });
 
 // Delete Task
-router.delete('/:id', authenticateToken, async (req, res) => {
+router.delete("/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -42,7 +42,16 @@ router.delete('/:id', authenticateToken, async (req, res) => {
   }
 });
 
-// Fetch tasks
-router.get('/', authenticateToken, async (req, res) => {});
+// Fetch User tasks
+router.get("/:userId", authenticateToken, async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const tasks = await Task.find({ assignee: userId });
+    res.status(201).json(tasks);
+  } catch (error) {
+    res.status(409).json({ message: "Failed to fetch tasks" });
+  }
+});
 
 export default router;

@@ -1,13 +1,12 @@
 import express from "express";
 import { User } from "../models/authModel";
-import { ROUTES } from "../constants";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 
 const router = express.Router();
 
 //Sign In
-router.post(ROUTES.SIGNIN, async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const existingUser = await User.findOne(req.body.email);
     if (!existingUser)
@@ -31,7 +30,7 @@ router.post(ROUTES.SIGNIN, async (req, res) => {
 });
 
 //Sign Up
-router.post(ROUTES.SIGNUP, async (req, res) => {
+router.post('/', async (req, res) => {
   const { name, email, password, confirmPassword } = req.body;
 
   try {
