@@ -6,15 +6,15 @@ import bcrypt from "bcryptjs";
 const router = express.Router();
 
 //Sign In
-router.post('/', async (req, res) => {
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
   try {
-    const existingUser = await User.findOne(req.body.email);
+    const existingUser = await User.findOne({ email });
     if (!existingUser)
       return res.status(404).json({ message: "User doesn't exist!" });
-    const isPassCorrect = await bcrypt.compare(
-      req.body.password,
-      existingUser.password
-    );
+    const isPassCorrect = await bcrypt.compare(password, existingUser.password);
+
     if (!isPassCorrect)
       return res.status(400).json({ message: "Incorrect credentials!" });
     const token = jwt.sign(
@@ -23,15 +23,22 @@ router.post('/', async (req, res) => {
       { expiresIn: "7d" }
     );
 
-    res.status(200).json({ result: existingUser, token });
+    const formatedUser = {
+      userId: existingUser._id,
+      email: existingUser.email,
+      avatar: existingUser.avatar,
+      name: existingUser.name,
+    };
+
+    res.status(201).json({ result: formatedUser, token });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong!" });
   }
 });
 
 //Sign Up
-router.post('/', async (req, res) => {
-  const { name, email, password, confirmPassword } = req.body;
+router.post("/register", async (req, res) => {
+  const { name, email, avatar, password, confirmPassword } = req.body;
 
   try {
     const existingUser = await User.findOne({ email });
@@ -44,6 +51,7 @@ router.post('/', async (req, res) => {
       email,
       password: hashedPassword,
       name,
+      avatar,
     });
     const token = jwt.sign(
       { email: newUser.email, id: newUser._id },
@@ -52,7 +60,15 @@ router.post('/', async (req, res) => {
         expiresIn: "7d",
       }
     );
-    res.status(200).json({ newUser, token });
+    
+    const formatedUser = {
+      userId: newUser._id,
+      email: newUser.email,
+      avatar: newUser.avatar,
+      name: newUser.name,
+    };
+
+    res.status(201).json({ formatedUser, token });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong!" });
   }

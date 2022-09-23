@@ -11,7 +11,7 @@ router.post("/", authenticateToken, async (req, res) => {
     await newMessage.save();
     res.status(201).json(newMessage);
   } catch (error) {
-    res.status(409).json({ message: "Failed to save message" });
+    res.status(500).json({ message: "Failed to save message" });
   }
 });
 
@@ -32,9 +32,9 @@ router.get("/", authenticateToken, async (req, res) => {
         message: msg.text,
       };
     });
-    res.status(201).json(projectedMessages);
+    res.status(200).json(projectedMessages);
   } catch (error) {
-    res.status(409).json({ message: `Failed to load messages` });
+    res.status(500).json({ message: `Failed to load messages` });
   }
 });
 

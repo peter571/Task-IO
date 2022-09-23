@@ -26,8 +26,6 @@ app.get('/', (req, res) => {
 })
 
 const CONNECTION_URL = `${process.env.MONGO_URL}`;
-console.log(process.env.SECRET)
-
 const PORT = process.env.PORT|| 5000;
 
 mongoose.connect(CONNECTION_URL)
