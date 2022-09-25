@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Chats, Login, Messages, Tasks, Spaces, Register } from "./components";
+import { Chats, Messages, Tasks, Spaces } from "./components";
+import { Login, Register } from "./features";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Main = () => {
   return (    
@@ -13,12 +17,15 @@ const Main = () => {
 };
 
 export default function App() {
-  const [hasAccount, setHasAccount] = useState(false);
+  const [hasAccount, setHasAccount] = useState(true);
   return (
-    <Routes>
+    <div>
+      <Routes>
       <Route path="/" element={hasAccount ? <Login /> : <Register />} />
       <Route path="/main" element={<Main />} />
       <Route path="/spaces" element={<Spaces />} />
     </Routes>
+      <ToastContainer />
+    </div>
   );
 }

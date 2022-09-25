@@ -27,10 +27,7 @@
 }
 
 @layer base {
-    h1 {
-      @apply font-sans;
-    }
-    p {
+    h1, p {
       @apply font-sans;
     }
   }

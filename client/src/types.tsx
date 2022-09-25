@@ -57,3 +57,39 @@ export interface GlobalModalProp {
   newSpaceModal: boolean;
   joinSpaceModal: boolean;
 }
+
+export interface LoginValues {
+  email: string;
+  password: string;
+}
+
+export interface RegisterValues {
+  email: string;
+  name: string;
+  password: string;
+  avatar: string | ArrayBuffer | null;
+  confirmPassword: string;
+}
+
+export interface User {
+  userId: string;
+  email: string;
+  name: string;
+  avatar: string | ArrayBuffer | null;
+}
+
+export interface ValidationErrors {
+  message: string
+  field_errors: Record<string, string>
+}
+
+export interface ConversationMembers {
+  from: string;
+  to: string;
+}
+
+export interface MessageDetails {
+  text: string;
+  users: Array<string>;
+  sender: string;
+}

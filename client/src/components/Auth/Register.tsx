@@ -1,11 +1,17 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
   const navigate = useNavigate();
 
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    //
+  }
+
   return (
-    <form className="auth__form">
+    <form onSubmit={handleSubmit} className="auth__form">
       <div className="div-container">
         <h1 className="logo text-center">Register</h1>
         <input
@@ -20,6 +26,11 @@ export default function Register() {
         />
         <input
           className="form__input py-2"
+          type="file"
+          placeholder="Choose profile image"
+        />
+        <input
+          className="form__input py-2"
           type="password"
           placeholder="Password"
         />
@@ -28,14 +39,20 @@ export default function Register() {
           type="password"
           placeholder="Confirm password"
         />
-        <button onClick={() => navigate("/spaces")} className="btn">
+        <button
+          type="submit"
+          onClick={() => navigate("/spaces")}
+          className="btn"
+        >
           Register
         </button>
         <p>
           Already have an account?{" "}
-          <Link className="text-blue-500" to="/login">Log in</Link> 
+          <Link className="text-blue-500" to="/login">
+            Log in
+          </Link>
         </p>
       </div>
     </form>
-  )
+  );
 }

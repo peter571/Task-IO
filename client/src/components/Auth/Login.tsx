@@ -3,9 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
   const navigate = useNavigate();
-  
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    //
+  }
+
   return (
-    <form className="auth__form">
+    <form onSubmit={handleSubmit} className="auth__form">
       <div className="div-container">
         <h1 className="logo text-center">Login</h1>
         <input
@@ -18,14 +24,20 @@ export default function Login() {
           type="password"
           placeholder="Password"
         />
-        <button onClick={() => navigate("/spaces")} className="btn">
+        <button
+          type="submit"
+          onClick={() => navigate("/spaces")}
+          className="btn"
+        >
           Log in
         </button>
         <p>
           Don't have an account?{" "}
-          <Link className="text-blue-500" to="/register">Register</Link> 
+          <Link className="text-blue-500" to="/register">
+            Register
+          </Link>
         </p>
       </div>
     </form>
-  )
+  );
 }
