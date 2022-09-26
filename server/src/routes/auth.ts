@@ -30,7 +30,7 @@ router.post("/login", async (req, res) => {
       name: existingUser.name,
     };
 
-    res.status(201).json({ result: formatedUser, token });
+    res.status(201).json({ user: formatedUser, token });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong!" });
   }
@@ -68,7 +68,7 @@ router.post("/register", async (req, res) => {
       name: newUser.name,
     };
 
-    res.status(201).json({ formatedUser, token });
+    res.status(201).json({ user: formatedUser, token });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong!" });
   }

@@ -3,29 +3,35 @@ import { Link, useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
 import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 import { RegisterValues } from "../../types";
-import { registerUser, userRegisterSelector } from "./registerSlice";
-import { toast } from 'react-toastify';
+import { registerUser } from "./userSlice";
+import { toast } from "react-toastify";
+import { userSelector } from "./userSlice";
+import { useAccountContext } from "../../context/AccountContext";
 
 export default function Register() {
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const { user, isloading } = useAppSelector(userRegisterSelector);
-  const [registerDetails, setRegisterDetails] = useState<RegisterValues>({
+  const initialValues = {
     email: "",
     name: "",
     password: "",
     confirmPassword: "",
     avatar: "",
-  });
+  };
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const { isloading } = useAppSelector(userSelector);
+  const { changeHasAccount } = useAccountContext();
+  const [registerDetails, setRegisterDetails] = useState<RegisterValues>(initialValues);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
       const user = await dispatch(registerUser(registerDetails)).unwrap();
-      toast.success(`Successfully logged in to ${user.result.name}`)
-      navigate('/spaces')
+      localStorage.setItem("account_user", JSON.stringify(user));
+      setRegisterDetails(initialValues)
+      toast.success(`Successfully logged in to ${user.user.name}`);
+      navigate("/spaces");
     } catch (error) {
-      toast.warn(`${error}`)
+      toast.warn(`${error}`);
     }
   }
 
@@ -57,6 +63,7 @@ export default function Register() {
           name="name"
           onChange={handleChange}
           placeholder="Username"
+          required
         />
         <input
           className="form__input py-2"
@@ -64,6 +71,7 @@ export default function Register() {
           name="email"
           onChange={handleChange}
           placeholder="Enter email"
+          required
         />
         <input
           className="form__input py-2 cursor-pointer"
@@ -71,6 +79,7 @@ export default function Register() {
           name="avatar"
           onChange={handleImageInput}
           placeholder="Choose profile image"
+          required
         />
         <input
           className="form__input py-2"
@@ -78,6 +87,7 @@ export default function Register() {
           name="password"
           onChange={handleChange}
           placeholder="Password"
+          required
         />
         <input
           className="form__input py-2"
@@ -85,17 +95,18 @@ export default function Register() {
           name="confirmPassword"
           onChange={handleChange}
           placeholder="Confirm password"
+          required
         />
-        <button
-          type="submit"
-          className="btn"
-          disabled={isloading}
-        >
+        <button type="submit" className="btn" disabled={isloading}>
           {isloading ? <Loader /> : "Register"}
         </button>
         <p>
           Already have an account?{" "}
-          <Link className="text-blue-500" to="/login">
+          <Link
+            className="text-blue-500"
+            to="/"
+            onClick={() => changeHasAccount()}
+          >
             Log in
           </Link>
         </p>

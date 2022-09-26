@@ -6,13 +6,16 @@ import { ModalProvider } from "./context/ModalContext";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
 import "./index.css";
+import { AccountProvider } from "./context/AccountContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <Provider store={store}>
     <ModalProvider>
       <React.StrictMode>
         <BrowserRouter>
-          <App />
+          <AccountProvider>
+            <App />
+          </AccountProvider>
         </BrowserRouter>
       </React.StrictMode>
     </ModalProvider>

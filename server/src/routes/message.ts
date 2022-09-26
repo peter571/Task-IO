@@ -17,7 +17,7 @@ router.post("/", authenticateToken, async (req, res) => {
 
 // Get conversations
 router.get("/", authenticateToken, async (req, res) => {
-  const { from, to } = req.body;
+  const { from, to } = req.params;
 
   try {
     const msgs = await Message.find({
@@ -29,7 +29,7 @@ router.get("/", authenticateToken, async (req, res) => {
     const projectedMessages = msgs.map((msg: any) => {
       return {
         fromSelf: msg.sender.toString() === from,
-        message: msg.text,
+        message: msg.text
       };
     });
     res.status(200).json(projectedMessages);

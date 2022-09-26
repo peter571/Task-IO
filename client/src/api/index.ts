@@ -14,18 +14,15 @@ const API = axios.create({
 });
 
 API.interceptors.request.use((req) => {
-  const user = localStorage.getItem("user");
+  const user = localStorage.getItem("account_user");
   let token: string | null;
-
   if (typeof user === "string") {
     let user_token = JSON.parse(user);
     token = user_token.token;
   } else {
     token = null;
   }
-
   req.headers!.Authorization = `Bearer ${token}`;
-
   return req;
 });
 
@@ -34,7 +31,7 @@ const responseBody = (response: AxiosResponse) => response;
 const requests = {
   get: (url: string) => API.get(url).then(responseBody),
   post: (url: string, body: {}) => API.post(url, body).then(responseBody),
-  put: (url: string, body: {}) => API.put(url, body).then(responseBody),
+  patch: (url: string, body: {}) => API.patch(url, body).then(responseBody),
   delete: (url: string) => API.delete(url).then(responseBody),
 };
 
@@ -56,7 +53,7 @@ export const spacesAPI = {
     spaceId: string,
     user: User
   ): Promise<AxiosResponse<any>> =>
-    requests.put(`/spaces/space/${spaceId}/add-member`, user),
+    requests.patch(`/spaces/space/${spaceId}/add-member`, user),
   getSpaceMembersBySpaceId: (spaceId: string): Promise<AxiosResponse<any>> =>
     requests.get(`/spaces/get-space-members/${spaceId}`),
 };
@@ -68,7 +65,7 @@ export const tasksAPI = {
   updateTaskById: (
     taskId: string,
     task: TaskProp
-  ): Promise<AxiosResponse<any>> => requests.put(`/tasks/${taskId}`, task),
+  ): Promise<AxiosResponse<any>> => requests.patch(`/tasks/${taskId}`, task),
   deleTaskById: (taskId: string): Promise<AxiosResponse<any>> =>
     requests.delete(`/tasks/${taskId}`),
   getTasksByUserId: (userId: string): Promise<AxiosResponse<any>> =>

@@ -3,26 +3,31 @@ import { Link, useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
 import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 import { LoginValues } from "../../types";
-import { loginUser, userLogin } from "./loginSlice";
-import { toast } from 'react-toastify';
+import { loginUser, userSelector } from "./userSlice";
+import { toast } from "react-toastify";
+import { useAccountContext } from "../../context/AccountContext";
 
 export default function Login() {
+  const initialValues = {
+    email: "",
+    password: ""
+  };
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isloading } = useAppSelector(userLogin);
-  const [loginDetails, setLoginDetails] = useState<LoginValues>({
-    email: "",
-    password: "",
-  });
+  const { isloading } = useAppSelector(userSelector);
+  const { changeHasAccount } = useAccountContext();
+  const [loginDetails, setLoginDetails] = useState<LoginValues>(initialValues);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
       const user = await dispatch(loginUser(loginDetails)).unwrap();
-      toast.success(`Successfully logged in to ${user.result.name}`)
-      navigate('/spaces')
+      localStorage.setItem("account_user", JSON.stringify(user));
+      setLoginDetails(initialValues);
+      toast.success(`Successfully logged in to ${user.user.name}`);
+      navigate("/spaces");
     } catch (error) {
-      toast.warn(`${error}`)
+      toast.warn(`${error}`);
     }
   }
 
@@ -40,6 +45,7 @@ export default function Login() {
           name="email"
           placeholder="Enter email"
           onChange={handleChange}
+          required
         />
         <input
           className="form__input py-2"
@@ -47,17 +53,18 @@ export default function Login() {
           name="password"
           placeholder="Password"
           onChange={handleChange}
+          required
         />
-        <button
-          type="submit"
-          className="btn"
-          disabled={isloading}
-        >
+        <button type="submit" className="btn" disabled={isloading}>
           {isloading ? <Loader /> : "Log in"}
         </button>
         <p>
           Don't have an account?{" "}
-          <Link className="text-blue-500" to="/register">
+          <Link
+            className="text-blue-500"
+            to="/"
+            onClick={() => changeHasAccount()}
+          >
             Register
           </Link>
         </p>

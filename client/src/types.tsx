@@ -1,15 +1,20 @@
 import React, { MouseEventHandler } from "react";
 
-export interface ChatProp {
-  profileImage: string;
-  userName: string;
+export interface ChatProp extends User {
+  avatar: string;
   previewText: string;
 }
 
 export interface SpaceProp {
-  spaceImage: string;
-  spaceName: string;
-  spaceId: string;
+  avatar: string | ArrayBuffer | null;
+  title: string;
+  members: Array<User>;
+  creator: string;
+}
+
+export interface SpacePropRender extends SpaceProp {
+  _id: string;
+  avatar: string;
 }
 
 export interface TaskModalProp {
@@ -24,11 +29,20 @@ export interface NewSpaceProp extends TaskModalProp {}
 export interface JoinSpaceProp extends TaskModalProp {}
 
 export interface TaskProp {
+  title: string;
+  description: string;
+  status: boolean;
+  completionDate: string;
+  adminId: string;
+  assignee: string;
+}
+
+export interface TaskPropRender {
   id?: string;
   title: string;
   description: string;
   status: string;
-  dateline: string;
+  completionDate: string;
   openModal?: MouseEventHandler<HTMLDivElement>;
 }
 
@@ -79,8 +93,8 @@ export interface User {
 }
 
 export interface ValidationErrors {
-  message: string
-  field_errors: Record<string, string>
+  message: string;
+  field_errors: Record<string, string>;
 }
 
 export interface ConversationMembers {
@@ -92,4 +106,14 @@ export interface MessageDetails {
   text: string;
   users: Array<string>;
   sender: string;
+}
+
+export interface AddMemberToSpaceProp {
+  spaceId: string;
+  user: User;
+}
+
+export interface UpdateTaskById {
+  taskId: string
+  task: TaskProp
 }
