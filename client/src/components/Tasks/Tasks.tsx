@@ -1,6 +1,13 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MODALS } from "../../constants";
 import { ModalContext } from "../../context/ModalContext";
+import {
+  taskSelector,
+  getTasksByUserId,
+  selectTask,
+} from "../../features/tasks/taskSlice";
+import { userSelector } from "../../features/users/userSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 import Task from "./Task";
 import TaskForm from "./TaskForm";
 import TaskModal from "./TaskUpdate";
@@ -16,6 +23,15 @@ export default function Tasks() {
   const [currentTaskModal, setCurrentTaskModal] = useState("");
   const { openModal, closeModal, taskFormIsOpen, taskModalIsOpen } =
     useContext(ModalContext);
+  const dispatch = useAppDispatch();
+  const { selectedUserTasks } = useAppSelector(taskSelector);
+  const { selectedUserId } = useAppSelector(userSelector);
+
+  useEffect(() => {
+    if (selectedUserId) {
+      dispatch(getTasksByUserId(selectedUserId));
+    }
+  }, [selectedUserId]);
 
   return (
     <div className="basis-1/4 h-screen">
@@ -38,51 +54,55 @@ export default function Tasks() {
       </div>
 
       <div className="flex flex-col gap-4 overflow-auto h-[80%]">
-        {someTasks.map((task) => {
-          if (currentId === tasks[0].id) {
-            return (
-              <Task
-                openModal={() => {
-                  setCurrentTaskModal(task.id);
-                  openModal(MODALS.taskModal);
-                }}
-                key={task.id}
-                title={task.title}
-                description={task.description}
-                status={task.status}
-                dateline={task.dateline}
-              />
-            );
-          } else if (currentId === tasks[1].id && tasks[1].id === task.status) {
-            return (
-              <Task
-                openModal={() => {
-                  setCurrentTaskModal(task.id);
-                  openModal(MODALS.taskModal);
-                }}
-                key={task.id}
-                title={task.title}
-                description={task.description}
-                status={task.status}
-                dateline={task.dateline}
-              />
-            );
-          } else if (currentId === tasks[2].id && tasks[2].id === task.status) {
-            return (
-              <Task
-                openModal={() => {
-                  setCurrentTaskModal(task.id);
-                  openModal(MODALS.taskModal);
-                }}
-                key={task.id}
-                title={task.title}
-                description={task.description}
-                status={task.status}
-                dateline={task.dateline}
-              />
-            );
-          }
-        })}
+        {selectedUserTasks.length === 0 ? (
+          <p>No tasks assigned</p>
+        ) : (
+          selectedUserTasks.map((task) => {
+            if (currentId === tasks[0].id) {
+              return (
+                <Task
+                  openModal={() => {
+                    setCurrentTaskModal(task._id);
+                    openModal(MODALS.taskModal);
+                    dispatch(selectTask(task));
+                  }}
+                  key={task._id}
+                  {...task}
+                />
+              );
+            } else if (
+              currentId === tasks[1].id &&
+              tasks[1].id === task.status
+            ) {
+              return (
+                <Task
+                  openModal={() => {
+                    setCurrentTaskModal(task._id);
+                    openModal(MODALS.taskModal);
+                    dispatch(selectTask(task));
+                  }}
+                  key={task._id}
+                  {...task}
+                />
+              );
+            } else if (
+              currentId === tasks[2].id &&
+              tasks[2].id === task.status
+            ) {
+              return (
+                <Task
+                  openModal={() => {
+                    setCurrentTaskModal(task._id);
+                    openModal(MODALS.taskModal);
+                    dispatch(selectTask(task));
+                  }}
+                  key={task._id}
+                  {...task}
+                />
+              );
+            }
+          })
+        )}
       </div>
 
       <TaskForm
@@ -99,34 +119,3 @@ export default function Tasks() {
     </div>
   );
 }
-
-export const someTasks = [
-  {
-    id: "001",
-    title: "UI",
-    description: "Develop the design",
-    status: "pending",
-    dateline: "11/04/2022",
-  },
-  {
-    id: "002",
-    title: "React app",
-    description: "Develop the react components",
-    status: "completed",
-    dateline: "11/04/2022",
-  },
-  {
-    id: "003",
-    title: "Node JS Server",
-    description: "Develop the server side services",
-    status: "pending",
-    dateline: "11/04/2022",
-  },
-  {
-    id: "004",
-    title: "Mongo DB database",
-    description: "Develop the database queries",
-    status: "completed",
-    dateline: "11/04/2022",
-  },
-];

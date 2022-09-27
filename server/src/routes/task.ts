@@ -46,7 +46,7 @@ router.get("/:userId", authenticateToken, async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const tasks = await Task.find({ assignee: userId });
+    const tasks = await Task.find({ assignee: userId }, { __v: 0 });
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch tasks" });

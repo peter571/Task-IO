@@ -1,9 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { tasksAPI } from "../../api";
-import { TaskProp, UpdateTaskById } from "../../types";
+import { RootState } from "../../app/store";
+import { TaskProp, TaskPropRender, UpdateTaskById } from "../../types";
 
 interface TaskState {
-    selectedUserTasks: []
+  selectedUserTasks: Array<any>;
+  isloadingUserTasks: boolean;
+  selectedTask: TaskPropRender | null;
 }
 
 export const saveNewTask = createAsyncThunk(
@@ -32,9 +35,39 @@ export const getTasksByUserId = createAsyncThunk(
 
 const taskSlice = createSlice({
   name: "tasks",
-  initialState: {selectedUserTasks: []} as TaskState,
-  reducers: {},
-  extraReducers: {},
+  initialState: {
+    selectedUserTasks: [],
+    isloadingUserTasks: false,
+    selectedTask: null,
+  } as TaskState,
+  reducers: {
+    selectTask: (state, action) => {
+      state.selectedTask = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getTasksByUserId.pending, (state, action) => {
+      state.isloadingUserTasks = true;
+    });
+    builder.addCase(getTasksByUserId.fulfilled, (state, { payload }) => {
+      state.selectedUserTasks = payload;
+      state.isloadingUserTasks = false;
+    });
+    builder.addCase(getTasksByUserId.rejected, (state, action) => {
+      state.isloadingUserTasks = false;
+    });
+    builder.addCase(updateTaskById.fulfilled, (state, { payload }) => {
+      state.selectedTask = payload;
+      state.selectedUserTasks = state.selectedUserTasks.map((task) => {
+        if (task.id === state.selectedTask?._id) {
+          task.status = payload.status;
+        }
+        return task;
+      });
+    });
+  },
 });
 
+export const { selectTask } = taskSlice.actions;
+export const taskSelector = (state: RootState) => state.tasks;
 export default taskSlice.reducer;

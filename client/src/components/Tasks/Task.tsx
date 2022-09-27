@@ -1,9 +1,10 @@
 import React from "react";
 import { TiTick } from "react-icons/ti";
-import { Status } from "../../constants";
-import { TaskProp } from "../../types";
+import { MODALS, Status } from "../../constants";
+import { TaskPropRender } from "../../types";
+import TaskModal from './TaskUpdate'
 
-export default function Task(props: TaskProp) {
+export default function Task(props: TaskPropRender) {
   return (
     <div
       onClick={props.openModal}
@@ -20,7 +21,10 @@ export default function Task(props: TaskProp) {
       >
         {props.status} {props.status === Status.COMPLETED && <TiTick />}
       </p>
-      {props.status === Status.PENDING && <p>To submit: {props.dateline}</p>}
+      {props.status === Status.PENDING && (
+        <p>To submit: {props.completionDate}</p>
+      )}
+      
     </div>
   );
 }

@@ -1,24 +1,27 @@
 import React, { useState } from "react";
+import { STATE } from "../../constants";
 import {
-  spacesSelector,
   createNewSpace,
   getUserSpacesByUserId
 } from "../../features/spaces/spaceSlice";
 import { userSelector } from "../../features/users/userSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 import { NewSpaceProp, SpaceProp } from "../../types";
+import Loader from "../Loader/Loader";
 import ModalWrapper from "../ModalWrapper/ModalWrapper";
 
 export default function NewSpace(props: NewSpaceProp) {
-  const { user } = useAppSelector(userSelector);
-  const dispatch = useAppDispatch();
-
-  const [newSpace, setNewSpace] = useState<SpaceProp>({
+  const initialValues = {
     avatar: "",
     title: "",
     members: [] as any[],
     creator: "",
-  });
+  };
+  const { user } = useAppSelector(userSelector);
+  const dispatch = useAppDispatch();
+  const [newSpace, setNewSpace] = useState<SpaceProp>(initialValues);
+  const [isloading, setIsLoading] = useState<STATE>(STATE.IDLE);
+  const pending = isloading === STATE.PENDING;
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -30,14 +33,17 @@ export default function NewSpace(props: NewSpaceProp) {
           members: [user],
           creator: user.userId,
         };
-
+        setIsLoading(STATE.PENDING);
         await dispatch(
           createNewSpace(space)
-        );
-
+        ).unwrap();
+        setIsLoading(STATE.SUCCESS);
+        setNewSpace(initialValues)
         await dispatch(getUserSpacesByUserId(user.userId));
       }
-    } catch (error) {}
+    } catch (error) {
+      setIsLoading(STATE.FAILED);
+    }
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -75,8 +81,8 @@ export default function NewSpace(props: NewSpaceProp) {
           onChange={handleImageInput}
           type="file"
         />
-        <button className="btn" type="submit">
-          Create
+        <button className="btn" type="submit" disabled={pending}>
+          {pending ? <Loader /> : 'Create'}
         </button>
       </form>
     </ModalWrapper>

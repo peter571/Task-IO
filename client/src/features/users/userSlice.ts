@@ -9,6 +9,7 @@ export interface UserState {
   isloading: boolean;
   hasError: boolean;
   errorMessage: string | undefined;
+  selectedUserId: string | null;
 }
 
 export const loginUser = createAsyncThunk(
@@ -50,9 +51,14 @@ const userSlice = createSlice({
     user: JSON.parse(localStorage.getItem("account_user")!)?.user,
     isloading: false,
     hasError: false,
-    errorMessage: ''
+    errorMessage: '',
+    selectedUserId: null
   } as UserState,
-  reducers: {},
+  reducers: {
+    selectUserById: (state, action) => {
+      state.selectedUserId = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(loginUser.pending, (state, action) => {
         state.isloading = true;
@@ -87,4 +93,5 @@ const userSlice = createSlice({
 
 export const userSelector = (state: RootState) => state.users;
 
+export const { selectUserById } = userSlice.actions;
 export default userSlice.reducer;

@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { AxiosError } from "axios";
 import { spacesAPI } from "../../api";
 import { RootState } from "../../app/store";
-import { AddMemberToSpaceProp, SpaceProp, ValidationErrors } from "../../types";
+import { AddMemberToSpaceProp, SpaceProp, User, ValidationErrors } from "../../types";
 
 interface SpaceState {
   userSpaces: Array<any>;
@@ -63,7 +63,7 @@ const spaceSlice = createSlice({
   name: "spaces",
   initialState: {
     userSpaces: [],
-    spaceMembers: [],
+    spaceMembers: []
   } as SpaceState,
   reducers: {},
   extraReducers: (builder) => {

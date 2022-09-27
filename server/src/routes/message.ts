@@ -24,7 +24,7 @@ router.get("/", authenticateToken, async (req, res) => {
       users: {
         $all: [from, to],
       },
-    }).sort({ updatedAt: 1 });
+    }, { __v: 0 }).sort({ updatedAt: 1 });
 
     const projectedMessages = msgs.map((msg: any) => {
       return {

@@ -21,6 +21,7 @@ export interface TaskModalProp {
   id?: string;
   taskId?: string;
   isOpen: boolean;
+  task?: TaskProp;
   onClose: () => void;
 }
 
@@ -29,20 +30,17 @@ export interface NewSpaceProp extends TaskModalProp {}
 export interface JoinSpaceProp extends TaskModalProp {}
 
 export interface TaskProp {
+  _id?: string
   title: string;
   description: string;
-  status: boolean;
+  status: string;
   completionDate: string;
   adminId: string;
   assignee: string;
 }
 
-export interface TaskPropRender {
-  id?: string;
-  title: string;
-  description: string;
-  status: string;
-  completionDate: string;
+export interface TaskPropRender extends TaskProp {
+  _id: string;
   openModal?: MouseEventHandler<HTMLDivElement>;
 }
 

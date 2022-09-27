@@ -30,20 +30,20 @@ export default function App() {
   return (
     <div>
       <Routes>
+      <Route
+          path="/spaces"
+          element={
+            <ProtectedRoute user={isAuthenticated} redirectPath={"/"}>
+              <Spaces />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/" element={!hasAccount ? <Login /> : <Register />} />
         <Route
           path="/spaces/:spaceId"
           element={
             <ProtectedRoute user={isAuthenticated} redirectPath={"/"}>
               <Main />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/spaces"
-          element={
-            <ProtectedRoute user={isAuthenticated} redirectPath={"/"}>
-              <Spaces />
             </ProtectedRoute>
           }
         />

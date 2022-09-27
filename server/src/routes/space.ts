@@ -22,7 +22,7 @@ router.get("/get-user-spaces/:userId", authenticateToken, async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const userSpaces = await Space.find({ "members.userId": userId });
+    const userSpaces = await Space.find({ "members.userId": userId }, { __v: 0 });
     res.status(200).json(userSpaces);
   } catch (error) {
     res.status(500).json({ message: `Failed to get Spaces` });
@@ -35,10 +35,14 @@ router.patch("/space/:spaceId/add-member", authenticateToken, async (req, res) =
   const { userId } = req.body;
 
   try {
-    const existingSpace = await Space.find({ _id: spaceId });
+    const existingSpace = await Space.findOne({ _id: spaceId });
     if (!existingSpace)
       return res.status(400).json({ message: "Space does not exist!" });
 
+    //Check if user exist in space 
+    const userExists = existingSpace.members.find((user) => user.userId === userId);
+    if (userExists) return res.status(400).json({ message: "Already member in Space"})
+    
     //Add user to members field 
     const user = await User.findOne({ _id: userId });
     const formatedUser = {
@@ -62,7 +66,7 @@ router.get("/get-space-members/:spaceId", authenticateToken, async (req, res) =>
 
   try {
     // Get members from space
-    const space = await Space.findOne({ _id: spaceId });
+    const space = await Space.findOne({ _id: spaceId }, { __v: 0 });
     const spaceMembers = space?.members;
     res.status(200).json(spaceMembers);
 

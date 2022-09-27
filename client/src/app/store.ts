@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import spaceSlice from '../features/spaces/spaceSlice'
+import taskSlice from '../features/tasks/taskSlice'
 import userSlice from '../features/users/userSlice'
 
 export const store = configureStore({
   reducer: {
     users: userSlice,
-    spaces: spaceSlice
+    spaces: spaceSlice,
+    tasks: taskSlice
   },
 })
 

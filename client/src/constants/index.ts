@@ -18,3 +18,10 @@ export enum userActionTypes {
   CHANGEPASSWORD = "changepassword",
   AUTH_REQUEST = "auth_request"
 }
+
+export enum STATE {
+  IDLE = 'idle',
+  PENDING = 'pending',
+  SUCCESS = 'success',
+  FAILED = 'failed'
+}
