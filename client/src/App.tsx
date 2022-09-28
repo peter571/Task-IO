@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { Chats, Messages, Tasks, Spaces, ProtectedRoute } from "./components";
 import { Login, Register } from "./features";
@@ -9,7 +9,7 @@ import { useAccountContext } from "./context/AccountContext";
 
 const Main = () => {
   return (
-    <div className="flex flex-row p-5 gap-4 h-screen">
+    <div className="flex flex-row p-5 gap-1 divide-x h-screen">
       <Chats />
       <Messages />
       <Tasks />

@@ -1,6 +1,5 @@
 import React from "react";
 import Chat from "./Chat";
-import pic from "../../assets/somepic.png";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../hooks/hook";
 import { spacesSelector } from "../../features/spaces/spaceSlice";
@@ -15,7 +14,7 @@ export default function Chats() {
     <div className="flex flex-col gap-4 h-screen">
       <div className="basis-1/8">
         <h1 className="logo" onClick={() => navigate("/")}>
-          Task Manager
+          TM
         </h1>
       </div>
       <h1 className="font-bold basis-1/8">Chats</h1>

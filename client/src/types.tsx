@@ -61,6 +61,11 @@ export interface ModalProviderProp {
   children: React.ReactNode;
 }
 
+export interface MessageProp {
+  fromSelf: boolean;
+  message: string;
+}
+
 export interface GlobalModalProp {
   closeModal: (id: string) => void;
   openModal: (id: string) => void;

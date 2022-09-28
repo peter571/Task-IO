@@ -1,6 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { MODALS } from "../../constants";
 import { ModalContext } from "../../context/ModalContext";
+import { spacesSelector } from "../../features/spaces/spaceSlice";
 import {
   taskSelector,
   getTasksByUserId,
@@ -26,6 +28,11 @@ export default function Tasks() {
   const dispatch = useAppDispatch();
   const { selectedUserTasks } = useAppSelector(taskSelector);
   const { selectedUserId } = useAppSelector(userSelector);
+  const { user } = useAppSelector(userSelector);
+  const { userSpaces } = useAppSelector(spacesSelector);
+  const { spaceId } = useParams();
+  const currentSpace = userSpaces.find((space) => space._id === spaceId);
+  const isCreator = user?.userId === currentSpace.creator;
 
   useEffect(() => {
     if (selectedUserId) {
@@ -34,11 +41,12 @@ export default function Tasks() {
   }, [selectedUserId]);
 
   return (
-    <div className="basis-1/4 h-screen">
-      <button onClick={() => openModal(MODALS.taskform)} className="btn">
-        Assign Task +
-      </button>
-
+    <div className="basis-1/4 h-screen px-3">
+      {isCreator && (
+        <button onClick={() => openModal(MODALS.taskform)} className="btn">
+          Assign Task +
+        </button>
+      )}
       <div className="flex justify-between my-3">
         {tasks.map((task) => (
           <button
@@ -55,7 +63,7 @@ export default function Tasks() {
 
       <div className="flex flex-col gap-4 overflow-auto h-[80%]">
         {selectedUserTasks.length === 0 ? (
-          <p>No tasks assigned</p>
+          selectedUserId && <p>No tasks assigned</p>
         ) : (
           selectedUserTasks.map((task) => {
             if (currentId === tasks[0].id) {
