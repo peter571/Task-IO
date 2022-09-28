@@ -7,7 +7,7 @@ interface MessageState {
   messages: MessageProp[];
 }
 
-const addNewMessage = createAsyncThunk(
+export const addNewMessage = createAsyncThunk(
   "messages/addNewMessage",
   async (messageDetails: MessageDetails) => {
     const { data } = await messagesAPI.addNewMessage(messageDetails);
@@ -15,7 +15,7 @@ const addNewMessage = createAsyncThunk(
   }
 );
 
-const getConversations = createAsyncThunk(
+export const getConversations = createAsyncThunk(
   "messages/getConversations",
   async (users: ConversationMembers) => {
     const { data } = await messagesAPI.getUsersConversations(users);

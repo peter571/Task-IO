@@ -16,7 +16,7 @@ router.post("/", authenticateToken, async (req, res) => {
 });
 
 // Get conversations
-router.get("/", authenticateToken, async (req, res) => {
+router.get("/:from-:to", authenticateToken, async (req, res) => {
   const { from, to } = req.params;
 
   try {
@@ -29,7 +29,9 @@ router.get("/", authenticateToken, async (req, res) => {
     const projectedMessages = msgs.map((msg: any) => {
       return {
         fromSelf: msg.sender.toString() === from,
-        message: msg.text
+        message: msg.text,
+        createdAt: msg.createdAt,
+        senderAvatar: msg.senderAvatar
       };
     });
     res.status(200).json(projectedMessages);

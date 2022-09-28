@@ -1,8 +1,12 @@
-import React, { useState } from "react";
-import { messageSelector } from "../../features/message/messageSlice";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import {
+  messageSelector,
+  addNewMessage,
+  getConversations,
+} from "../../features/message/messageSlice";
 import { spacesSelector } from "../../features/spaces/spaceSlice";
 import { userSelector } from "../../features/users/userSlice";
-import { useAppSelector } from "../../hooks/hook";
+import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 import Message from "./Message";
 
 export default function Messages() {
@@ -10,6 +14,15 @@ export default function Messages() {
   const { selectedUserId, user } = useAppSelector(userSelector);
   const { messages } = useAppSelector(messageSelector);
   const [textMsg, setTextMsg] = useState("");
+  const msgRef = useCallback(
+    (node: any) => {
+      if (node) {
+        node.scrollIntoView({ smooth: true });
+      }
+    },
+    []
+  );
+  const dispatch = useAppDispatch();
   const selectedUser = spaceMembers.find(
     (user) => user.userId === selectedUserId
   );
@@ -23,7 +36,11 @@ export default function Messages() {
           text: textMsg,
           users: [user.userId, selectedUserId],
           sender: user.userId,
+          senderAvatar: user.avatar
         };
+        const newMsg = await dispatch(addNewMessage(msgDetails)).unwrap();
+        setTextMsg("");
+        dispatch(getConversations({ from: user.userId, to: selectedUserId }));
       }
     } catch (error) {}
   }
@@ -31,6 +48,12 @@ export default function Messages() {
   function handleChange(e: React.ChangeEvent<any>) {
     setTextMsg(e.target.value);
   }
+
+  useEffect(() => {
+    if (user && selectedUserId) {
+      dispatch(getConversations({ from: user.userId, to: selectedUserId }));
+    }
+  }, [user, selectedUserId]);
 
   if (!selectedUserId)
     return (
@@ -59,13 +82,19 @@ export default function Messages() {
         {messages.length === 0 ? (
           <p>No messages for this chat</p>
         ) : (
-          messages.map((msg, index) => (
-            <Message
-              key={index}
-              message={msg.message}
-              fromSelf={msg.fromSelf}
-            />
-          ))
+          messages.map((msg, index) => {
+            const lastMsg = messages.length - 1 === index;
+            return (
+              <div
+                ref={lastMsg ? msgRef : null}
+                className={`flex flex-col ${
+                  msg.fromSelf ? "justify-self-end" : "justify-self-start"
+                } w-[70%] mb-3`}
+              >
+                <Message key={index} {...msg} />
+              </div>
+            );
+          })
         )}
       </div>
       <form
@@ -79,6 +108,7 @@ export default function Messages() {
           onChange={handleChange}
           id="msg"
           rows={3}
+          value={textMsg}
         ></textarea>
         <div className="basis-1/4 justify-center items-center align-middle">
           <button className="btn w-full" type="submit">

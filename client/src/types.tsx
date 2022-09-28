@@ -64,6 +64,8 @@ export interface ModalProviderProp {
 export interface MessageProp {
   fromSelf: boolean;
   message: string;
+  createdAt: string;
+  senderAvatar: string| ArrayBuffer | null;
 }
 
 export interface GlobalModalProp {
@@ -109,6 +111,7 @@ export interface MessageDetails {
   text: string;
   users: Array<string>;
   sender: string;
+  senderAvatar: string| ArrayBuffer | null;
 }
 
 export interface AddMemberToSpaceProp {
