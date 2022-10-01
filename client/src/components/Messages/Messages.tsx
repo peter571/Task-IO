@@ -48,9 +48,11 @@ export default function Messages() {
           message: msgDetails.text,
           senderAvatar: msgDetails.senderAvatar,
         });
-        //const newMsg = await dispatch(addNewMessage(msgDetails)).unwrap();
+        const newMsg = await dispatch(addNewMessage(msgDetails)).unwrap();
+        dispatch(updateConversations({ fromSelf: true, createdAt: Date.now(),
+          message: msgDetails.text,
+          senderAvatar: msgDetails.senderAvatar, }));
         setTextMsg("");
-        //dispatch(getConversations({ from: user.userId, to: selectedUserId }));
       }
     } catch (error) {}
   }
@@ -86,8 +88,6 @@ export default function Messages() {
     };
   }, [socket, handleSubmit]);
 
-  console.log(socket)
-
   if (!selectedUserId || !user)
     return (
       <div className="basis-1/2 px-3 h-screen relative">
@@ -96,7 +96,7 @@ export default function Messages() {
     );
 
   return (
-    <SocketProvider id={user.userId}>
+    
       <div className="basis-1/2 px-3 h-screen relative">
         {selectedUser && (
           <div className="border-b-2 mb-2 bg-gray-200 p-3">
@@ -152,6 +152,6 @@ export default function Messages() {
           </div>
         </form>
       </div>
-    </SocketProvider>
+   
   );
 }

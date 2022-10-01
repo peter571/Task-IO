@@ -49,23 +49,26 @@ export default function Tasks() {
   }, [selectedUserId]);
 
   useEffect(() => {
-    if (userSpaces.length === 0) {
-      
+    const onload = async () => {
       if (user && spaceId) {
-        dispatch(getUserSpacesByUserId(user.userId));
-        dispatch(getSpaceMembersBySpaceId(spaceId))
+        const spaces = await dispatch(
+          getUserSpacesByUserId(user.userId)
+        ).unwrap();
+        await dispatch(getSpaceMembersBySpaceId(spaceId)).unwrap();
+        setCurrentSpace(spaces.find((space: any) => space._id === spaceId));
+        setIsCreator(user?.userId == currentSpace.creator);
       } else {
-        navigate('/spaces')
+        navigate("/spaces");
       }
-    } else {
-      setCurrentSpace(userSpaces.find((space) => space._id === spaceId));
-      setIsCreator(user?.userId === currentSpace.creator);
-    }
+    };
+    onload();
   }, []);
+
+  const userIsCreator = user?.userId == currentSpace.creator;
 
   return (
     <div className="basis-1/4 h-screen px-3">
-      {isCreator && (
+      {userIsCreator && (
         <button onClick={() => openModal(MODALS.taskform)} className="btn">
           Assign Task +
         </button>

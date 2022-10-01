@@ -7,9 +7,11 @@ import { Provider } from "react-redux";
 import { store } from "./app/store";
 import "./index.css";
 import { AccountProvider } from "./context/AccountContext";
+import { SocketProvider } from "./context/SocketContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <Provider store={store}>
+    <SocketProvider>
     <ModalProvider>
       <React.StrictMode>
         <BrowserRouter>
@@ -19,5 +21,6 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
         </BrowserRouter>
       </React.StrictMode>
     </ModalProvider>
+    </SocketProvider>
   </Provider>
 );

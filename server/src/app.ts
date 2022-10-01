@@ -58,7 +58,6 @@ io.on("connection", (socket) => {
   socket.on(
     "send-message",
     ({ recipients, message, createdAt, senderAvatar }) => {
-      console.log(recipients, message)
       recipients.forEach((recipient: any) => {
         const newRecipients = recipients.filter((r: any) => r !== recipient);
         newRecipients.push(id);
