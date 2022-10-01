@@ -49,23 +49,26 @@ export interface ModalWrapperProp extends TaskModalProp {
   modalName?: string;
 }
 
-export interface UserContextProp {
-  children: React.ReactNode;
-}
-
 export interface GlobalUser {
   currentUser: string | null;
 }
 
-export interface ModalProviderProp {
+export interface ProviderProp {
   children: React.ReactNode;
 }
 
 export interface MessageProp {
   fromSelf: boolean;
   message: string;
-  createdAt: string;
+  createdAt: any;
   senderAvatar: string| ArrayBuffer | null;
+}
+
+export interface SocketMsgProp {
+  senderId: string;
+  message: string;
+  createdAt: any;
+  senderAvatar: string;
 }
 
 export interface GlobalModalProp {

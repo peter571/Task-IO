@@ -1,12 +1,9 @@
 import { createContext, useState, useContext } from "react";
+import { ProviderProp } from "../types";
 
 interface AccountProp {
   hasAccount: boolean;
   changeHasAccount: () => void;
-}
-
-interface ProviderProp {
-  children: React.ReactNode;
 }
 
 const AccountContext = createContext<AccountProp>({} as AccountProp);

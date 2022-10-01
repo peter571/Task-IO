@@ -1,8 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { MODALS } from "../../constants";
 import { ModalContext } from "../../context/ModalContext";
-import { spacesSelector } from "../../features/spaces/spaceSlice";
+import {
+  getSpaceMembersBySpaceId,
+  getUserSpacesByUserId,
+  spacesSelector,
+} from "../../features/spaces/spaceSlice";
 import {
   taskSelector,
   getTasksByUserId,
@@ -10,6 +14,7 @@ import {
 } from "../../features/tasks/taskSlice";
 import { userSelector } from "../../features/users/userSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/hook";
+import { SpacePropRender } from "../../types";
 import Task from "./Task";
 import TaskForm from "./TaskForm";
 import TaskModal from "./TaskUpdate";
@@ -26,19 +31,37 @@ export default function Tasks() {
   const { openModal, closeModal, taskFormIsOpen, taskModalIsOpen } =
     useContext(ModalContext);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { selectedUserTasks } = useAppSelector(taskSelector);
   const { selectedUserId } = useAppSelector(userSelector);
   const { user } = useAppSelector(userSelector);
   const { userSpaces } = useAppSelector(spacesSelector);
   const { spaceId } = useParams();
-  const currentSpace = userSpaces.find((space) => space._id === spaceId);
-  const isCreator = user?.userId === currentSpace.creator;
+  const [isCreator, setIsCreator] = useState(false);
+  const [currentSpace, setCurrentSpace] = useState<SpacePropRender>(
+    {} as SpacePropRender
+  );
 
   useEffect(() => {
     if (selectedUserId) {
       dispatch(getTasksByUserId(selectedUserId));
     }
   }, [selectedUserId]);
+
+  useEffect(() => {
+    if (userSpaces.length === 0) {
+      
+      if (user && spaceId) {
+        dispatch(getUserSpacesByUserId(user.userId));
+        dispatch(getSpaceMembersBySpaceId(spaceId))
+      } else {
+        navigate('/spaces')
+      }
+    } else {
+      setCurrentSpace(userSpaces.find((space) => space._id === spaceId));
+      setIsCreator(user?.userId === currentSpace.creator);
+    }
+  }, []);
 
   return (
     <div className="basis-1/4 h-screen px-3">
@@ -62,55 +85,53 @@ export default function Tasks() {
       </div>
 
       <div className="flex flex-col gap-4 overflow-auto h-[80%]">
-        {selectedUserTasks.length === 0 ? (
-          selectedUserId && <p>No tasks assigned</p>
-        ) : (
-          selectedUserTasks.map((task) => {
-            if (currentId === tasks[0].id) {
-              return (
-                <Task
-                  openModal={() => {
-                    setCurrentTaskModal(task._id);
-                    openModal(MODALS.taskModal);
-                    dispatch(selectTask(task));
-                  }}
-                  key={task._id}
-                  {...task}
-                />
-              );
-            } else if (
-              currentId === tasks[1].id &&
-              tasks[1].id === task.status
-            ) {
-              return (
-                <Task
-                  openModal={() => {
-                    setCurrentTaskModal(task._id);
-                    openModal(MODALS.taskModal);
-                    dispatch(selectTask(task));
-                  }}
-                  key={task._id}
-                  {...task}
-                />
-              );
-            } else if (
-              currentId === tasks[2].id &&
-              tasks[2].id === task.status
-            ) {
-              return (
-                <Task
-                  openModal={() => {
-                    setCurrentTaskModal(task._id);
-                    openModal(MODALS.taskModal);
-                    dispatch(selectTask(task));
-                  }}
-                  key={task._id}
-                  {...task}
-                />
-              );
-            }
-          })
-        )}
+        {selectedUserTasks.length === 0
+          ? selectedUserId && <p>No tasks assigned</p>
+          : selectedUserTasks.map((task) => {
+              if (currentId === tasks[0].id) {
+                return (
+                  <Task
+                    openModal={() => {
+                      setCurrentTaskModal(task._id);
+                      openModal(MODALS.taskModal);
+                      dispatch(selectTask(task));
+                    }}
+                    key={task._id}
+                    {...task}
+                  />
+                );
+              } else if (
+                currentId === tasks[1].id &&
+                tasks[1].id === task.status
+              ) {
+                return (
+                  <Task
+                    openModal={() => {
+                      setCurrentTaskModal(task._id);
+                      openModal(MODALS.taskModal);
+                      dispatch(selectTask(task));
+                    }}
+                    key={task._id}
+                    {...task}
+                  />
+                );
+              } else if (
+                currentId === tasks[2].id &&
+                tasks[2].id === task.status
+              ) {
+                return (
+                  <Task
+                    openModal={() => {
+                      setCurrentTaskModal(task._id);
+                      openModal(MODALS.taskModal);
+                      dispatch(selectTask(task));
+                    }}
+                    key={task._id}
+                    {...task}
+                  />
+                );
+              }
+            })}
       </div>
 
       <TaskForm

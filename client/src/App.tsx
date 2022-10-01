@@ -1,13 +1,18 @@
 import React, { useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { Chats, Messages, Tasks, Spaces, ProtectedRoute } from "./components";
 import { Login, Register } from "./features";
 import { ToastContainer } from "react-toastify";
 import { authVerify } from "./utils/verifyToken";
 import "react-toastify/dist/ReactToastify.css";
 import { useAccountContext } from "./context/AccountContext";
+import { spacesSelector } from "./features/spaces/spaceSlice";
+import { useAppSelector } from "./hooks/hook";
 
 const Main = () => {
+  const navigate = useNavigate();
+  const { userSpaces } = useAppSelector(spacesSelector);
+
   return (
     <div className="flex flex-row p-5 gap-1 divide-x h-screen">
       <Chats />

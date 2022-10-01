@@ -1,10 +1,10 @@
 import { createContext, useState } from "react";
 import { MODALS } from "../constants";
-import { GlobalModalProp, ModalProviderProp } from "../types";
+import { GlobalModalProp, ProviderProp } from "../types";
 
 export const ModalContext = createContext({} as GlobalModalProp);
 
-export const ModalProvider = ({ children }: ModalProviderProp) => {
+export const ModalProvider = ({ children }: ProviderProp) => {
   const [taskFormIsOpen, setTaskFormIsOpen] = useState(false);
   const [taskModalIsOpen, setTaskModalIsOpen] = useState(false);
   const [newSpaceModal, setNewSpaceModalIsOpen] = useState(false);
