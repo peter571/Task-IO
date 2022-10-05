@@ -16,3 +16,9 @@ export enum STATE {
   SUCCESS = 'success',
   FAILED = 'failed'
 }
+
+export const TASKS = [
+  { id: "all", title: "All" },
+  { id: "pending", title: "Pending" },
+  { id: "completed", title: "Completed" },
+];

@@ -7,7 +7,7 @@ import TaskModal from './TaskUpdate'
 export default function Task(props: TaskPropRender) {
   return (
     <div
-      onClick={props.openModal}
+      onClick={props.openUpdateModal}
       className="border p-2 rounded-md cursor-pointer hover:bg-gray-200"
     >
       <h1>Title: {props.title}</h1>

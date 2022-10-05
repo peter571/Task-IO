@@ -5,6 +5,7 @@ import { ConversationMembers, MessageDetails, MessageProp } from "../../types";
 
 interface MessageState {
   messages: MessageProp[];
+  isloadingMessages: boolean;
 }
 
 export const addNewMessage = createAsyncThunk(
@@ -25,15 +26,22 @@ export const getConversations = createAsyncThunk(
 
 const messageSlice = createSlice({
   name: "messages",
-  initialState: { messages: [] } as MessageState,
+  initialState: { messages: [], isloadingMessages: false } as MessageState,
   reducers: {
     updateConversations: (state, { payload }) => {
       state.messages = [...state.messages, payload];
-    }
+    },
   },
   extraReducers: (builder) => {
+    builder.addCase(getConversations.rejected, (state, { payload }) => {
+      state.isloadingMessages = false;
+    });
     builder.addCase(getConversations.fulfilled, (state, { payload }) => {
       state.messages = payload;
+      state.isloadingMessages = false;
+    });
+    builder.addCase(getConversations.pending, (state, { payload }) => {
+      state.isloadingMessages = true;
     });
   },
 });

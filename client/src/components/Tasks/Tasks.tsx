@@ -1,11 +1,11 @@
+import { TasksList } from "./TasksList";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { MODALS } from "../../constants";
+import { MODALS, TASKS } from "../../constants";
 import { ModalContext } from "../../context/ModalContext";
 import {
   getSpaceMembersBySpaceId,
   getUserSpacesByUserId,
-  spacesSelector,
 } from "../../features/spaces/spaceSlice";
 import {
   taskSelector,
@@ -15,18 +15,11 @@ import {
 import { userSelector } from "../../features/users/userSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 import { SpacePropRender } from "../../types";
-import Task from "./Task";
 import TaskForm from "./TaskForm";
 import TaskModal from "./TaskUpdate";
 
-const tasks = [
-  { id: "all", title: "All" },
-  { id: "pending", title: "Pending" },
-  { id: "completed", title: "Completed" },
-];
-
 export default function Tasks() {
-  const [currentId, setCurrentId] = useState(tasks[0].id);
+  const [currentId, setCurrentId] = useState(TASKS[0].id);
   const [currentTaskModal, setCurrentTaskModal] = useState("");
   const { openModal, closeModal, taskFormIsOpen, taskModalIsOpen } =
     useContext(ModalContext);
@@ -35,9 +28,7 @@ export default function Tasks() {
   const { selectedUserTasks } = useAppSelector(taskSelector);
   const { selectedUserId } = useAppSelector(userSelector);
   const { user } = useAppSelector(userSelector);
-  const { userSpaces } = useAppSelector(spacesSelector);
   const { spaceId } = useParams();
-  const [isCreator, setIsCreator] = useState(false);
   const [currentSpace, setCurrentSpace] = useState<SpacePropRender>(
     {} as SpacePropRender
   );
@@ -56,7 +47,6 @@ export default function Tasks() {
         ).unwrap();
         await dispatch(getSpaceMembersBySpaceId(spaceId)).unwrap();
         setCurrentSpace(spaces.find((space: any) => space._id === spaceId));
-        setIsCreator(user?.userId == currentSpace.creator);
       } else {
         navigate("/spaces");
       }
@@ -74,7 +64,7 @@ export default function Tasks() {
         </button>
       )}
       <div className="flex justify-between my-3">
-        {tasks.map((task) => (
+        {TASKS.map((task) => (
           <button
             className={`px-2 py-1 ${
               currentId === task.id ? "text-white bg-slate-700" : ""
@@ -87,55 +77,12 @@ export default function Tasks() {
         ))}
       </div>
 
-      <div className="flex flex-col gap-4 overflow-auto h-[80%]">
-        {selectedUserTasks.length === 0
-          ? selectedUserId && <p>No tasks assigned</p>
-          : selectedUserTasks.map((task) => {
-              if (currentId === tasks[0].id) {
-                return (
-                  <Task
-                    openModal={() => {
-                      setCurrentTaskModal(task._id);
-                      openModal(MODALS.taskModal);
-                      dispatch(selectTask(task));
-                    }}
-                    key={task._id}
-                    {...task}
-                  />
-                );
-              } else if (
-                currentId === tasks[1].id &&
-                tasks[1].id === task.status
-              ) {
-                return (
-                  <Task
-                    openModal={() => {
-                      setCurrentTaskModal(task._id);
-                      openModal(MODALS.taskModal);
-                      dispatch(selectTask(task));
-                    }}
-                    key={task._id}
-                    {...task}
-                  />
-                );
-              } else if (
-                currentId === tasks[2].id &&
-                tasks[2].id === task.status
-              ) {
-                return (
-                  <Task
-                    openModal={() => {
-                      setCurrentTaskModal(task._id);
-                      openModal(MODALS.taskModal);
-                      dispatch(selectTask(task));
-                    }}
-                    key={task._id}
-                    {...task}
-                  />
-                );
-              }
-            })}
-      </div>
+      <TasksList
+        selectedUserTasks={selectedUserTasks}
+        currentId={currentId}
+        selectedUserId={selectedUserId}
+        setCurrentTaskModal={setCurrentTaskModal}
+      />
 
       <TaskForm
         isOpen={taskFormIsOpen}

@@ -41,7 +41,7 @@ export interface TaskProp {
 
 export interface TaskPropRender extends TaskProp {
   _id: string;
-  openModal?: MouseEventHandler<HTMLDivElement>;
+  openUpdateModal?: MouseEventHandler<HTMLDivElement>;
 }
 
 export interface ModalWrapperProp extends TaskModalProp {

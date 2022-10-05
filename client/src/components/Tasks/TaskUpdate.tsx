@@ -21,7 +21,7 @@ export default function TaskUpdate(props: TaskModalProp) {
     try {
       if (selectedTask) {
         const task = { ...selectedTask, status: Status.COMPLETED };
-        delete task.openModal;
+        delete task.openUpdateModal;
         setIsLoading(STATE.PENDING);
         const updatedTask = await dispatch(
           updateTaskById({ taskId: task._id, task })

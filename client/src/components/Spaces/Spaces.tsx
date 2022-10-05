@@ -19,30 +19,21 @@ export default function Spaces() {
   const { userSpaces } = useAppSelector(spacesSelector);
   const { user } = useAppSelector(userSelector);
   const dispatch = useAppDispatch();
-  const [fetchedSpaces, setFetchedSpaces] = useState<Array<any>>([]);
 
   useEffect(() => {
-    const fetchSpaces = async () => {
-      try {
-        if (user) {
-          const spaces = await dispatch(
-            getUserSpacesByUserId(user.userId)
-          ).unwrap();
-          setFetchedSpaces(spaces);
-        }
-      } catch (error) {}
-    };
-    fetchSpaces();
+    if (user) {
+      dispatch(getUserSpacesByUserId(user.userId));
+    }
   }, []);
-
-  if (userSpaces.length === 0) return <CreateSpace />;
 
   return (
     <div className="screen-wrapper">
       <div className="div-container">
-        {userSpaces.map((space) => (
-          <Space key={space._id} {...space} />
-        ))}
+        {userSpaces.length === 0 ? (
+          <h1>No spaces available</h1>
+        ) : (
+          userSpaces.map((space) => <Space key={space._id} {...space} />)
+        )}
         <button onClick={() => openModal(MODALS.newSpaceModal)} className="btn">
           Create space+
         </button>
