@@ -12,7 +12,7 @@ export default function Chats() {
   const { user } = useAppSelector(userSelector);
 
   return (
-    <div className="flex flex-col gap-4 h-screen">
+    <div className="flex flex-col gap-4 h-full">
       <div className="basis-1/8">
         <h1 className="logo" onClick={() => navigate("/spaces")}>
           <BiHome />

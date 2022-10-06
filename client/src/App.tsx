@@ -8,7 +8,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { useAccountContext } from "./context/AccountContext";
 
 const Main = () => {
-
   return (
     <div className="flex flex-row p-5 gap-1 divide-x h-screen">
       <Chats />
@@ -29,7 +28,7 @@ export default function App() {
   }, [location]);
 
   return (
-    <div>
+    <div className="">
       <Routes>
       <Route
           path="/spaces"

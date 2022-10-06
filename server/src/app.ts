@@ -8,6 +8,7 @@ import authRoutes from "./routes/auth";
 import taskRoutes from "./routes/task";
 import messageRoutes from "./routes/message";
 import spaceRoutes from "./routes/space";
+import { users } from "./socket";
 
 dotenv.config();
 const app = express();
@@ -53,6 +54,10 @@ io.on("connection", (socket) => {
   if (id) {
     console.log(`User with id: ${id} connected!`);
     socket.join(id);
+    if (typeof id === 'string') {
+      users.addUser(id);
+      io.emit("get-users", users.getUsers());
+    }
   }
 
   socket.on(
@@ -71,4 +76,12 @@ io.on("connection", (socket) => {
       });
     }
   );
+
+  socket.on("disconnect", () => {
+    console.log(`User with id: ${id} disconnected!`);
+    if (typeof id === 'string') {
+      users.removeUser(id);
+      io.emit("get-users", users.getUsers());
+    }
+  })
 });

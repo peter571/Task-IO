@@ -23,7 +23,7 @@ export default function Chat(props: ChatProp) {
       onClick={() => selectUser(userId)}
     >
       <img
-        className="h-12 w-12 rounded-[50%]"
+        className="h-10 w-10 rounded-[50%]"
         src={props.avatar}
         alt={props.name}
         loading="lazy"

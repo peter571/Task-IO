@@ -25,7 +25,7 @@ export function MessagesList({ messages }: MessagesListProp) {
   return (
     <div
       id="messages-container"
-      className="grid h-[80%] overflow-auto rounded-sm"
+      className="grid h-[80%] overflow-auto px-3 rounded-sm"
     >
       {messages.length === 0 ? (
         <p className="text-center">No messages for this chat</p>

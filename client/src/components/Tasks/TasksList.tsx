@@ -35,7 +35,7 @@ export function TasksList({
             if (currentId === TASKS[0].id) {
               return (
                 <Task
-                openUpdateModal={() => {
+                  openUpdateModal={() => {
                     onTaskClick(task);
                   }}
                   key={task._id}
@@ -48,7 +48,7 @@ export function TasksList({
             ) {
               return (
                 <Task
-                openUpdateModal={() => {
+                  openUpdateModal={() => {
                     onTaskClick(task);
                   }}
                   key={task._id}

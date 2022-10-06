@@ -33,7 +33,7 @@ export default function Messages() {
     );
 
   return (
-    <div className="basis-1/2 px-3 min-h-screen flex flex-col">
+    <div className="basis-1/2 h-full flex flex-col">
       <UserAvatar selectedUser={selectedUser} />
       <MessagesList messages={messages} />
       <TextInput />
