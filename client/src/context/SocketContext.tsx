@@ -6,6 +6,7 @@ import { userSelector } from "../features/users/userSlice";
 
 interface GlobalSocket {
   socket: Socket | null;
+  onlineUsers: string[];
 }
 
 interface SocketProvider extends ProviderProp {}
@@ -18,6 +19,7 @@ export function useSocket() {
 
 export const SocketProvider = ({ children }: SocketProvider) => {
   const [socket, setSocket] = useState<Socket | null>(null);
+  const [onlineUsers, setOnlineUsers] = useState([])
   const { user } = useAppSelector(userSelector);
 
   useEffect(() => {
@@ -26,6 +28,9 @@ export const SocketProvider = ({ children }: SocketProvider) => {
         query: { id: user.userId },
       });
       setSocket(newSocket);
+      socket?.on('get-users', (users) => {
+        setOnlineUsers(users);
+      })
       return () => {
         newSocket.close();
       };
@@ -33,7 +38,7 @@ export const SocketProvider = ({ children }: SocketProvider) => {
   }, [user]);
 
   return (
-    <SocketContext.Provider value={{ socket }}>
+    <SocketContext.Provider value={{ socket, onlineUsers }}>
       {children}
     </SocketContext.Provider>
   );

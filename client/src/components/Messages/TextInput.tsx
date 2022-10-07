@@ -61,7 +61,6 @@ export function TextInput() {
           message,
           createdAt,
         };
-        console.log(msg);
         dispatch(updateConversations(msg));
       }
     );

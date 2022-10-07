@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Chat from "./Chat";
-import { BiHome } from 'react-icons/bi'
+import { BiHome } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../hooks/hook";
 import { spacesSelector } from "../../features/spaces/spaceSlice";
 import { userSelector } from "../../features/users/userSlice";
+import { useSocket } from "../../context/SocketContext";
 
 export default function Chats() {
   const navigate = useNavigate();

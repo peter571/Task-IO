@@ -56,7 +56,9 @@ io.on("connection", (socket) => {
     socket.join(id);
     if (typeof id === 'string') {
       users.addUser(id);
+      console.log('User added!')
       io.emit("get-users", users.getUsers());
+      console.log(users.getUsers())
     }
   }
 
@@ -81,6 +83,7 @@ io.on("connection", (socket) => {
     console.log(`User with id: ${id} disconnected!`);
     if (typeof id === 'string') {
       users.removeUser(id);
+      console.log('User removed!')
       io.emit("get-users", users.getUsers());
     }
   })

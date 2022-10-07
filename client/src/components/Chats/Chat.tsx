@@ -1,5 +1,6 @@
-import React from "react";
-import { getTasksByUserId } from "../../features/tasks/taskSlice";
+import React, { useEffect, useState } from "react";
+import { useSocket } from "../../context/SocketContext";
+import { getConversations } from "../../features/message/messageSlice";
 import { selectUserById, userSelector } from "../../features/users/userSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 import { ChatProp } from "../../types";
@@ -7,13 +8,39 @@ import { ChatProp } from "../../types";
 export default function Chat(props: ChatProp) {
   const { userId } = props;
   const dispatch = useAppDispatch();
-  const { selectedUserId } = useAppSelector(userSelector);
+  const { selectedUserId, user } = useAppSelector(userSelector);
   const isSelected = selectedUserId === userId;
+  const [lastMessage, setLastMessage] = useState("");
+  const { socket } = useSocket();
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
   function selectUser(id: string) {
     dispatch(selectUserById(id));
-    dispatch(getTasksByUserId(id))
   }
+
+  useEffect(() => {
+    socket?.on("get-users", (users) => {
+      setOnlineUsers(users);
+    });
+  }, [user]);
+
+  const isOnline = onlineUsers.some((user) => user === userId);
+
+  useEffect(() => {
+    async function fetchTexts() {
+      try {
+        if (userId && user) {
+          const textMsgs = await dispatch(
+            getConversations({ from: user.userId, to: userId })
+          ).unwrap();
+          if (textMsgs.length > 0) {
+            setLastMessage(textMsgs[textMsgs.length - 1].message);
+          }
+        }
+      } catch (error) {}
+    }
+    fetchTexts();
+  }, []);
 
   return (
     <div
@@ -30,9 +57,16 @@ export default function Chat(props: ChatProp) {
       />
       <div>
         <h1 className="font-semibold">{props.name}</h1>
-        <p className="font-light text-sm">{props.previewText}</p>
+        <p className="font-light text-xs max-w-[95%] truncate">{lastMessage}</p>
       </div>
-      <div className="bg-green-500 absolute h-3 w-3 left-3 rounded-[50%]"></div>
+      <div
+        className={`${
+          isOnline ? "bg-green-500" : "bg-gray-200"
+        } absolute h-3 w-3 left-3 rounded-[50%]`}
+      ></div>
+      <div className="bg-red-500 absolute h-3.5 w-3.5 right-3 rounded-[50%]">
+        <h1 className="text-xs font-semibold text-center text-white">2</h1>
+      </div>
     </div>
   );
 }

@@ -20,10 +20,13 @@ export default function Messages() {
   );
 
   useEffect(() => {
-    if (user && selectedUserId) {
-      dispatch(getConversations({ from: user.userId, to: selectedUserId }));
-    }
-  }, [user, selectedUserId]);
+    const fetchTexts = async () => {
+      if (user && selectedUserId) {
+        await dispatch(getConversations({ from: user.userId, to: selectedUserId })).unwrap();
+      }
+    };
+    fetchTexts();
+  }, [selectedUserId]);
 
   if (!selectedUserId)
     return (
