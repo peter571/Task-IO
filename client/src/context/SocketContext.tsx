@@ -24,7 +24,7 @@ export const SocketProvider = ({ children }: SocketProvider) => {
 
   useEffect(() => {
     if (user) {
-      const newSocket = io("http://localhost:5000", {
+      const newSocket = io("https://chat-app-vpct.onrender.com", {
         query: { id: user.userId },
       });
       setSocket(newSocket);
