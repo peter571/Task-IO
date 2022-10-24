@@ -20,17 +20,14 @@ export default function Messages() {
   );
 
   useEffect(() => {
-    const fetchTexts = async () => {
-      if (user && selectedUserId) {
-        await dispatch(getConversations({ from: user.userId, to: selectedUserId })).unwrap();
-      }
-    };
-    fetchTexts();
+    if (user && selectedUserId) {
+      dispatch(getConversations({ from: user.userId, to: selectedUserId }));
+    }
   }, [selectedUserId]);
 
   if (!selectedUserId)
     return (
-      <div className="basis-1/2 px-3 h-screen relative">
+      <div className="basis-1/2 px-3 h-full relative">
         <p>Open Conversation</p>
       </div>
     );

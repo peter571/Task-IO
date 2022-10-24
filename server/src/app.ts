@@ -26,7 +26,7 @@ app.use("/spaces", spaceRoutes);
 app.use("/messages", messageRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Task manager API");
+  res.send("<h1>Task manager API</h1>");
 });
 
 //DATABASE CONNECTION
@@ -45,7 +45,7 @@ const server = app.listen(PORT, () =>
 //SOCKET IO
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: `${process.env.CLIENT_URL}`
   },
 });
 

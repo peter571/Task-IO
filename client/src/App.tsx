@@ -30,7 +30,7 @@ export default function App() {
   return (
     <div className="">
       <Routes>
-      <Route
+        <Route
           path="/spaces"
           element={
             <ProtectedRoute user={isAuthenticated} redirectPath={"/"}>

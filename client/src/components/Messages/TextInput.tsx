@@ -30,7 +30,7 @@ export function TextInput() {
           message: msgDetails.text,
           senderAvatar: msgDetails.senderAvatar,
         });
-        await dispatch(addNewMessage(msgDetails)).unwrap();
+        dispatch(addNewMessage(msgDetails));
         dispatch(
           updateConversations({
             fromSelf: true,
@@ -42,7 +42,7 @@ export function TextInput() {
         setTextMsg("");
       }
     } catch (error) {
-        console.log(error)
+      console.log(error)
     }
   }
 
