@@ -58,7 +58,6 @@ const userSlice = createSlice({
     selectUserById: (state, action) => {
       state.selectedUserId = action.payload;
     }
-
   },
   extraReducers: (builder) => {
     builder.addCase(loginUser.pending, (state, action) => {

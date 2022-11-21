@@ -1,12 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ProviderProp } from "../types";
 import { io, Socket } from "socket.io-client";
-import { useAppSelector } from "../hooks/hook";
-import { userSelector } from "../features/users/userSlice";
+import { ProviderProp } from "../types";
+
+interface ISocket extends Socket {
+  userID?: string;
+  sessionID?: string;
+}
 
 interface GlobalSocket {
-  socket: Socket | null;
   onlineUsers: string[];
+  setOnlineUsers: React.Dispatch<React.SetStateAction<any[]>>
+  socket: ISocket
 }
 
 interface SocketProvider extends ProviderProp {}
@@ -17,28 +21,15 @@ export function useSocket() {
   return useContext(SocketContext);
 }
 
-export const SocketProvider = ({ children }: SocketProvider) => {
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const [onlineUsers, setOnlineUsers] = useState([])
-  const { user } = useAppSelector(userSelector);
+const URL = 'http://localhost:5000'
+const url = 'https://chat-app-vpct.onrender.com'
 
-  useEffect(() => {
-    if (user) {
-      const newSocket = io("https://chat-app-vpct.onrender.com", {
-        query: { id: user.userId },
-      });
-      setSocket(newSocket);
-      socket?.on('get-users', (users) => {
-        setOnlineUsers(users);
-      })
-      return () => {
-        newSocket.close();
-      };
-    }
-  }, [user]);
+export const SocketProvider = ({ children }: SocketProvider) => {
+  const [onlineUsers, setOnlineUsers] = useState<any[]>([]);
+  const socket = io(URL, { autoConnect: false });
 
   return (
-    <SocketContext.Provider value={{ socket, onlineUsers }}>
+    <SocketContext.Provider value={{ socket, onlineUsers, setOnlineUsers }}>
       {children}
     </SocketContext.Provider>
   );

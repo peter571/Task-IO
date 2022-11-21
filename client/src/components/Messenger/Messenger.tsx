@@ -1,7 +1,7 @@
 import { UserAvatar } from "./UserAvatar";
 import { MessagesList } from "./MessagesList";
 import { TextInput } from "./TextInput";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   messageSelector,
   getConversations,
@@ -9,6 +9,11 @@ import {
 import { spacesSelector } from "../../features/spaces/spaceSlice";
 import { userSelector } from "../../features/users/userSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/hook";
+import { io, Socket } from "socket.io-client";
+import { useSocket } from "../../context/SocketContext";
+
+const URL = 'http://localhost:5000'
+const url = 'https://chat-app-vpct.onrender.com'
 
 export default function Messages() {
   const { spaceMembers } = useAppSelector(spacesSelector);
@@ -18,6 +23,27 @@ export default function Messages() {
   const selectedUser = spaceMembers.find(
     (user) => user.userId === selectedUserId
   );
+
+  const { setOnlineUsers, socket } = useSocket();
+
+  useEffect(() => {
+    const sessionID = localStorage.getItem("sessionID");
+
+    if (sessionID) {
+      socket.auth = { sessionID };
+      socket.connect();
+    }
+
+    socket.on("session", ({ sessionID, userID }) => {
+      // attach the session ID to the next reconnection attempts
+      socket.auth = { sessionID };
+      // store it in the localStorage
+      localStorage.setItem("sessionID", sessionID);
+      // save the ID of the user
+      socket.userID = userID;
+    })
+
+  }, []);
 
   useEffect(() => {
     if (user && selectedUserId) {

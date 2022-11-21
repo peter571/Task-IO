@@ -3,6 +3,8 @@ import React, { MouseEventHandler } from "react";
 export interface ChatProp extends User {
   avatar: string;
   previewText: string;
+  hasNewMessages?: boolean;
+  isConnected?: boolean;
 }
 
 export interface SpaceProp {

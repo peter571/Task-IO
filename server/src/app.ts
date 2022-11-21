@@ -2,13 +2,16 @@ import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 
 import authRoutes from "./routes/auth";
 import taskRoutes from "./routes/task";
 import messageRoutes from "./routes/message";
 import spaceRoutes from "./routes/space";
-import { users } from "./socket";
+import crypto from "crypto";
+import { InMemorySessionStore } from "./socket/sessionStore";
+
+const sessionStore = new InMemorySessionStore();
 
 dotenv.config();
 const app = express();
@@ -45,46 +48,99 @@ const server = app.listen(PORT, () =>
 //SOCKET IO
 const io = new Server(server, {
   cors: {
-    origin: `${process.env.CLIENT_URL}`
+    origin: `${process.env.CLIENT_URL}`,
   },
 });
 
-io.on("connection", (socket) => {
-  const id = socket.handshake.query.id;
-  if (id) {
-    console.log(`User with id: ${id} connected!`);
-    socket.join(id);
-    if (typeof id === 'string') {
-      users.addUser(id);
-      console.log('User added!')
-      io.emit("get-users", users.getUsers());
-      console.log(users.getUsers())
+interface UserSocket extends Socket {
+  userID?: string;
+  sessionID?: string;
+}
+
+const randomId = () => crypto.randomBytes(8).toString("hex");
+
+io.use((socket: UserSocket, next) => {
+  const sessionID = socket.handshake.auth.sessionID;
+  if (sessionID) {
+    const session = sessionStore.findSession(sessionID);
+    if (session) {
+      socket.sessionID = sessionID;
+      socket.userID = session.userID;
+      return next();
     }
   }
+  socket.sessionID = randomId();
+  socket.userID = randomId();
+  next();
+});
 
-  socket.on(
-    "send-message",
-    ({ recipients, message, createdAt, senderAvatar }) => {
-      recipients.forEach((recipient: any) => {
-        const newRecipients = recipients.filter((r: any) => r !== recipient);
-        newRecipients.push(id);
-        socket.broadcast.to(recipient).emit("receive-message", {
-          recipients: newRecipients,
-          sender: id,
-          message,
-          createdAt,
-          senderAvatar,
-        });
-      });
-    }
-  );
+io.on("connection", (socket: UserSocket) => {
+  // persist session
+  if (socket.sessionID && socket.userID) {
+    sessionStore.saveSession(socket.sessionID, {
+      userID: socket.userID,
+      connected: true,
+    });
+  }
 
-  socket.on("disconnect", () => {
-    console.log(`User with id: ${id} disconnected!`);
-    if (typeof id === 'string') {
-      users.removeUser(id);
-      console.log('User removed!')
-      io.emit("get-users", users.getUsers());
+  // emit session details
+  socket.emit("session", {
+    sessionID: socket.sessionID,
+    userID: socket.userID,
+  });
+
+  // join the "userID" room
+  if (socket.userID) {
+    socket.join(socket.userID);
+  }
+
+  // fetch existing users
+  const users: Array<any> = [];
+  sessionStore.findAllSessions().forEach((session: any) => {
+    users.push({
+      userID: session.userID,
+      connected: session.connected,
+    });
+  });
+  socket.emit("users", users);
+
+  // notify existing users
+  socket.broadcast.emit("user connected", {
+    userID: socket.userID,
+    connected: true,
+  });
+
+  // forward the private message to the right recipient (and to other tabs of the sender)
+  socket.on("private message", ({ content, to }) => {
+    const message = {
+      content,
+      from: socket.userID,
+      to,
+    };
+    if (socket.userID)
+      socket.to(to).to(socket.userID).emit("private message", message);
+  });
+
+  // notify users upon disconnection
+  socket.on("disconnect", async () => {
+    let matchingSockets: Set<string>;
+    let isDisconnected: boolean;
+
+    if (socket.userID) {
+      matchingSockets = await io.in(socket.userID).allSockets();
+      isDisconnected = matchingSockets.size === 0;
+
+      if (isDisconnected) {
+        // notify other users
+        socket.broadcast.emit("user disconnected", socket.userID);
+        // update the connection status of the session
+        if (socket.sessionID) {
+          sessionStore.saveSession(socket.sessionID, {
+            userID: socket.userID,
+            connected: false,
+          });
+        }
+      }
     }
-  })
+  });
 });

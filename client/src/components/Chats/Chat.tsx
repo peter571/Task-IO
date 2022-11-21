@@ -11,18 +11,12 @@ export default function Chat(props: ChatProp) {
   const { selectedUserId, user } = useAppSelector(userSelector);
   const isSelected = selectedUserId === userId;
   const [lastMessage, setLastMessage] = useState("");
-  const { socket } = useSocket();
-  const [onlineUsers, setOnlineUsers] = useState([]);
+
+  const { onlineUsers } = useSocket();
 
   function selectUser(id: string) {
     dispatch(selectUserById(id));
   }
-
-  useEffect(() => {
-    socket?.on("get-users", (users) => {
-      setOnlineUsers(users);
-    });
-  }, [user]);
 
   const isOnline = onlineUsers.some((user) => user === userId);
 
@@ -37,16 +31,15 @@ export default function Chat(props: ChatProp) {
             setLastMessage(textMsgs[textMsgs.length - 1].message);
           }
         }
-      } catch (error) {}
+      } catch (error) { }
     }
     fetchTexts();
   }, []);
 
   return (
     <div
-      className={`relative ${
-        isSelected && "bg-gray-200"
-      } flex flex-row align-middle gap-2 border cursor-pointer p-2 rounded-md hover:bg-gray-200`}
+      className={`relative ${isSelected && "bg-gray-200"
+        } flex flex-row align-middle gap-2 border cursor-pointer p-2 rounded-md hover:bg-gray-200`}
       onClick={() => selectUser(userId)}
     >
       <img
@@ -60,13 +53,14 @@ export default function Chat(props: ChatProp) {
         <p className="font-light text-xs max-w-[95%] truncate">{lastMessage}</p>
       </div>
       <div
-        className={`${
-          isOnline ? "bg-green-500" : "bg-gray-200"
-        } absolute h-3 w-3 left-3 rounded-[50%]`}
+        className={`${props.isConnected ? "bg-green-500" : "bg-gray-200"
+          } absolute h-3 w-3 left-3 rounded-[50%]`}
       ></div>
-      <div className="bg-red-500 absolute h-3.5 w-3.5 right-3 rounded-[50%]">
-        <h1 className="text-xs font-semibold text-center text-white">2</h1>
-      </div>
+      {props.hasNewMessages && (
+        <div className="bg-red-500 absolute h-3.5 w-3.5 right-3 rounded-[50%]">
+          <h1 className="text-xs font-semibold text-center text-white"></h1>
+        </div>
+      )}
     </div>
   );
 }

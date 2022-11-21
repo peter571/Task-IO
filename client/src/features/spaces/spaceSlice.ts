@@ -65,7 +65,23 @@ const spaceSlice = createSlice({
     userSpaces: [],
     spaceMembers: []
   } as SpaceState,
-  reducers: {},
+  reducers: {
+    updateUserHasMsg: (state, action) => {
+      state.spaceMembers.forEach((member) => {
+        if (member.userId === action.payload.id) {
+          member.hasNewMessages = action.payload.hasNewMessages;
+        }
+      })
+    },
+
+    updateUserConnection: (state, action) => {
+      state.spaceMembers.forEach((member) => {
+        if (member.userId === action.payload.id) {
+          member.isConnected = action.payload.isConnected;
+        }
+      })
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(getUserSpacesByUserId.fulfilled, (state, { payload }) => {
       state.userSpaces = payload;
@@ -79,5 +95,6 @@ const spaceSlice = createSlice({
   },
 });
 
+export const { updateUserConnection, updateUserHasMsg } = spaceSlice.actions;
 export const spacesSelector = (state: RootState) => state.spaces;
 export default spaceSlice.reducer;
