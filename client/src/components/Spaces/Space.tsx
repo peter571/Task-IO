@@ -5,6 +5,7 @@ import { getSpaceMembersBySpaceId } from "../../features/spaces/spaceSlice";
 import { useAppDispatch } from "../../hooks/hook";
 import { MdContentCopy } from "react-icons/md";
 import { toast } from "react-toastify";
+import { FaLongArrowAltRight } from 'react-icons/fa'
 
 export default function Space(props: SpacePropRender) {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ export default function Space(props: SpacePropRender) {
   return (
     <div
       onClick={() => navigate(`/spaces/${props._id}`)}
-      className="flex flex-row align-middle gap-2 cursor-pointer p-2 rounded-md hover:bg-gray-200"
+      className="flex flex-row align-middle gap-2 cursor-pointer p-2 rounded-md hover:bg-gray-200 relative border"
     >
       <img
         className="h-12 w-12 rounded-[25%]"
@@ -48,6 +49,7 @@ export default function Space(props: SpacePropRender) {
           />
         </div>
       </div>
+      <FaLongArrowAltRight className="absolute right-2 inset-y-1/3" size={25} />
     </div>
   );
 }

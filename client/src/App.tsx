@@ -1,21 +1,19 @@
 import React, { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
-import { Chats, Messages, Tasks, Spaces, ProtectedRoute } from "./components";
+import {
+  Chats,
+  Messages,
+  Tasks,
+  Spaces,
+  ProtectedRoute,
+  Nav,
+  WorkSpace,
+} from "./components";
 import { Login, Register } from "./features";
 import { ToastContainer } from "react-toastify";
 import { authVerify } from "./utils/verifyToken";
 import "react-toastify/dist/ReactToastify.css";
 import { useAccountContext } from "./context/AccountContext";
-
-const Main = () => {
-  return (
-    <div className="flex flex-row p-5 gap-1 divide-x h-screen">
-      <Chats />
-      <Messages />
-      <Tasks />
-    </div>
-  );
-};
 
 export default function App() {
   const { hasAccount } = useAccountContext();
@@ -29,6 +27,9 @@ export default function App() {
 
   return (
     <div className="">
+      {location.pathname === "/spaces" && <Nav />}
+      {location.pathname === "/" && <Nav />}
+
       <Routes>
         <Route
           path="/spaces"
@@ -43,7 +44,7 @@ export default function App() {
           path="/spaces/:spaceId"
           element={
             <ProtectedRoute user={isAuthenticated} redirectPath={"/"}>
-              <Main />
+              <WorkSpace />
             </ProtectedRoute>
           }
         />

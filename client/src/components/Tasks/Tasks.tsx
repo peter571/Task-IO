@@ -57,7 +57,7 @@ export default function Tasks() {
   const userIsCreator = user?.userId == currentSpace.creator;
 
   return (
-    <div className="basis-1/4 h-full px-3">
+    <div className="w-1/5 h-full p-3 ">
       {userIsCreator && (
         <button onClick={() => openModal(MODALS.taskform)} className="btn">
           Assign Task +

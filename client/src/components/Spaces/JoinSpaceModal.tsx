@@ -10,6 +10,7 @@ import { userSelector } from "../../features/users/userSlice";
 import { toast } from "react-toastify";
 import { STATE } from "../../constants";
 import Loader from "../Loader/Loader";
+import { useNavigate } from "react-router-dom";
 
 export default function JoinSpaceModal(props: JoinSpaceProp) {
   const [spaceId, setSpaceId] = useState("");
@@ -17,6 +18,7 @@ export default function JoinSpaceModal(props: JoinSpaceProp) {
   const { user } = useAppSelector(userSelector);
   const [isloading, setIsLoading] = useState<STATE>(STATE.IDLE);
   const pending = isloading === STATE.PENDING;
+  const navigate = useNavigate()
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -31,6 +33,7 @@ export default function JoinSpaceModal(props: JoinSpaceProp) {
         setSpaceId("");
         toast.success(`You joined ${space.title} space!`);
         await dispatch(getUserSpacesByUserId(user.userId));
+        navigate('/spaces/' + spaceId)
       }
     } catch (error) {
       setIsLoading(STATE.FAILED);

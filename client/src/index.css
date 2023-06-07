@@ -1,13 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 
 @layer components {
   .auth__form {
     @apply flex flex-col min-h-screen align-middle justify-center items-center px-5;
   }
   .form__input {
-    @apply rounded-sm ring-1 ring-gray-200 outline-none my-1 px-1 focus:ring-1 focus:ring-black placeholder:text-sm;
+    @apply rounded-lg ring-1 ring-gray-200 outline-none my-1 px-1 focus:ring-1 focus:ring-black placeholder:text-sm;
   }
   .btn {
     @apply inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
@@ -26,8 +27,12 @@
   }
 }
 
+.bg-navbar {
+  @apply bg-slate-50 drop-shadow-lg !important;
+}
+
 @layer base {
-    h1, p {
-      @apply font-sans;
+    html, body {
+      @apply font-poppins;
     }
   }

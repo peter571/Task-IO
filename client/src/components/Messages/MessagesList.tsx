@@ -3,6 +3,7 @@ import { messageSelector } from "../../features/message/messageSlice";
 import { useAppSelector } from "../../hooks/hook";
 import Loader from "../Loader/Loader";
 import Message from "./Message";
+import { TbMessages } from "react-icons/tb";
 
 interface MessagesListProp {
   messages: Array<any>;
@@ -27,8 +28,12 @@ export function MessagesList({ messages }: MessagesListProp) {
       id="messages-container"
       className="grid h-[80%] overflow-auto px-3 rounded-sm"
     >
+      {/* Display when there is no messages */}
       {messages.length === 0 ? (
-        <p className="text-center">No messages for this chat</p>
+        <div className="flex flex-col justify-center items-center">
+          <TbMessages color="gray" size={25} />
+          <p className="text-center text-gray-500">No messages for this chat</p>
+        </div>
       ) : (
         messages.map((msg, index) => {
           const lastMsg = messages.length - 1 === index;

@@ -9,6 +9,7 @@ import {
 import { spacesSelector } from "../../features/spaces/spaceSlice";
 import { userSelector } from "../../features/users/userSlice";
 import { useAppDispatch, useAppSelector } from "../../hooks/hook";
+import { TiMessages } from "react-icons/ti";
 
 export default function Messages() {
   const { spaceMembers } = useAppSelector(spacesSelector);
@@ -27,13 +28,16 @@ export default function Messages() {
 
   if (!selectedUserId)
     return (
-      <div className="basis-1/2 px-3 h-full relative">
-        <p>Open Conversation</p>
+      <div className="w-3/5 px-3 h-full flex justify-center items-center">
+        <div className="flex flex-col justify-center items-center">
+          <TiMessages color="gray" size={65} className="" />
+          <p className="font-semibold text-gray-500">Select Conversation</p>
+        </div>
       </div>
     );
 
   return (
-    <div className="basis-1/2 h-full flex flex-col">
+    <div className="w-3/5 h-full flex flex-col">
       <UserAvatar selectedUser={selectedUser} />
       <MessagesList messages={messages} />
       <TextInput />

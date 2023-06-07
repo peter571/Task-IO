@@ -6,6 +6,7 @@ import {
 } from "../../features/message/messageSlice";
 import { userSelector } from "../../features/users/userSlice";
 import { useAppSelector, useAppDispatch } from "../../hooks/hook";
+import { Button } from "flowbite-react";
 
 export function TextInput() {
   const { selectedUserId, user } = useAppSelector(userSelector);
@@ -85,9 +86,9 @@ export function TextInput() {
         required
       ></textarea>
       <div className="basis-1/4 justify-center items-center align-middle">
-        <button className="btn w-full" type="submit" disabled={textMsg.length === 0}>
+        <Button color="success" className="w-full" type="submit" disabled={textMsg.length === 0}>
           Send
-        </button>
+        </Button>
       </div>
     </form>
   );
