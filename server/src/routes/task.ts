@@ -12,7 +12,7 @@ router.post("/", authenticateToken, async (req, res) => {
     await newTask.save();
     res.status(201).json(newTask);
   } catch (error) {
-    res.status(500).json({ message: "Failed to save task" });
+    res.status(500).json({ message: "Failed to create task" });
   }
 });
 

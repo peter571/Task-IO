@@ -1,6 +1,5 @@
 import express from "express";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
 import cors from "cors";
 import { Server } from "socket.io";
 
@@ -9,6 +8,7 @@ import taskRoutes from "./routes/task";
 import messageRoutes from "./routes/message";
 import spaceRoutes from "./routes/space";
 import { users } from "./socket";
+import { connectDB } from './database/database'
 
 dotenv.config();
 const app = express();
@@ -31,13 +31,9 @@ app.get("/", (req, res) => {
 
 //DATABASE CONNECTION
 const CONNECTION_URL = `${process.env.MONGO_URL}`;
-const PORT = process.env.PORT || 5000;
-console.log('url', CONNECTION_URL)
-mongoose
-  .connect(CONNECTION_URL)
-  .then(() => console.log("Database connected successfully!"))
-  .catch((error) => console.log(`${error} did not connect`));
+connectDB(CONNECTION_URL)
 
+const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () =>
   console.log(`Server Running on Port: http://localhost:${PORT}`)
 );

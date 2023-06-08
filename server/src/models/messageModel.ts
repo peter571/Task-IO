@@ -1,22 +1,22 @@
 import { Schema, model, Types } from "mongoose";
 
 interface IMessage {
-  text: string;
-  users: Array<string>;
+  content: string;
+  receiver: Types.ObjectId;
   sender: Types.ObjectId;
-  senderAvatar: string;
+  workspace_id: Types.ObjectId;
 }
 
 const msgModel = new Schema<IMessage>(
   {
-    text: { type: String, required: true },
-    users: { type: [String], required: true },
+    content: { type: String, required: true },
+    receiver: { type: Schema.Types.ObjectId, required: true },
     sender: { type: Schema.Types.ObjectId, required: true },
-    senderAvatar: { type: String }
+    workspace_id: { type: Schema.Types.ObjectId, required: true}
   },
   {
     timestamps: true,
   }
 );
 
-export const Message = model<IMessage>("message", msgModel);
+export const Message = model<IMessage>("Message", msgModel);

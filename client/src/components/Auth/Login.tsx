@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Loader from "../../components/Loader/Loader";
+import Loader from "../Loader/Loader";
 import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 import { LoginValues } from "../../types";
-import { loginUser, userSelector } from "./userSlice";
+import { loginUser, userSelector } from "../../features/users/userSlice";
 import { toast } from "react-toastify";
 import { useAccountContext } from "../../context/AccountContext";
 
