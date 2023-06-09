@@ -1,16 +1,16 @@
 import React, { useEffect } from "react";
 import Chat from "./Chat";
 import { BiHome } from "react-icons/bi";
-import { useNavigate } from "react-router-dom";
-import { useAppSelector } from "../../hooks/hook";
-import { spacesSelector } from "../../features/spaces/spaceSlice";
-import { userSelector } from "../../features/users/userSlice";
+import { useNavigate, useParams } from "react-router-dom";
 import { TiMessage } from "react-icons/ti";
+import { useAccountContext } from "../../context/AccountContext";
+import { useGetWorkSpaceMembersQuery } from "../../features/api/workspaceApi";
 
 export default function Chats() {
   const navigate = useNavigate();
-  const { spaceMembers } = useAppSelector(spacesSelector);
-  const { user } = useAppSelector(userSelector);
+  const { spaceId } = useParams()
+  const { data: spaceMembers = [] } = useGetWorkSpaceMembersQuery(spaceId);
+  const { user } = useAccountContext();
 
   return (
     <div className="flex flex-col gap-4 h-full bg-[#EAF1FB] w-1/5">
@@ -29,7 +29,7 @@ export default function Chats() {
           </div>
         )}
         {/* Display the space members here */}
-        {spaceMembers.map((member, index) => {
+        {spaceMembers.map((member: any, index: number) => {
           if (member.userId !== user?.userId) {
             return <Chat key={index} {...member} />;
           }

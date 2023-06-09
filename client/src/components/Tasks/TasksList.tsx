@@ -1,8 +1,6 @@
 import React, { useContext } from "react";
 import { MODALS, TASKS } from "../../constants";
 import { ModalContext } from "../../context/ModalContext";
-import { selectTask } from "../../features/tasks/taskSlice";
-import { useAppDispatch } from "../../hooks/hook";
 import Task from "./Task";
 
 interface TasksListProp {
@@ -19,12 +17,10 @@ export function TasksList({
   setCurrentTaskModal,
 }: TasksListProp) {
   const { openModal } = useContext(ModalContext);
-  const dispatch = useAppDispatch();
 
   function onTaskClick(task: any) {
     setCurrentTaskModal(task._id);
     openModal(MODALS.taskModal);
-    dispatch(selectTask(task));
   }
 
   return (

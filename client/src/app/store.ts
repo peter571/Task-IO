@@ -1,17 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit'
-import messageSlice from '../features/message/messageSlice'
-import spaceSlice from '../features/spaces/spaceSlice'
-import taskSlice from '../features/tasks/taskSlice'
-import userSlice from '../features/users/userSlice'
+import { configureStore } from "@reduxjs/toolkit";
+import { appApi } from "../features/api/api";
 
 export const store = configureStore({
   reducer: {
-    users: userSlice,
-    spaces: spaceSlice,
-    tasks: taskSlice,
-    messages: messageSlice
+    // Add the generated reducer as a specific top-level slice
+    [appApi.reducerPath]: appApi.reducer,
   },
-})
+  // Adding the api middleware enables caching, invalidation, polling,
+  // and other useful features of `rtk-query`.
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(appApi.middleware),
+});
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;

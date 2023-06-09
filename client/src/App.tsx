@@ -1,15 +1,13 @@
 import React, { useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import {
-  Chats,
-  Messages,
-  Tasks,
   Spaces,
   ProtectedRoute,
   Nav,
   WorkSpace,
+  Login,
+  Register,
 } from "./components";
-import { Login, Register } from "./features";
 import { ToastContainer } from "react-toastify";
 import { authVerify } from "./utils/verifyToken";
 import "react-toastify/dist/ReactToastify.css";

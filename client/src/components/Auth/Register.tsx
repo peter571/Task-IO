@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
-import { useAppDispatch, useAppSelector } from "../../hooks/hook";
+import { useAppDispatch } from "../../hooks/hook";
 import { RegisterValues } from "../../types";
-import { registerUser } from "./userSlice";
 import { toast } from "react-toastify";
-import { userSelector } from "./userSlice";
 import { useAccountContext } from "../../context/AccountContext";
+import { useRegisterMutation } from "../../features/api/authApi";
 
 export default function Register() {
   const initialValues = {
@@ -18,18 +17,22 @@ export default function Register() {
   };
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isloading } = useAppSelector(userSelector);
-  const { changeHasAccount } = useAccountContext();
-  const [registerDetails, setRegisterDetails] = useState<RegisterValues>(initialValues);
+
+  const { changeHasAccount, setUser } = useAccountContext();
+  const [registerDetails, setRegisterDetails] =
+    useState<RegisterValues>(initialValues);
+  const [register, { data, isLoading }] = useRegisterMutation();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const user = await dispatch(registerUser(registerDetails)).unwrap();
-      localStorage.setItem("account_user", JSON.stringify(user));
-      setRegisterDetails(initialValues)
-      toast.success(`Successfully logged in to ${user.user.name}`);
-      navigate("/spaces");
+      await register(registerDetails).then(() => {
+        localStorage.setItem("account_user", JSON.stringify(data));
+        setUser(data)
+        setRegisterDetails(initialValues);
+        toast.success("Successfully Logged In");
+        navigate("/spaces");
+      });
     } catch (error) {
       toast.warn(`${error}`);
     }
@@ -97,8 +100,8 @@ export default function Register() {
           placeholder="Confirm password"
           required
         />
-        <button type="submit" className="btn" disabled={isloading}>
-          {isloading ? <Loader /> : "Register"}
+        <button type="submit" className="btn" disabled={isLoading}>
+          {isLoading ? <Loader /> : "Register"}
         </button>
         <p>
           Already have an account?{" "}

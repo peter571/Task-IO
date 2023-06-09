@@ -1,47 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useSocket } from "../../context/SocketContext";
-import {
-  addNewMessage,
-  updateConversations,
-} from "../../features/message/messageSlice";
-import { userSelector } from "../../features/users/userSlice";
-import { useAppSelector, useAppDispatch } from "../../hooks/hook";
 import { Button } from "flowbite-react";
+import { useAccountContext } from "../../context/AccountContext";
 
 export function TextInput() {
-  const { selectedUserId, user } = useAppSelector(userSelector);
+  const { user } = useAccountContext();
   const [textMsg, setTextMsg] = useState("");
-  const dispatch = useAppDispatch();
+  
   const { socket } = useSocket();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     try {
-      if (user && selectedUserId) {
-        const msgDetails = {
-          text: textMsg,
-          users: [user.userId, selectedUserId],
-          sender: user.userId,
-          senderAvatar: user.avatar,
-        };
-        socket?.emit("send-message", {
-          recipients: msgDetails.users,
-          createdAt: Date.now(),
-          message: msgDetails.text,
-          senderAvatar: msgDetails.senderAvatar,
-        });
-        dispatch(addNewMessage(msgDetails));
-        dispatch(
-          updateConversations({
-            fromSelf: true,
-            createdAt: Date.now(),
-            message: msgDetails.text,
-            senderAvatar: msgDetails.senderAvatar,
-          })
-        );
-        setTextMsg("");
-      }
+      
     } catch (error) {
       console.log(error)
     }
@@ -50,25 +22,6 @@ export function TextInput() {
   function handleChange(e: React.ChangeEvent<any>) {
     setTextMsg(e.target.value);
   }
-
-  useEffect(() => {
-    if (socket == null) return;
-    socket.on(
-      "receive-message",
-      ({ sender, message, createdAt, senderAvatar }) => {
-        const msg = {
-          fromSelf: user?.userId === sender,
-          senderAvatar,
-          message,
-          createdAt,
-        };
-        dispatch(updateConversations(msg));
-      }
-    );
-    return () => {
-      socket.off("receive-message");
-    };
-  }, [socket, handleSubmit]);
 
   return (
     <form

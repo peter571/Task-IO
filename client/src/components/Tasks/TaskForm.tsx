@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { STATE, Status } from "../../constants";
-import { saveNewTask } from "../../features/tasks/taskSlice";
-import { userSelector } from "../../features/users/userSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks/hook";
+import { useAppDispatch } from "../../hooks/hook";
 import { TaskModalProp, TaskProp } from "../../types";
 import Loader from "../Loader/Loader";
 import ModalWrapper from "../ModalWrapper/ModalWrapper";
@@ -18,7 +16,7 @@ export default function TaskForm(props: TaskModalProp) {
   };
   const [taskData, setTaskData] = useState<TaskProp>(initialValues);
   const dispatch = useAppDispatch();
-  const { user, selectedUserId } = useAppSelector(userSelector);
+ 
   const [isloading, setIsLoading] = useState(STATE.IDLE);
   const pending = isloading === STATE.PENDING;
 
@@ -30,17 +28,8 @@ export default function TaskForm(props: TaskModalProp) {
     e.preventDefault();
 
     try {
-      if (user && selectedUserId) {
-        const task = {
-          ...taskData,
-          assignee: selectedUserId,
-          adminId: user.userId,
-        };
-        setIsLoading(STATE.PENDING);
-        const savedTask = await dispatch(saveNewTask(task)).unwrap();
-        setIsLoading(STATE.SUCCESS)
-        setTaskData(initialValues);
-      }
+      
+      
     } catch (error) {
       setIsLoading(STATE.FAILED);
     }

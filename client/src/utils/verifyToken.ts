@@ -13,7 +13,7 @@ const parseJwt = (token: string) => {
 export const authVerify = () => {
 
     const user = JSON.parse(localStorage.getItem("account_user")!);
-    if (user) {
+    if (user && user !== 'undefined') {
       const decodedJwt = parseJwt(user.token);
       
       if (decodedJwt.exp * 1000 < Date.now()) {

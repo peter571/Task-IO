@@ -1,31 +1,32 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../Loader/Loader";
-import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 import { LoginValues } from "../../types";
-import { loginUser, userSelector } from "../../features/users/userSlice";
 import { toast } from "react-toastify";
 import { useAccountContext } from "../../context/AccountContext";
+import { useLoginMutation } from "../../features/api/authApi";
 
 export default function Login() {
   const initialValues = {
     email: "",
-    password: ""
+    password: "",
   };
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const { isloading } = useAppSelector(userSelector);
-  const { changeHasAccount } = useAccountContext();
+ 
+  const { changeHasAccount, setUser } = useAccountContext();
   const [loginDetails, setLoginDetails] = useState<LoginValues>(initialValues);
+  const [login, { data, isLoading }] = useLoginMutation();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      const user = await dispatch(loginUser(loginDetails)).unwrap();
-      localStorage.setItem("account_user", JSON.stringify(user));
-      setLoginDetails(initialValues);
-      toast.success(`Successfully logged in to ${user.user.name}`);
-      navigate("/spaces");
+      await login(loginDetails).then(() => {
+        localStorage.setItem("account_user", JSON.stringify(data));
+        setUser(data)
+        setLoginDetails(initialValues);
+        toast.success(`Successfully Logged In.`);
+        navigate("/spaces");
+      });
     } catch (error) {
       toast.warn(`${error}`);
     }
@@ -55,8 +56,8 @@ export default function Login() {
           onChange={handleChange}
           required
         />
-        <button type="submit" className="btn" disabled={isloading}>
-          {isloading ? <Loader /> : "Log in"}
+        <button type="submit" className="btn" disabled={isLoading}>
+          {isLoading ? <Loader /> : "Log in"}
         </button>
         <p>
           Don't have an account?{" "}

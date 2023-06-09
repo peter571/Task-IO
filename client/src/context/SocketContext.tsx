@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ProviderProp } from "../types";
 import { io, Socket } from "socket.io-client";
-import { useAppSelector } from "../hooks/hook";
-import { userSelector } from "../features/users/userSlice";
+import { useAccountContext } from "./AccountContext";
 
 interface GlobalSocket {
   socket: Socket | null;
@@ -20,7 +19,7 @@ export function useSocket() {
 export const SocketProvider = ({ children }: SocketProvider) => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [onlineUsers, setOnlineUsers] = useState([])
-  const { user } = useAppSelector(userSelector);
+  const { user } = useAccountContext();
 
   useEffect(() => {
     if (user) {

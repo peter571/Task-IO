@@ -1,21 +1,15 @@
 import React, { useState } from "react";
 import ModalWrapper from "../ModalWrapper/ModalWrapper";
 import { JoinSpaceProp } from "../../types";
-import {
-  addMemberToSpace,
-  getUserSpacesByUserId,
-} from "../../features/spaces/spaceSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks/hook";
-import { userSelector } from "../../features/users/userSlice";
 import { toast } from "react-toastify";
 import { STATE } from "../../constants";
 import Loader from "../Loader/Loader";
 import { useNavigate } from "react-router-dom";
+import { useAccountContext } from "../../context/AccountContext";
 
 export default function JoinSpaceModal(props: JoinSpaceProp) {
   const [spaceId, setSpaceId] = useState("");
-  const dispatch = useAppDispatch();
-  const { user } = useAppSelector(userSelector);
+  const { user } = useAccountContext();
   const [isloading, setIsLoading] = useState<STATE>(STATE.IDLE);
   const pending = isloading === STATE.PENDING;
   const navigate = useNavigate()
@@ -24,17 +18,7 @@ export default function JoinSpaceModal(props: JoinSpaceProp) {
     e.preventDefault();
 
     try {
-      if (user) {
-        setIsLoading(STATE.PENDING);
-        const space = await dispatch(
-          addMemberToSpace({ spaceId, user })
-        ).unwrap();
-        setIsLoading(STATE.SUCCESS);
-        setSpaceId("");
-        toast.success(`You joined ${space.title} space!`);
-        await dispatch(getUserSpacesByUserId(user.userId));
-        navigate('/spaces/' + spaceId)
-      }
+     
     } catch (error) {
       setIsLoading(STATE.FAILED);
       toast.error(`Fialed to join space Id of ${spaceId}!`);

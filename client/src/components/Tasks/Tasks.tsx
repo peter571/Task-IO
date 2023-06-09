@@ -3,20 +3,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MODALS, TASKS } from "../../constants";
 import { ModalContext } from "../../context/ModalContext";
-import {
-  getSpaceMembersBySpaceId,
-  getUserSpacesByUserId,
-} from "../../features/spaces/spaceSlice";
-import {
-  taskSelector,
-  getTasksByUserId,
-  selectTask,
-} from "../../features/tasks/taskSlice";
-import { userSelector } from "../../features/users/userSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks/hook";
+import { useAppDispatch } from "../../hooks/hook";
 import { SpacePropRender } from "../../types";
 import TaskForm from "./TaskForm";
 import TaskModal from "./TaskUpdate";
+import { useAccountContext } from "../../context/AccountContext";
 
 export default function Tasks() {
   const [currentId, setCurrentId] = useState(TASKS[0].id);
@@ -25,36 +16,22 @@ export default function Tasks() {
     useContext(ModalContext);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { selectedUserTasks } = useAppSelector(taskSelector);
-  const { selectedUserId } = useAppSelector(userSelector);
-  const { user } = useAppSelector(userSelector);
+ 
+  const { user } = useAccountContext();
   const { spaceId } = useParams();
   const [currentSpace, setCurrentSpace] = useState<SpacePropRender>(
     {} as SpacePropRender
   );
 
-  useEffect(() => {
-    if (selectedUserId) {
-      dispatch(getTasksByUserId(selectedUserId));
-    }
-  }, [selectedUserId]);
 
   useEffect(() => {
     const onload = async () => {
-      if (user && spaceId) {
-        const spaces = await dispatch(
-          getUserSpacesByUserId(user.userId)
-        ).unwrap();
-        await dispatch(getSpaceMembersBySpaceId(spaceId)).unwrap();
-        setCurrentSpace(spaces.find((space: any) => space._id === spaceId));
-      } else {
-        navigate("/spaces");
-      }
+     
     };
     onload();
   }, []);
 
-  const userIsCreator = user?.userId == currentSpace.creator;
+  const userIsCreator = true;
 
   return (
     <div className="w-1/5 h-full p-3 ">
@@ -78,9 +55,9 @@ export default function Tasks() {
       </div>
 
       <TasksList
-        selectedUserTasks={selectedUserTasks}
+        selectedUserTasks={[]}
         currentId={currentId}
-        selectedUserId={selectedUserId}
+        selectedUserId={''}
         setCurrentTaskModal={setCurrentTaskModal}
       />
 

@@ -1,21 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useSocket } from "../../context/SocketContext";
-import { getConversations } from "../../features/message/messageSlice";
-import { selectUserById, userSelector } from "../../features/users/userSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks/hook";
 import { ChatProp } from "../../types";
+import { useAccountContext } from "../../context/AccountContext";
 
 export default function Chat(props: ChatProp) {
   const { userId } = props;
-  const dispatch = useAppDispatch();
-  const { selectedUserId, user } = useAppSelector(userSelector);
-  const isSelected = selectedUserId === userId;
+  const { user } = useAccountContext();
+  const isSelected = true;
   const [lastMessage, setLastMessage] = useState("");
   const { socket } = useSocket();
   const [onlineUsers, setOnlineUsers] = useState([]);
 
   function selectUser(id: string) {
-    dispatch(selectUserById(id));
+   
   }
 
   useEffect(() => {
@@ -29,14 +26,7 @@ export default function Chat(props: ChatProp) {
   useEffect(() => {
     async function fetchTexts() {
       try {
-        if (userId && user) {
-          const textMsgs = await dispatch(
-            getConversations({ from: user.userId, to: userId })
-          ).unwrap();
-          if (textMsgs.length > 0) {
-            setLastMessage(textMsgs[textMsgs.length - 1].message);
-          }
-        }
+       
       } catch (error) {}
     }
     fetchTexts();

@@ -1,27 +1,15 @@
-import React, { useState } from "react";
-import { STATE } from "../../constants";
-import {
-  createNewSpace,
-  getUserSpacesByUserId
-} from "../../features/spaces/spaceSlice";
-import { userSelector } from "../../features/users/userSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks/hook";
+import React, { useRef } from "react";
 import { NewSpaceProp, SpaceProp } from "../../types";
 import Loader from "../Loader/Loader";
 import ModalWrapper from "../ModalWrapper/ModalWrapper";
+import { useCreateWorkSpaceMutation } from "../../features/api/workspaceApi";
+import { useAccountContext } from "../../context/AccountContext";
 
 export default function NewSpace(props: NewSpaceProp) {
-  const initialValues = {
-    avatar: "",
-    title: "",
-    members: [] as any[],
-    creator: "",
-  };
-  const { user } = useAppSelector(userSelector);
-  const dispatch = useAppDispatch();
-  const [newSpace, setNewSpace] = useState<SpaceProp>(initialValues);
-  const [isloading, setIsLoading] = useState<STATE>(STATE.IDLE);
-  const pending = isloading === STATE.PENDING;
+  
+  const { user } = useAccountContext();
+  const [createWorkSpace, { data, isLoading }] = useCreateWorkSpaceMutation();
+  const companyNameRef = useRef<HTMLInputElement | null>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -29,39 +17,14 @@ export default function NewSpace(props: NewSpaceProp) {
     try {
       if (user) {
         const space = {
-          ...newSpace,
-          members: [user],
-          creator: user.userId,
+          name: companyNameRef.current?.value!,
+          members: [user.userId],
+          admin: user.userId,
         };
-        setIsLoading(STATE.PENDING);
-        await dispatch(
-          createNewSpace(space)
-        ).unwrap();
-        setIsLoading(STATE.SUCCESS);
-        setNewSpace(initialValues)
-        await dispatch(getUserSpacesByUserId(user.userId));
+        await createWorkSpace(space).then(() => {});
       }
-    } catch (error) {
-      setIsLoading(STATE.FAILED);
-    }
+    } catch (error) {}
   }
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setNewSpace({ ...newSpace, [e.target.name]: e.target.value });
-  }
-
-  const handleImageInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files![0];
-    const reader = new FileReader();
-
-    reader.onload = function () {
-      const imgUrl = reader.result;
-      setNewSpace({ ...newSpace, avatar: imgUrl });
-    };
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-  };
 
   return (
     <ModalWrapper isOpen={props.isOpen} onClose={props.onClose}>
@@ -70,19 +33,13 @@ export default function NewSpace(props: NewSpaceProp) {
           placeholder="Enter company name..."
           className="form__input py-2"
           name="title"
-          onChange={handleChange}
+          ref={companyNameRef}
           type="text"
           required
         />
-        <input
-          placeholder="Enter company name..."
-          className="form__input py-2 cursor-pointer"
-          name="avatar"
-          onChange={handleImageInput}
-          type="file"
-        />
-        <button className="btn" type="submit" disabled={pending}>
-          {pending ? <Loader /> : 'Create'}
+
+        <button className="btn" type="submit" disabled={isLoading}>
+          {isLoading ? <Loader /> : "Create"}
         </button>
       </form>
     </ModalWrapper>

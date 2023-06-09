@@ -54,6 +54,7 @@ export const spacesAPI = {
     user: User
   ): Promise<AxiosResponse<any>> =>
     requests.patch(`/spaces/space/${spaceId}/add-member`, user),
+    
   getSpaceMembersBySpaceId: (spaceId: string): Promise<AxiosResponse<any>> =>
     requests.get(`/spaces/get-space-members/${spaceId}`),
 };

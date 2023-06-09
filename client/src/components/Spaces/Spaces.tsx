@@ -1,38 +1,28 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MODALS } from "../../constants";
 import { ModalContext } from "../../context/ModalContext";
-import {
-  spacesSelector,
-  getUserSpacesByUserId,
-} from "../../features/spaces/spaceSlice";
-import { userSelector } from "../../features/users/userSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks/hook";
-import CreateSpace from "./CreateSpace";
 import JoinSpaceModal from "./JoinSpaceModal";
 import NewSpace from "./NewSpace";
 import Space from "./Space";
+import { useGetUserWorkSpacesQuery } from "../../features/api/workspaceApi";
+import { useAccountContext } from "../../context/AccountContext";
 
 export default function Spaces() {
   const { openModal, closeModal, newSpaceModal, joinSpaceModal } =
     useContext(ModalContext);
 
-  const { userSpaces } = useAppSelector(spacesSelector);
-  const { user } = useAppSelector(userSelector);
-  const dispatch = useAppDispatch();
+ 
+  const { user } = useAccountContext()
 
-  useEffect(() => {
-    if (user) {
-      dispatch(getUserSpacesByUserId(user.userId));
-    }
-  }, []);
+  const { data: userWorkSpaces = []} = useGetUserWorkSpacesQuery(user.userId)
 
   return (
     <div className="screen-wrapper">
       <div className="div-container">
-        {userSpaces.length === 0 ? (
+        {userWorkSpaces.length === 0 ? (
           <h1>No spaces available</h1>
         ) : (
-          userSpaces.map((space) => <Space key={space._id} {...space} />)
+          userWorkSpaces.map((space: any) => <Space key={space._id} {...space} />)
         )}
         <button onClick={() => openModal(MODALS.newSpaceModal)} className="btn">
           Create space+

@@ -1,6 +1,4 @@
 import React, { useCallback } from "react";
-import { messageSelector } from "../../features/message/messageSlice";
-import { useAppSelector } from "../../hooks/hook";
 import Loader from "../Loader/Loader";
 import Message from "./Message";
 import { TbMessages } from "react-icons/tb";
@@ -10,14 +8,14 @@ interface MessagesListProp {
 }
 
 export function MessagesList({ messages }: MessagesListProp) {
-  const { isloadingMessages } = useAppSelector(messageSelector);
+ 
   const msgRef = useCallback((node: any) => {
     if (node) {
       node.scrollIntoView({ smooth: true });
     }
   }, []);
 
-  if (isloadingMessages) {
+  if (false) {
     <div className="grid h-[80%]">
       <Loader />
     </div>;

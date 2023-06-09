@@ -6,10 +6,9 @@ export interface ChatProp extends User {
 }
 
 export interface SpaceProp {
-  avatar: string | ArrayBuffer | null;
-  title: string;
+  name: string;
   members: Array<User>;
-  creator: string;
+  admin: string;
 }
 
 export interface SpacePropRender extends SpaceProp {
