@@ -7,6 +7,7 @@ import {
   WorkSpace,
   Login,
   Register,
+  Invite,
 } from "./components";
 import { ToastContainer } from "react-toastify";
 import { authVerify } from "./utils/verifyToken";
@@ -25,19 +26,24 @@ export default function App() {
 
   return (
     <div className="">
-      {location.pathname === "/spaces" && <Nav />}
       {location.pathname === "/" && <Nav />}
+      {location.pathname === "/invite" && <Nav />}
 
       <Routes>
         <Route
-          path="/spaces"
+          path="/"
           element={
-            <ProtectedRoute user={isAuthenticated} redirectPath={"/"}>
-              <Spaces />
-            </ProtectedRoute>
+            isAuthenticated ? (
+              <ProtectedRoute user={isAuthenticated} redirectPath={"/"}>
+                <Spaces />
+              </ProtectedRoute>
+            ) : !hasAccount ? (
+              <Login />
+            ) : (
+              <Register />
+            )
           }
         />
-        <Route path="/" element={!hasAccount ? <Login /> : <Register />} />
         <Route
           path="/spaces/:spaceId"
           element={
@@ -47,6 +53,7 @@ export default function App() {
           }
         />
         <Route path="*" element={<p>There's nothing here: 404!</p>} />
+        <Route path="/invite" element={<Invite />} />
       </Routes>
       <ToastContainer />
     </div>

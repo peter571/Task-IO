@@ -22,7 +22,19 @@ export default function Nav() {
         label={<Avatar className="cursor-pointer" rounded />}
         dismissOnClick={true}
       >
-        <Dropdown.Item>Sign out</Dropdown.Item>
+        <Dropdown.Item>
+          {" "}
+          <span
+            role="button"
+            onClick={() => {
+              localStorage.clear();
+              navigate('/')
+            }}
+          >
+            {" "}
+            Sign out
+          </span>
+        </Dropdown.Item>
       </Dropdown>
     </Navbar>
   );

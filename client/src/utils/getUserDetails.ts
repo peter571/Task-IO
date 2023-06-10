@@ -3,7 +3,7 @@ export function getUserDetails() {
   
   if (!user) return null
   if (typeof user === "string" && user !== 'undefined') {
-    return JSON.parse(user);
+    return JSON.parse(user).user;
   } else {
     return null;
   }

@@ -18,7 +18,7 @@ router.post("/login", async (req, res) => {
     if (!isPassCorrect)
       return res.status(400).json({ message: "Incorrect credentials!" });
     const token = jwt.sign(
-      { email: existingUser.email, id: existingUser._id },
+      { data: `${existingUser.email}` + `${existingUser._id}` },
       `${process.env.SECRET}`,
       { expiresIn: "7d" }
     );

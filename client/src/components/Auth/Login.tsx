@@ -15,20 +15,22 @@ export default function Login() {
  
   const { changeHasAccount, setUser } = useAccountContext();
   const [loginDetails, setLoginDetails] = useState<LoginValues>(initialValues);
-  const [login, { data, isLoading }] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      await login(loginDetails).then(() => {
-        localStorage.setItem("account_user", JSON.stringify(data));
-        setUser(data)
-        setLoginDetails(initialValues);
-        toast.success(`Successfully Logged In.`);
-        navigate("/spaces");
-      });
+      await login(loginDetails).unwrap().then((payload) => {
+       localStorage.setItem("account_user", JSON.stringify(payload));
+      setUser(payload.user)
+      setLoginDetails(initialValues);
+      toast.success(`Successfully Logged In.`);
+      navigate("/");
+      })
+
     } catch (error) {
-      toast.warn(`${error}`);
+      
+      toast.warn(`An error occured. Check credentials!`);
     }
   }
 

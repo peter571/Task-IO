@@ -4,7 +4,7 @@ import { appApi } from "./api";
 const authApi = appApi.injectEndpoints({
   endpoints: (build) => ({
     //Register a User
-    register: build.mutation<RegisterValues, RegisterValues>({
+    register: build.mutation({
       query: (body) => ({
         url: "/users/register",
         method: "POST",
@@ -13,7 +13,7 @@ const authApi = appApi.injectEndpoints({
       
     }),
     //Login an existing User
-    login: build.mutation<LoginValues, LoginValues>({
+    login: build.mutation({
       query: (body) => ({
         url: "/users/login",
         method: "POST",

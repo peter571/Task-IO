@@ -14,7 +14,7 @@ export default function Spaces() {
  
   const { user } = useAccountContext()
 
-  const { data: userWorkSpaces = []} = useGetUserWorkSpacesQuery(user.userId)
+  const { data: userWorkSpaces = []} = useGetUserWorkSpacesQuery({ userId: user.userId, user_email: user.email })
 
   return (
     <div className="screen-wrapper">

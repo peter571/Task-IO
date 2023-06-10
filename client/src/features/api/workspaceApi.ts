@@ -12,19 +12,32 @@ const workspaceApi = appApi.injectEndpoints({
     }),
 
     getUserWorkSpaces: build.query({
-      query: (userId) => ({ url: `/spaces/get-user-spaces/${userId}` }),
+      query: ({ userId, user_email }) => ({ url: `/spaces/get-user-spaces/${userId}?user_email=${user_email}` }),
     }),
 
     addWorkSpaceMember: build.mutation({
-      query: ({ user_id, workspace_id }) => ({
-        url: `/spaces/${workspace_id}/add-member/${user_id}`,
+      query: ({ admin_id, workspace_id, email }) => ({
+        url: `spaces/${workspace_id}/add-member`,
         method: "PATCH",
+        body: {email, admin_id}
       }),
     }),
 
     getWorkSpaceMembers: build.query({
       query: (spaceId) => ({ url: `/spaces/get-space-members/${spaceId}` }),
     }),
+
+    inviteMember: build.mutation({
+      query: (body) => ({ url: '/spaces/invite-member', method: "POST", body: body })
+    }),
+
+    validateMemberInvite: build.mutation({
+      query: ({ token }) => ({
+        url: '/spaces/validate/add-member',
+        method: "PATCH",
+        body: {token}
+      }),
+    })
   }),
 });
 
@@ -33,4 +46,6 @@ export const {
   useAddWorkSpaceMemberMutation,
   useGetUserWorkSpacesQuery,
   useGetWorkSpaceMembersQuery,
+  useInviteMemberMutation,
+  useValidateMemberInviteMutation
 } = workspaceApi;

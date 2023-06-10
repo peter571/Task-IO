@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
-import { useAppDispatch } from "../../hooks/hook";
 import { RegisterValues } from "../../types";
 import { toast } from "react-toastify";
 import { useAccountContext } from "../../context/AccountContext";
@@ -16,25 +15,24 @@ export default function Register() {
     avatar: "",
   };
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
 
   const { changeHasAccount, setUser } = useAccountContext();
   const [registerDetails, setRegisterDetails] =
     useState<RegisterValues>(initialValues);
-  const [register, { data, isLoading }] = useRegisterMutation();
+  const [register, { isLoading }] = useRegisterMutation();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      await register(registerDetails).then(() => {
-        localStorage.setItem("account_user", JSON.stringify(data));
-        setUser(data)
+      await register(registerDetails).unwrap().then((payload) => {
+        localStorage.setItem("account_user", JSON.stringify(payload));
+        setUser(payload.user)
         setRegisterDetails(initialValues);
         toast.success("Successfully Logged In");
-        navigate("/spaces");
+        navigate("/");
       });
     } catch (error) {
-      toast.warn(`${error}`);
+      toast.warn(`An error occured. Check credentials!`);
     }
   }
 
