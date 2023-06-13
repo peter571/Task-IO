@@ -9,8 +9,8 @@ interface ITeamMessage {
 const msgModel = new Schema<ITeamMessage>(
   {
     content: { type: String, required: true },
-    sender: { type: Schema.Types.ObjectId, required: true },
-    workspace_id: { type: Schema.Types.ObjectId, required: true, index: true },
+    sender: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+    workspace_id: { type: Schema.Types.ObjectId, required: true, index: true, ref: 'Space' },
   },
   {
     timestamps: true,

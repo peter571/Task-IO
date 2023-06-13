@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
-import { MODALS, TASKS } from "../../constants";
-import { ModalContext } from "../../context/ModalContext";
+import { TASKS } from "../../constants";
 import Task from "./Task";
 
 interface TasksListProp {
@@ -16,11 +15,11 @@ export function TasksList({
   selectedUserId,
   setCurrentTaskModal,
 }: TasksListProp) {
-  const { openModal } = useContext(ModalContext);
+ 
 
   function onTaskClick(task: any) {
     setCurrentTaskModal(task._id);
-    openModal(MODALS.taskModal);
+    // openModal(MODALS.taskModal);
   }
 
   return (

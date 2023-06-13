@@ -4,7 +4,7 @@ import { SpacePropRender } from "../../types";
 import { MdContentCopy } from "react-icons/md";
 import { toast } from "react-toastify";
 import { FaLongArrowAltRight } from "react-icons/fa";
-import { formatWorkspaceTitle } from "../../utils/formatWorkspaceTitle";
+import { formatTitle } from "../../utils/formatTitle";
 
 export default function Space(props: SpacePropRender) {
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export default function Space(props: SpacePropRender) {
       className="flex flex-row align-middle gap-2 cursor-pointer p-2 rounded-md hover:bg-gray-200 relative border"
     >
       <div className="flex justify-center items-center h-12 w-12 rounded-[25%] text-white bg-black font-bold text-xl">
-        {formatWorkspaceTitle(props.name)}
+        {formatTitle(props.name)}
       </div>
       <div className="">
         <h1 className="font-semibold">{props.name}</h1>

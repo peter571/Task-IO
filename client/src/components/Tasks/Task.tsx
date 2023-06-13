@@ -1,8 +1,7 @@
 import React from "react";
 import { TiTick } from "react-icons/ti";
-import { MODALS, Status } from "../../constants";
 import { TaskPropRender } from "../../types";
-import TaskModal from './TaskUpdate'
+
 
 export default function Task(props: TaskPropRender) {
   return (
@@ -12,7 +11,7 @@ export default function Task(props: TaskPropRender) {
     >
       <h1>Title: {props.title}</h1>
       <p>Description: {props.description}</p>
-      <p
+      {/* <p
         className={`flex flex-row align-middle items-center ${
           props.status === Status.COMPLETED
             ? "text-green-600"
@@ -23,7 +22,7 @@ export default function Task(props: TaskPropRender) {
       </p>
       {props.status === Status.PENDING && (
         <p>To submit: {props.completionDate}</p>
-      )}
+      )} */}
       
     </div>
   );

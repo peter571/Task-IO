@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { useValidateMemberInviteMutation } from "../../features/api/workspaceApi";
+import { useGetUserQuery } from "../../features/api/authApi";
+import axios from "axios";
 
 export default function Invite() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -8,11 +10,17 @@ export default function Invite() {
 
   useEffect(() => {
     (async () => {
-      await validateMemberInvite({ token })
-        .unwrap()
-        .then((payload) => {
-            console.log(payload)
-        });
+      axios
+        .get("http://localhost:5000/spaces/validate-token", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(({ data }) => {
+          
+          console.log(data);
+        })
+        .catch((err) => console.log(err));
     })();
   }, []);
 

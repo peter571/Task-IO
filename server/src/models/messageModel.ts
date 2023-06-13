@@ -10,9 +10,9 @@ interface IMessage {
 const msgModel = new Schema<IMessage>(
   {
     content: { type: String, required: true },
-    receiver: { type: Schema.Types.ObjectId, required: true },
-    sender: { type: Schema.Types.ObjectId, required: true },
-    workspace_id: { type: Schema.Types.ObjectId, required: true}
+    receiver: { type: Schema.Types.ObjectId, required: true, ref: "User" },
+    sender: { type: Schema.Types.ObjectId, required: true, ref: "User" },
+    workspace_id: { type: Schema.Types.ObjectId, required: true, ref: "Space" },
   },
   {
     timestamps: true,

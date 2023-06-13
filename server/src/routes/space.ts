@@ -22,10 +22,10 @@ router.post("/new-space", authenticateToken, async (req, res) => {
 
 //Get spaces for a specific user
 router.get("/get-user-spaces/:userId", authenticateToken, async (req, res) => {
-  const { user_email } = req.query;
+  const { userId } = req.params;
 
   try {
-    const userSpaces = await Space.find({ members: user_email }, { __v: 0 });
+    const userSpaces = await Space.find({ members: userId }, { __v: 0 });
     res.status(200).json(userSpaces);
   } catch (error) {
     res.status(500).json({ message: `Failed to get Spaces` });
@@ -64,25 +64,38 @@ router.post("/invite-member", authenticateToken, async (req, res) => {
   }
 });
 
+//Validate token
+router.get("/validate-token", async (req, res) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
+  if (token == null) return res.sendStatus(401);
+
+  jwt.verify(token, `${process.env.SECRET}`, (err, user) => {
+    console.log(err);
+    if (err) return res.sendStatus(403);
+    return res.status(200).json(user);
+  });
+});
+
 //Add new Member to Space
 router.patch("/validate/add-member", async (req, res) => {
-  const { token } = req.body;
+  const { token, userId } = req.body;
 
   try {
     const decoded = jwt.verify(token, `${process.env.SECRET}`) as JwtPayload;
 
     const foundSpace = await Space.findOne({
-      members: { $in: [decoded.user_email] },
+      members: { $in: [userId] },
     });
 
     if (foundSpace) {
-      console.log("Email already exists in the array");
+      console.log("User already exists in the array");
       return res.status(200).json("Email already exists in the array");
     } else {
-      console.log("Email does not exist in the array");
+      console.log("User does not exist in the array");
       await Space.updateOne(
         { _id: decoded.workspace_id },
-        { $push: { members: decoded.user_email } }
+        { $push: { members: userId } }
       );
 
       const workspace = await Space.findOne(
@@ -106,7 +119,11 @@ router.get(
 
     try {
       // Get members from space
-      const space = await Space.findOne({ _id: spaceId }, { __v: 0 });
+      const space = await Space.findOne({ _id: spaceId }).populate("members", {
+        __v: 0,
+        password: 0,
+      });
+
       const spaceMembers = space?.members;
       res.status(200).json(spaceMembers);
     } catch (error) {

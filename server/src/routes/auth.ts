@@ -26,7 +26,6 @@ router.post("/login", async (req, res) => {
     const formatedUser = {
       userId: existingUser._id,
       email: existingUser.email,
-      avatar: existingUser.avatar,
       name: existingUser.name,
     };
 
@@ -38,7 +37,7 @@ router.post("/login", async (req, res) => {
 
 //Sign Up
 router.post("/register", async (req, res) => {
-  const { name, email, avatar, password, confirmPassword } = req.body;
+  const { name, email, password, confirmPassword } = req.body;
 
   try {
     const existingUser = await User.findOne({ email });
@@ -51,7 +50,6 @@ router.post("/register", async (req, res) => {
       email,
       password: hashedPassword,
       name,
-      avatar,
     });
     const token = jwt.sign(
       { email: newUser.email, id: newUser._id },
@@ -60,17 +58,35 @@ router.post("/register", async (req, res) => {
         expiresIn: "7d",
       }
     );
-    
+
     const formatedUser = {
       userId: newUser._id,
       email: newUser.email,
-      avatar: newUser.avatar,
+
       name: newUser.name,
     };
 
     res.status(201).json({ user: formatedUser, token });
   } catch (error) {
     res.status(500).json({ message: "Something went wrong!" });
+  }
+});
+
+//Get User
+router.get("/get-user", async (req, res) => {
+  const { email } = req.query;
+
+  try {
+    const user = await User.findOne(
+      { email: email },
+      { __v: 0, password: 0, confirmPassword: 0 }
+    );
+    console.log(user);
+    if (!user) return res.status(404).json(null);
+
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json("An error occured! Could not fetch value.");
   }
 });
 

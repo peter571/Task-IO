@@ -20,8 +20,13 @@ const authApi = appApi.injectEndpoints({
         body: body,
       }),
     }),
+
+    //Get user
+    getUser: build.query({
+      query: (email) => ({ url: '/users/get-user?email=' + email })
+    })
   }),
   overrideExisting: false,
 });
 
-export const { useRegisterMutation, useLoginMutation } = authApi;
+export const { useRegisterMutation, useLoginMutation, useGetUserQuery } = authApi;

@@ -1,4 +1,4 @@
-export function formatWorkspaceTitle(title: string = "") {
+export function formatTitle(title: string = "") {
     const words = title.trim().split(' ');
     
     if (words.length > 1) {

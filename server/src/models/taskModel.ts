@@ -14,8 +14,8 @@ const taskSchema = new Schema<Itask>({
     description: { type: String, required: true },
     status: { type: String, required: true },
     completionDate: { type: String, required: true },
-    adminId: { type: Schema.Types.ObjectId, required: true },
-    assignee: { type: Schema.Types.ObjectId, required: true }
+    adminId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
+    assignee: { type: Schema.Types.ObjectId, required: true, ref: 'User' }
 })
 
 export const Task = model<Itask>('Task', taskSchema);

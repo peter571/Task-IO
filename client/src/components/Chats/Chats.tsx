@@ -16,6 +16,8 @@ export default function Chats() {
     boolean | undefined
   >(undefined);
 
+  console.log(spaceMembers)
+
   return (
     <div className="flex flex-col gap-4 h-full bg-[#EAF1FB] w-1/5">
       <div className="basis-1/8">

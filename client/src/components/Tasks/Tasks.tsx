@@ -2,7 +2,6 @@ import { TasksList } from "./TasksList";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MODALS, TASKS } from "../../constants";
-import { ModalContext } from "../../context/ModalContext";
 import { useAppDispatch } from "../../hooks/hook";
 import { SpacePropRender } from "../../types";
 import TaskForm from "./TaskForm";
@@ -12,8 +11,7 @@ import { useAccountContext } from "../../context/AccountContext";
 export default function Tasks() {
   const [currentId, setCurrentId] = useState(TASKS[0].id);
   const [currentTaskModal, setCurrentTaskModal] = useState("");
-  const { openModal, closeModal, taskFormIsOpen, taskModalIsOpen } =
-    useContext(ModalContext);
+  
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
  
@@ -36,7 +34,7 @@ export default function Tasks() {
   return (
     <div className="w-1/5 h-full p-3 ">
       {userIsCreator && (
-        <button onClick={() => openModal(MODALS.taskform)} className="btn">
+        <button onClick={() => ('')} className="btn">
           Assign Task +
         </button>
       )}
@@ -61,17 +59,17 @@ export default function Tasks() {
         setCurrentTaskModal={setCurrentTaskModal}
       />
 
-      <TaskForm
+      {/* <TaskForm
         isOpen={taskFormIsOpen}
         onClose={() => closeModal(MODALS.taskform)}
         id={MODALS.taskform}
-      />
-      <TaskModal
+      /> */}
+      {/* <TaskModal
         isOpen={taskModalIsOpen}
         onClose={() => closeModal(MODALS.taskModal)}
         id={MODALS.taskModal}
         taskId={currentTaskModal}
-      />
+      /> */}
     </div>
   );
 }
