@@ -9,12 +9,9 @@ import { useParams } from "react-router-dom";
 import { useAccountContext } from "../../context/AccountContext";
 
 export default function Messages() {
-  const { spaceId } = useParams()
+  const { spaceId } = useParams();
   const { data: spaceMembers = [] } = useGetWorkSpaceMembersQuery(spaceId);
   const { user } = useAccountContext();
- 
-
-  
 
   if (null)
     return (

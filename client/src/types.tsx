@@ -88,7 +88,6 @@ export interface RegisterValues {
   email: string;
   name: string;
   password: string;
-  avatar: string | ArrayBuffer | null;
   confirmPassword: string;
 }
 

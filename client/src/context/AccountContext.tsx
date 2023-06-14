@@ -7,6 +7,7 @@ interface AccountProp {
   changeHasAccount: () => void;
   user: any
   setUser: React.Dispatch<React.SetStateAction<any>>
+  setHasAccount: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const AccountContext = createContext<AccountProp>({} as AccountProp);
@@ -22,7 +23,7 @@ export const AccountProvider = ({ children }: ProviderProp) => {
   const changeHasAccount = () => setHasAccount((prev) => !prev);
 
   return (
-    <AccountContext.Provider value={{ hasAccount, changeHasAccount, user, setUser }}>
+    <AccountContext.Provider value={{ hasAccount, changeHasAccount, user, setUser, setHasAccount }}>
       {children}
     </AccountContext.Provider>
   );

@@ -4,7 +4,7 @@ import { User } from "../models/authModel";
 import { Space } from "../models/spaceModel";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { sendMail } from "../utils/sendMail";
-import { error } from "console";
+
 
 const router = express.Router();
 
@@ -89,15 +89,12 @@ router.patch("/validate/add-member", async (req, res) => {
     });
 
     if (foundSpace) {
-      console.log("User already exists in the array");
       return res.status(200).json("Email already exists in the array");
     } else {
-      console.log("User does not exist in the array");
       await Space.updateOne(
         { _id: decoded.workspace_id },
         { $push: { members: userId } }
       );
-
       const workspace = await Space.findOne(
         { _id: decoded.workspace_id },
         { __v: 0 }
@@ -123,11 +120,11 @@ router.get(
         __v: 0,
         password: 0,
       });
+      if (!space) return res.status(403).json();
 
-      const spaceMembers = space?.members;
-      res.status(200).json(spaceMembers);
+      res.status(200).json(space.members);
     } catch (error) {
-      res.status(500).json({ message: `Failed to load Space Users` });
+      res.status(500).json({ message: "Failed to load Space Users" });
     }
   }
 );

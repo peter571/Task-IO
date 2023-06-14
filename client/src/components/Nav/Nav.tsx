@@ -1,6 +1,7 @@
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { appApi } from "../../features/api/api";
 
 export default function Nav() {
   const navigate = useNavigate();
@@ -27,8 +28,9 @@ export default function Nav() {
           <span
             role="button"
             onClick={() => {
+              appApi.util.resetApiState()
               localStorage.clear();
-              navigate('/')
+              navigate("/");
             }}
           >
             {" "}

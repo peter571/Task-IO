@@ -29,4 +29,4 @@ const authApi = appApi.injectEndpoints({
   overrideExisting: false,
 });
 
-export const { useRegisterMutation, useLoginMutation, useGetUserQuery } = authApi;
+export const { useRegisterMutation, useLoginMutation, useGetUserQuery, useLazyGetUserQuery } = authApi;

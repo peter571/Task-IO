@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
 import { RegisterValues } from "../../types";
 import { toast } from "react-toastify";
 import { useAccountContext } from "../../context/AccountContext";
 import { useRegisterMutation } from "../../features/api/authApi";
+import { useValidateMemberInviteMutation } from "../../features/api/workspaceApi";
 
 export default function Register() {
   const initialValues = {
@@ -12,9 +13,16 @@ export default function Register() {
     name: "",
     password: "",
     confirmPassword: "",
-    avatar: "",
   };
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get("token");
+  const [validateMemberInvite] = useValidateMemberInviteMutation();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  if (location.pathname === "/invite") {
+    console.log("Invite page.");
+  }
 
   const { changeHasAccount, setUser } = useAccountContext();
   const [registerDetails, setRegisterDetails] =
@@ -24,35 +32,31 @@ export default function Register() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      await register(registerDetails).unwrap().then((payload) => {
-        localStorage.setItem("account_user", JSON.stringify(payload));
-        setUser(payload.user)
-        setRegisterDetails(initialValues);
-        toast.success("Successfully Logged In");
+      const payload = await register(registerDetails).unwrap();
+      localStorage.setItem("account_user", JSON.stringify(payload));
+      
+      if (location.pathname === "/invite") {
+        const payloadInvite = await validateMemberInvite({
+          token,
+          userId: payload.user.userId,
+        }).unwrap();
+
+        navigate("/spaces/" + payloadInvite._id);
+      } else {
         navigate("/");
-      });
+      }
+
+      setUser(payload.user);
+      setRegisterDetails(initialValues);
+      toast.success("Successfully Logged In");
     } catch (error) {
-      toast.warn(`An error occured. Check credentials!`);
+      toast.warn("An error occurred. Check credentials!");
     }
   }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setRegisterDetails({ ...registerDetails, [e.target.name]: e.target.value });
   }
-
-  const handleImageInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files![0];
-    const reader = new FileReader();
-
-    reader.onload = function () {
-      const imgUrl = reader.result;
-      setRegisterDetails({ ...registerDetails, avatar: imgUrl });
-    };
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-  };
 
   return (
     <form onSubmit={handleSubmit} className="auth__form">
@@ -74,14 +78,7 @@ export default function Register() {
           placeholder="Enter email"
           required
         />
-        <input
-          className="form__input py-2 cursor-pointer"
-          type="file"
-          name="avatar"
-          onChange={handleImageInput}
-          placeholder="Choose profile image"
-          required
-        />
+
         <input
           className="form__input py-2"
           type="password"
@@ -103,13 +100,13 @@ export default function Register() {
         </button>
         <p>
           Already have an account?{" "}
-          <Link
+          <span
             className="text-blue-500"
-            to="/"
+            role="button"
             onClick={() => changeHasAccount()}
           >
             Log in
-          </Link>
+          </span>
         </p>
       </div>
     </form>

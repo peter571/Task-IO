@@ -1,18 +1,27 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Loader from "../Loader/Loader";
 import { LoginValues } from "../../types";
 import { toast } from "react-toastify";
 import { useAccountContext } from "../../context/AccountContext";
 import { useLoginMutation } from "../../features/api/authApi";
+import { useValidateMemberInviteMutation } from "../../features/api/workspaceApi";
 
 export default function Login() {
   const initialValues = {
     email: "",
     password: "",
   };
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get("token");
+  const [validateMemberInvite] = useValidateMemberInviteMutation();
   const navigate = useNavigate();
- 
+  const location = useLocation();
+
+  if (location.pathname === "/invite") {
+    console.log("Invite page.");
+  }
+
   const { changeHasAccount, setUser } = useAccountContext();
   const [loginDetails, setLoginDetails] = useState<LoginValues>(initialValues);
   const [login, { isLoading }] = useLoginMutation();
@@ -20,19 +29,24 @@ export default function Login() {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      await login(loginDetails).unwrap().then((payload) => {
-       localStorage.setItem("account_user", JSON.stringify(payload));
-      setUser(payload.user)
+      const payload = await login(loginDetails).unwrap();
+  
+      if (location.pathname === "/invite") {
+        const payloadInvite = await validateMemberInvite({ token, userId: payload.user.userId }).unwrap();
+        navigate("/spaces/" + payloadInvite._id);
+      } else {
+        navigate("/");
+      }
+  
+      localStorage.setItem("account_user", JSON.stringify(payload));
+      setUser(payload.user);
       setLoginDetails(initialValues);
-      toast.success(`Successfully Logged In.`);
-      navigate("/");
-      })
-
+      toast.success("Successfully Logged In.");
     } catch (error) {
-      
-      toast.warn(`An error occured. Check credentials!`);
+      toast.warn("An error occurred. Check credentials!");
     }
   }
+  
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setLoginDetails({ ...loginDetails, [e.target.name]: e.target.value });
@@ -63,13 +77,13 @@ export default function Login() {
         </button>
         <p>
           Don't have an account?{" "}
-          <Link
+          <span
             className="text-blue-500"
-            to="/"
+            role="button"
             onClick={() => changeHasAccount()}
           >
             Register
-          </Link>
+          </span>
         </p>
       </div>
     </form>

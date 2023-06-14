@@ -38,7 +38,7 @@ export default function Chat(props: ChatProp) {
       onClick={() => selectUser(userId)}
     >
       <div className="h-10 w-10 rounded-full bg-black text-white flex justify-center items-center">
-        {formatTitle("Peter Koech")}
+        {formatTitle(props.name)}
       </div>
       <div>
         <h1 className="font-semibold">{props.name}</h1>
