@@ -2,20 +2,33 @@ import React, { useEffect, useRef, useState } from "react";
 import { useSocket } from "../../context/SocketContext";
 import { Button } from "flowbite-react";
 import { useAccountContext } from "../../context/AccountContext";
+import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
+import { useNewMessageMutation } from "../../features/api/messageApi";
+import { useParams } from "react-router-dom";
 
 export function TextInput() {
   const { user } = useAccountContext();
   const [textMsg, setTextMsg] = useState("");
-  
+  const { selectedChat, selectedUser } = useWorkSpaceContext();
+  const [sendMessage, { isLoading }] = useNewMessageMutation();
+  const { spaceId } = useParams();
+
   const { socket } = useSocket();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     try {
-      
+      const payload = await sendMessage({
+        content: textMsg,
+        receiver: selectedUser,
+        sender: user.userId,
+        workspace_id: spaceId,
+        chat_id: selectedChat,
+      }).unwrap();
+      setTextMsg("")
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
@@ -39,7 +52,12 @@ export function TextInput() {
         required
       ></textarea>
       <div className="basis-1/4 justify-center items-center align-middle">
-        <Button color="success" className="w-full" type="submit" disabled={textMsg.length === 0}>
+        <Button
+          color="success"
+          className="w-full"
+          type="submit"
+          disabled={textMsg.length === 0}
+        >
           Send
         </Button>
       </div>

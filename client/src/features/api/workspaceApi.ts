@@ -9,12 +9,14 @@ const workspaceApi = appApi.injectEndpoints({
         method: "post",
         body: body,
       }),
+      invalidatesTags: ["Spaces"]
     }),
 
     getUserWorkSpaces: build.query({
       query: ({ userId, user_email }) => ({
         url: `/spaces/get-user-spaces/${userId}?user_email=${user_email}`,
       }),
+      providesTags: ["Spaces"]
     }),
 
     addWorkSpaceMember: build.mutation({
@@ -23,10 +25,15 @@ const workspaceApi = appApi.injectEndpoints({
         method: "PATCH",
         body: { email, admin_id },
       }),
+      invalidatesTags: ["Spaces"]
     }),
 
     getWorkSpaceMembers: build.query({
       query: (spaceId) => ({ url: `/spaces/get-space-members/${spaceId}` }),
+    }),
+
+    getWorkSpace: build.query({
+      query: (spaceId) => '/spaces/space/' + spaceId 
     }),
 
     inviteMember: build.mutation({
@@ -43,6 +50,7 @@ const workspaceApi = appApi.injectEndpoints({
         method: "PATCH",
         body: { token, userId },
       }),
+      invalidatesTags: ["Spaces"]
     }),
   }),
 });
@@ -54,4 +62,5 @@ export const {
   useGetWorkSpaceMembersQuery,
   useInviteMemberMutation,
   useValidateMemberInviteMutation,
+  useGetWorkSpaceQuery
 } = workspaceApi;

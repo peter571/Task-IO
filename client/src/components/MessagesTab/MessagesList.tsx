@@ -2,13 +2,14 @@ import React, { useCallback } from "react";
 import Loader from "../Loader/Loader";
 import Message from "./Message";
 import { TbMessages } from "react-icons/tb";
+import { useAccountContext } from "../../context/AccountContext";
 
 interface MessagesListProp {
   messages: Array<any>;
 }
 
 export function MessagesList({ messages }: MessagesListProp) {
- 
+ const { user } = useAccountContext()
   const msgRef = useCallback((node: any) => {
     if (node) {
       node.scrollIntoView({ smooth: true });
@@ -24,7 +25,7 @@ export function MessagesList({ messages }: MessagesListProp) {
   return (
     <div
       id="messages-container"
-      className="grid h-[80%] overflow-auto px-3 rounded-sm"
+      className="grid content-start h-[80%] overflow-auto px-3 rounded-sm w-full"
     >
       {/* Display when there is no messages */}
       {messages.length === 0 ? (
@@ -39,8 +40,8 @@ export function MessagesList({ messages }: MessagesListProp) {
             <div
               key={index}
               ref={lastMsg ? msgRef : null}
-              className={`flex flex-col ${
-                msg.fromSelf ? "justify-self-end" : "justify-self-start"
+              className={`${
+                msg.sender === user.userId ? "justify-self-end" : "justify-self-start"
               } w-[70%] mb-5`}
             >
               <Message {...msg} />

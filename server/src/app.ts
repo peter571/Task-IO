@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth";
 import taskRoutes from "./routes/task";
 import messageRoutes from "./routes/message";
 import spaceRoutes from "./routes/space";
+import chatsRoutes from "./routes/chat"
 import { users } from "./socket";
 import { connectDB } from './database/database'
 
@@ -24,6 +25,7 @@ app.use("/users", authRoutes);
 app.use("/tasks", taskRoutes);
 app.use("/spaces", spaceRoutes);
 app.use("/messages", messageRoutes);
+app.use("/chats", chatsRoutes)
 
 app.get("/", (req, res) => {
   res.send("<h1>Task manager API</h1>");

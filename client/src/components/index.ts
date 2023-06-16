@@ -1,5 +1,5 @@
-export { default as Chats } from "./Chats/Chats";
-export { default as Messages } from "./Messages/Messages";
+export { default as MembersAndChatSidebar } from "./MembersAndChatSidebar/MembersAndChatSidebar";
+export { default as Tab } from "./MessagesTab/MessagesTab";
 export { default as Tasks } from "./Tasks/Tasks";
 export { default as Spaces } from "./Spaces/Spaces";
 export { default as ProtectedRoute } from "./ProtectedRoute";

@@ -12,5 +12,6 @@ export const appApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ['Users', "Spaces", "Messages", "Chats"],
   endpoints: () => ({}),
 });

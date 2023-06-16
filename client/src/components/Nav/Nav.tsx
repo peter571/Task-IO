@@ -2,9 +2,11 @@ import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { appApi } from "../../features/api/api";
+import { useAccountContext } from "../../context/AccountContext";
 
 export default function Nav() {
   const navigate = useNavigate();
+  const { user, setUser } = useAccountContext();
 
   return (
     <Navbar rounded className="fixed w-full bg-navbar">
@@ -23,13 +25,15 @@ export default function Nav() {
         label={<Avatar className="cursor-pointer" rounded />}
         dismissOnClick={true}
       >
+        {user && <Dropdown.Item>{user.name}</Dropdown.Item>}
         <Dropdown.Item>
           {" "}
           <span
             role="button"
             onClick={() => {
-              appApi.util.resetApiState()
+              appApi.util.resetApiState();
               localStorage.clear();
+              setUser(null)
               navigate("/");
             }}
           >

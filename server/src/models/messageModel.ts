@@ -5,10 +5,12 @@ interface IMessage {
   receiver: Types.ObjectId;
   sender: Types.ObjectId;
   workspace_id: Types.ObjectId;
+  chat_id: Types.ObjectId;
 }
 
 const msgModel = new Schema<IMessage>(
   {
+    chat_id: { type: Schema.Types.ObjectId, required: true, ref: 'ChatModel', index: true},
     content: { type: String, required: true },
     receiver: { type: Schema.Types.ObjectId, required: true, ref: "User" },
     sender: { type: Schema.Types.ObjectId, required: true, ref: "User" },

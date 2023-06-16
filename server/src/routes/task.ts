@@ -6,13 +6,13 @@ import * as mongoose from "mongoose";
 const router = express.Router();
 
 //Create new Task
-router.post("/", authenticateToken, async (req, res) => {
+router.post("/new-task", authenticateToken, async (req, res) => {
   try {
     const newTask = new Task(req.body);
     await newTask.save();
     res.status(201).json(newTask);
   } catch (error) {
-    res.status(500).json({ message: "Failed to create task" });
+    res.status(500).json(error);
   }
 });
 

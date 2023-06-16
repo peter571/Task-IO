@@ -32,6 +32,20 @@ router.get("/get-user-spaces/:userId", authenticateToken, async (req, res) => {
   }
 });
 
+//Get space by Id
+router.get('/space/:workspace_id', authenticateToken, async(req, res) => {
+  const { workspace_id } = req.params
+
+  try {
+    const space = await Space.findOne({ _id: workspace_id }, { __v: 0 })
+    if (!space) return res.status(404).json()
+    res.status(200).json(space)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error)
+  }
+})
+
 // Invite member to space
 router.post("/invite-member", authenticateToken, async (req, res) => {
   const { admin_id, user_email, workspace_id } = req.body;

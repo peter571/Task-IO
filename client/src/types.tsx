@@ -1,8 +1,10 @@
 import React, { MouseEventHandler } from "react";
 
-export interface ChatProp extends User {
-  avatar: string;
-  previewText: string;
+export interface MemberProp {
+  email: string;
+  name: string;
+  _id: string;
+  showLastMsg: boolean;
 }
 
 export interface SpaceProp {
@@ -29,7 +31,7 @@ export interface NewSpaceProp extends TaskModalProp {}
 export interface JoinSpaceProp extends TaskModalProp {}
 
 export interface TaskProp {
-  _id?: string
+  _id?: string;
   title: string;
   description: string;
   status: string;
@@ -57,10 +59,14 @@ export interface ProviderProp {
 }
 
 export interface MessageProp {
-  fromSelf: boolean;
-  message: string;
-  createdAt: any;
-  senderAvatar: string| ArrayBuffer | null;
+  chat_id: string;
+  content: string;
+  createdAt: string;
+  receiver: string;
+  sender: string;
+  updatedAt: string;
+  workspace_id: string;
+  _id: string;
 }
 
 export interface SocketMsgProp {
@@ -112,7 +118,7 @@ export interface MessageDetails {
   text: string;
   users: Array<string>;
   sender: string;
-  senderAvatar: string| ArrayBuffer | null;
+  senderAvatar: string | ArrayBuffer | null;
 }
 
 export interface AddMemberToSpaceProp {
@@ -121,6 +127,6 @@ export interface AddMemberToSpaceProp {
 }
 
 export interface UpdateTaskById {
-  taskId: string
-  task: TaskProp
+  taskId: string;
+  task: TaskProp;
 }

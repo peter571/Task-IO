@@ -2,6 +2,7 @@ import { LoginValues, RegisterValues } from "../../types";
 import { appApi } from "./api";
 
 const authApi = appApi.injectEndpoints({
+  
   endpoints: (build) => ({
     //Register a User
     register: build.mutation({
