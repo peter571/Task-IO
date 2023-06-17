@@ -47,42 +47,42 @@ const io = new Server(server, {
   },
 });
 
-io.on("connection", (socket) => {
-  const id = socket.handshake.query.id;
-  if (id) {
-    console.log(`User with id: ${id} connected!`);
-    socket.join(id);
-    if (typeof id === 'string') {
-      users.addUser(id);
-      console.log('User added!')
-      io.emit("get-users", users.getUsers());
-      console.log(users.getUsers())
-    }
-  }
+// io.on("connection", (socket) => {
+//   const id = socket.handshake.query.id;
+//   if (id) {
+//     console.log(`User with id: ${id} connected!`);
+//     socket.join(id);
+//     if (typeof id === 'string') {
+//       users.addUser(id);
+//       console.log('User added!')
+//       io.emit("get-users", users.getUsers());
+//       console.log(users.getUsers())
+//     }
+//   }
 
-  socket.on(
-    "send-message",
-    ({ recipients, message, createdAt, senderAvatar }) => {
-      recipients.forEach((recipient: any) => {
-        const newRecipients = recipients.filter((r: any) => r !== recipient);
-        newRecipients.push(id);
-        socket.broadcast.to(recipient).emit("receive-message", {
-          recipients: newRecipients,
-          sender: id,
-          message,
-          createdAt,
-          senderAvatar,
-        });
-      });
-    }
-  );
+//   socket.on(
+//     "send-message",
+//     ({ recipients, message, createdAt, senderAvatar }) => {
+//       recipients.forEach((recipient: any) => {
+//         const newRecipients = recipients.filter((r: any) => r !== recipient);
+//         newRecipients.push(id);
+//         socket.broadcast.to(recipient).emit("receive-message", {
+//           recipients: newRecipients,
+//           sender: id,
+//           message,
+//           createdAt,
+//           senderAvatar,
+//         });
+//       });
+//     }
+//   );
 
-  socket.on("disconnect", () => {
-    console.log(`User with id: ${id} disconnected!`);
-    if (typeof id === 'string') {
-      users.removeUser(id);
-      console.log('User removed!')
-      io.emit("get-users", users.getUsers());
-    }
-  })
-});
+//   socket.on("disconnect", () => {
+//     console.log(`User with id: ${id} disconnected!`);
+//     if (typeof id === 'string') {
+//       users.removeUser(id);
+//       console.log('User removed!')
+//       io.emit("get-users", users.getUsers());
+//     }
+//   })
+// });

@@ -16,19 +16,27 @@ router.post("/new-task", authenticateToken, async (req, res) => {
   }
 });
 
-// Update Task
-router.patch("/:taskId", authenticateToken, async (req, res) => {
-  const { taskId } = req.params;
-  const task = req.body;
-  if (!mongoose.Types.ObjectId.isValid(taskId))
-    return res.status(404).send(`No Task with id: ${taskId}`);
+// Update Task status
+router.patch(
+  "/update-task-status/:taskId",
+  authenticateToken,
+  async (req, res) => {
+    const { taskId } = req.params;
+    const task = req.body;
+    if (!mongoose.Types.ObjectId.isValid(taskId))
+      return res.status(404).send(`No Task with id: ${taskId}`);
 
-  const updatedTask = await Task.findByIdAndUpdate(taskId, { status: task.status }, { new: true });
-  res.status(201).json(updatedTask);
-});
+    const updatedTask = await Task.findByIdAndUpdate(
+      taskId,
+      { status: task.status },
+      { new: true }
+    );
+    res.status(201).json(updatedTask);
+  }
+);
 
 // Delete Task
-router.delete("/:id", authenticateToken, async (req, res) => {
+router.delete("/delete-task/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -42,14 +50,40 @@ router.delete("/:id", authenticateToken, async (req, res) => {
 });
 
 // Fetch User tasks
-router.get("/:userId", authenticateToken, async (req, res) => {
-  const { userId } = req.params;
+router.get("/user/:workspace_id/:userId", authenticateToken, async (req, res) => {
+  const {workspace_id, userId } = req.params;
 
   try {
-    const tasks = await Task.find({ assignee: userId }, { __v: 0 });
+    const tasks = await Task.find({ assignee: userId, workspace_id: workspace_id }, { __v: 0 });
     res.status(200).json(tasks);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch tasks" });
+  }
+});
+
+//Get all the tasks in the workspace
+//Only admin of the workspace can call this endpoint
+router.get("/:workspace_id", authenticateToken, async (req, res) => {
+  const { workspace_id } = req.params;
+  const { status_type } = req.query;
+
+  try {
+    if (status_type === "all-tasks") {
+      const all_tasks = await Task.find(
+        { workspace_id: workspace_id },
+        { __v: 0 }
+      ).populate("assignee", { password: 0, __v: 0 });
+      return res.status(200).json(all_tasks);
+    }
+
+    const tasks = await Task.find(
+      { workspace_id: workspace_id, status: status_type },
+      { __v: 0 }
+    ).populate("assignee", { password: 0, __v: 0 });
+    res.status(200).json(tasks);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
   }
 });
 

@@ -14,8 +14,6 @@ export default function Chats() {
     userId: user.userId,
   });
 
-  //console.log(userChats)
-
   return (
     <Accordion>
       <Accordion.Panel>

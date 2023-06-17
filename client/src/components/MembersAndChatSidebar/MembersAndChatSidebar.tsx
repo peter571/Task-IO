@@ -9,11 +9,12 @@ import {
 import InviteMember from "../Modals/InviteMember";
 import AllWorkSpaceMembers from "./AllWorkSpaceMembers";
 import Chats from "./Chats";
+import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 
 export default function MembersAndChatSidebar() {
   const navigate = useNavigate();
   const { spaceId } = useParams();
-  const { data: spaceMembers = [] } = useGetWorkSpaceMembersQuery(spaceId);
+  const { userIsAdmin } = useWorkSpaceContext();
   const { data: workspace, isSuccess: spaceLoaded } =
     useGetWorkSpaceQuery(spaceId);
   const { user } = useAccountContext();
@@ -39,9 +40,14 @@ export default function MembersAndChatSidebar() {
       </div>
 
       <div className="p-3">
-        <button className="btn" onClick={() => setOpenInviteMemberModal(true)}>
-          + Add new member
-        </button>
+        {userIsAdmin && (
+          <button
+            className="btn"
+            onClick={() => setOpenInviteMemberModal(true)}
+          >
+            + Add new member
+          </button>
+        )}
       </div>
 
       <InviteMember

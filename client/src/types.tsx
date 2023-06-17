@@ -35,14 +35,9 @@ export interface TaskProp {
   title: string;
   description: string;
   status: string;
-  completionDate: string;
+  completion_date: string;
   adminId: string;
-  assignee: string;
-}
-
-export interface TaskPropRender extends TaskProp {
-  _id: string;
-  openUpdateModal?: MouseEventHandler<HTMLDivElement>;
+  assignee: { name: string; _id: string };
 }
 
 export interface ModalWrapperProp extends TaskModalProp {

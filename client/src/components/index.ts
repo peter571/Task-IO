@@ -1,6 +1,6 @@
 export { default as MembersAndChatSidebar } from "./MembersAndChatSidebar/MembersAndChatSidebar";
 export { default as Tab } from "./MessagesTab/MessagesTab";
-export { default as Tasks } from "./Tasks/Tasks";
+export { default as TasksTab } from "./TasksTab/TasksTab";
 export { default as Spaces } from "./Spaces/Spaces";
 export { default as ProtectedRoute } from "./ProtectedRoute";
 export { default as Nav } from "./Nav/Nav";

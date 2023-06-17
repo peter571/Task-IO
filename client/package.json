@@ -21,6 +21,8 @@
     "react-router-dom": "^6.3.0",
     "react-toastify": "^9.0.8",
     "socket.io-client": "^4.5.2",
+    "tailwind-scrollbar-hide": "^1.1.7",
+    "tailwindcss-scrollbar": "^0.1.0",
     "timeago.js": "^4.0.2"
   },
   "devDependencies": {

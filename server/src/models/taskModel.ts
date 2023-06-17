@@ -5,7 +5,6 @@ interface Itask {
   description: string;
   status: string;
   completion_date: string;
-  adminId: Types.ObjectId;
   assignee: Types.ObjectId;
   workspace_id: Types.ObjectId;
 }
@@ -15,7 +14,6 @@ const taskSchema = new Schema<Itask>({
   description: { type: String, required: true },
   status: { type: String, required: true },
   completion_date: { type: String, required: true },
-  adminId: { type: Schema.Types.ObjectId, required: true, ref: "User" },
   assignee: { type: Schema.Types.ObjectId, required: true, ref: "User" },
   workspace_id: { type: Schema.Types.ObjectId, required: true, ref: "Space" },
 });
