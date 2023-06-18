@@ -35,10 +35,32 @@ router.patch(
   }
 );
 
+//Update task details
+router.patch("/update-task/:task_id", authenticateToken, async (req, res) => {
+  const { task_id } = req.params;
+  const { title, description, completion_date } = req.body;
+
+  try {
+    if (!mongoose.Types.ObjectId.isValid(task_id))
+      return res.status(404).send(`No Task with id: ${task_id}`);
+
+    const updatedTask = await Task.findByIdAndUpdate(
+      task_id,
+      {
+        title: title,
+        description: description,
+        completion_date: completion_date,
+      },
+      { new: true }
+    );
+    res.status(201).json(updatedTask);
+  } catch (error) {}
+});
+
 // Delete Task
 router.delete("/delete-task/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
-
+console.log("ID",id)
   try {
     if (!mongoose.Types.ObjectId.isValid(id))
       return res.status(404).send(`No Task with id: ${id}`);
@@ -50,16 +72,23 @@ router.delete("/delete-task/:id", authenticateToken, async (req, res) => {
 });
 
 // Fetch User tasks
-router.get("/user/:workspace_id/:userId", authenticateToken, async (req, res) => {
-  const {workspace_id, userId } = req.params;
+router.get(
+  "/user/:workspace_id/:userId",
+  authenticateToken,
+  async (req, res) => {
+    const { workspace_id, userId } = req.params;
 
-  try {
-    const tasks = await Task.find({ assignee: userId, workspace_id: workspace_id }, { __v: 0 });
-    res.status(200).json(tasks);
-  } catch (error) {
-    res.status(500).json({ message: "Failed to fetch tasks" });
+    try {
+      const tasks = await Task.find(
+        { assignee: userId, workspace_id: workspace_id },
+        { __v: 0 }
+      );
+      res.status(200).json(tasks);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch tasks" });
+    }
   }
-});
+);
 
 //Get all the tasks in the workspace
 //Only admin of the workspace can call this endpoint

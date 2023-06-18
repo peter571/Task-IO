@@ -8,6 +8,7 @@ import { TbNotes } from "react-icons/tb";
 import AllTasks, { STATUS } from "./AllTasks";
 import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 import UserTasks from "./UserTasks";
+import Notes from "../Notes/Notes";
 
 export default function TasksList() {
   const { userIsAdmin } = useWorkSpaceContext();
@@ -39,8 +40,8 @@ export default function TasksList() {
         )}
         {userIsAdmin ? <AllTasks status_type={status} /> : <UserTasks />}
       </Tabs.Item>
-      <Tabs.Item className="" icon={TbNotes} title="Notes">
-        <p>My notes</p>
+      <Tabs.Item className="" icon={TbNotes} title="My notes">
+        <Notes />
       </Tabs.Item>
     </Tabs.Group>
   );

@@ -15,9 +15,18 @@ const taskApi = appApi.injectEndpoints({
 
     getUserTasks: build.query({
       query: ({ workspace_id, userId }) => ({
-        url: `/tasks/user/${workspace_id}/${userId}`
+        url: `/tasks/user/${workspace_id}/${userId}`,
       }),
-      providesTags: ["Tasks"]
+      providesTags: ["Tasks"],
+    }),
+
+    updateTask: build.mutation({
+      query: ({ task_id, title, description, completion_date }) => ({
+        url: `/tasks/update-task/${task_id}`,
+        method: "PATCH",
+        body: { title, description, completion_date },
+      }),
+      invalidatesTags: ["Tasks"],
     }),
 
     updateTaskStatus: build.mutation({
@@ -28,6 +37,11 @@ const taskApi = appApi.injectEndpoints({
       }),
       invalidatesTags: ["Tasks"],
     }),
+
+    deleteTask: build.mutation({
+      query: (id) => ({ url: `/tasks/delete-task/${id}`, method: "DELETE"}),
+      invalidatesTags: ["Tasks"]
+    })
   }),
 });
 
@@ -36,5 +50,7 @@ export const {
   useGetWorkSpaceTasksQuery,
   useUpdateTaskStatusMutation,
   useGetUserTasksQuery,
-  useLazyGetWorkSpaceTasksQuery
+  useLazyGetWorkSpaceTasksQuery,
+  useUpdateTaskMutation,
+  useDeleteTaskMutation
 } = taskApi;

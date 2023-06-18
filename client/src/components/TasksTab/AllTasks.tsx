@@ -8,10 +8,17 @@ import Task from "./Task";
 
 export type STATUS = "all-tasks" | "completed" | "pending";
 
-export default function AllTasks({ status_type }: { status_type: STATUS | string }) {
+export default function AllTasks({
+  status_type,
+}: {
+  status_type: STATUS | string;
+}) {
   const { spaceId } = useParams();
-  const [tasks, setTasks] = useState([]);
   const [fetchTasks, { isSuccess }] = useLazyGetWorkSpaceTasksQuery();
+  const { data: tasks = [] } = useGetWorkSpaceTasksQuery({
+    workspace_id: spaceId,
+    status_type,
+  });
 
   useEffect(() => {
     async function fetchData() {
@@ -20,8 +27,6 @@ export default function AllTasks({ status_type }: { status_type: STATUS | string
           workspace_id: spaceId,
           status_type,
         }).unwrap();
-
-        setTasks(payload);
       } catch (error) {}
     }
 

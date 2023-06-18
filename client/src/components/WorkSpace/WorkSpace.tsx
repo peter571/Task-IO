@@ -13,6 +13,10 @@ const WorkSpaceContext = React.createContext(
     selectedUser: string | null;
     setSelectedUser: React.Dispatch<React.SetStateAction<string | null>>;
     userIsAdmin: boolean;
+    setSelectedTask: React.Dispatch<React.SetStateAction<string | null>>;
+    selectedTaskId: string | null;
+    selectedNoteId: string | null;
+    setSelectedNote: React.Dispatch<React.SetStateAction<string | null>>;
   }
 );
 
@@ -24,6 +28,8 @@ export default function WorkSpace() {
   const [selectedChat, setSelectedChat] = useState("");
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [userIsAdmin, setUserIsAdmin] = useState(false);
+  const [selectedTaskId, setSelectedTask] = useState<string | null>(null);
+  const [selectedNoteId, setSelectedNote] = useState<string | null>(null);
   const { spaceId } = useParams();
   const { user } = useAccountContext();
   const { data: workspace, isSuccess: spaceLoaded } =
@@ -34,7 +40,6 @@ export default function WorkSpace() {
       setUserIsAdmin(user.userId.toString() === workspace.admin.toString());
   }, [spaceLoaded]);
 
-  console.log("userIsAdmin:", userIsAdmin);
 
   return (
     <WorkSpaceContext.Provider
@@ -44,6 +49,10 @@ export default function WorkSpace() {
         selectedUser,
         setSelectedUser,
         userIsAdmin,
+        selectedTaskId,
+        setSelectedTask,
+        selectedNoteId,
+        setSelectedNote,
       }}
     >
       <div className="flex flex-row gap-1 divide-x h-screen">

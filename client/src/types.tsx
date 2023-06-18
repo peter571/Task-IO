@@ -31,13 +31,22 @@ export interface NewSpaceProp extends TaskModalProp {}
 export interface JoinSpaceProp extends TaskModalProp {}
 
 export interface TaskProp {
-  _id?: string;
+  _id: string;
   title: string;
   description: string;
   status: string;
   completion_date: string;
   adminId: string;
   assignee: { name: string; _id: string };
+  workspace_id: string;
+}
+
+export interface NoteProp {
+  _id: string;
+  title: string;
+  workspace_id: string;
+  user: string;
+  text: string
 }
 
 export interface ModalWrapperProp extends TaskModalProp {
