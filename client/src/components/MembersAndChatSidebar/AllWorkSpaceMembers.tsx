@@ -4,9 +4,10 @@ import { useParams } from "react-router-dom";
 import { useAccountContext } from "../../context/AccountContext";
 import Member from "./Member";
 import { Accordion } from "flowbite-react";
+import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 
 export default function AllWorkSpaceMembers() {
-  const { spaceId } = useParams();
+  const { spaceId } = useWorkSpaceContext();
   const { data: spaceMembers = [] } = useGetWorkSpaceMembersQuery(spaceId);
   
   return (

@@ -17,6 +17,7 @@ const WorkSpaceContext = React.createContext(
     selectedTaskId: string | null;
     selectedNoteId: string | null;
     setSelectedNote: React.Dispatch<React.SetStateAction<string | null>>;
+    spaceId: string | null;
   }
 );
 
@@ -25,12 +26,22 @@ export const useWorkSpaceContext = () => {
 };
 
 export default function WorkSpace() {
-  const [selectedChat, setSelectedChat] = useState("");
-  const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [userIsAdmin, setUserIsAdmin] = useState(false);
   const [selectedTaskId, setSelectedTask] = useState<string | null>(null);
   const [selectedNoteId, setSelectedNote] = useState<string | null>(null);
-  const { spaceId } = useParams();
+  const urlParams = new URLSearchParams(window.location.search);
+  const userName = urlParams.get("inbox");
+  const [selectedChat, setSelectedChat] = useState(
+    JSON.parse(sessionStorage.getItem(userName!)!)?.chat_id
+  );
+  const [selectedUser, setSelectedUser] = useState<string | null>(
+    JSON.parse(sessionStorage.getItem(userName!)!)?.user_id
+  );
+  const { space } = useParams();
+  const [spaceId] = useState<string | null>(
+    JSON.parse(sessionStorage.getItem(space!)!)
+  );
+
   const { user } = useAccountContext();
   const { data: workspace, isSuccess: spaceLoaded } =
     useGetWorkSpaceQuery(spaceId);
@@ -39,7 +50,6 @@ export default function WorkSpace() {
     if (spaceLoaded && workspace)
       setUserIsAdmin(user.userId.toString() === workspace.admin.toString());
   }, [spaceLoaded]);
-
 
   return (
     <WorkSpaceContext.Provider
@@ -53,6 +63,7 @@ export default function WorkSpace() {
         setSelectedTask,
         selectedNoteId,
         setSelectedNote,
+        spaceId,
       }}
     >
       <div className="flex flex-row gap-1 divide-x h-screen">

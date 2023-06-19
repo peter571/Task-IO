@@ -5,6 +5,7 @@ import {
 } from "../../features/api/taskApi";
 import { useParams } from "react-router-dom";
 import Task from "./Task";
+import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 
 export type STATUS = "all-tasks" | "completed" | "pending";
 
@@ -13,7 +14,7 @@ export default function AllTasks({
 }: {
   status_type: STATUS | string;
 }) {
-  const { spaceId } = useParams();
+  const { spaceId } = useWorkSpaceContext();
   const [fetchTasks, { isSuccess }] = useLazyGetWorkSpaceTasksQuery();
   const { data: tasks = [] } = useGetWorkSpaceTasksQuery({
     workspace_id: spaceId,

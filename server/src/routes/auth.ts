@@ -81,7 +81,7 @@ router.get("/get-user", async (req, res) => {
       { email: email },
       { __v: 0, password: 0, confirmPassword: 0 }
     );
-    console.log(user);
+    
     if (!user) return res.status(404).json(null);
 
     return res.status(200).json(user);

@@ -45,7 +45,7 @@ export default function App() {
           }
         />
         <Route
-          path="/spaces/:spaceId"
+          path="/spaces/:space"
           element={
             <ProtectedRoute user={isAuthenticated} redirectPath={"/"}>
               <WorkSpace />

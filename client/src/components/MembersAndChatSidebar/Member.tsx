@@ -3,16 +3,22 @@ import { MemberProp } from "../../types";
 import { useAccountContext } from "../../context/AccountContext";
 import { Avatar } from "flowbite-react";
 import { useNewChatMutation } from "../../features/api/chatApi";
-import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
+import { formatUrlString } from "../../utils/formatUrlString";
 
 export default function Member(props: MemberProp) {
   const { _id } = props;
   const { user } = useAccountContext();
-  const { setSelectedChat, setSelectedUser } = useWorkSpaceContext();
-  const { spaceId } = useParams();
-
+  const { setSelectedChat, setSelectedUser, spaceId } = useWorkSpaceContext();
   const [newChat, { isLoading }] = useNewChatMutation();
+  const navigate = useNavigate();
+
+  const handleParam = () => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("inbox", props.name.toLowerCase());
+    navigate(url.pathname + url.search);
+  };
 
   async function createNewChat() {
     try {
@@ -21,9 +27,14 @@ export default function Member(props: MemberProp) {
         userone: _id,
         usertwo: user.userId,
       }).unwrap();
-      
+
       setSelectedChat(payload._id);
-      setSelectedUser(_id)
+      setSelectedUser(_id);
+      sessionStorage.setItem(
+        formatUrlString(props.name.toLowerCase()),
+        JSON.stringify({ chat_id: payload._id, user_id: _id })
+      );
+      handleParam();
     } catch (error) {}
   }
 
@@ -33,12 +44,7 @@ export default function Member(props: MemberProp) {
       onClick={createNewChat}
       role="button"
     >
-      <Avatar
-        status="online"
-        statusPosition="bottom-right"
-        className=""
-        size="sm"
-      />
+      <Avatar status="online" statusPosition="bottom-right" size="sm" />
       <div>
         <h1 className="font-semibold text-sm">
           {props.name}

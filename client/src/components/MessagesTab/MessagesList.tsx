@@ -3,23 +3,29 @@ import Loader from "../Loader/Loader";
 import Message from "./Message";
 import { TbMessages } from "react-icons/tb";
 import { useAccountContext } from "../../context/AccountContext";
+import { useGetMessagesQuery } from "../../features/api/messageApi";
+import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 
 interface MessagesListProp {
   messages: Array<any>;
 }
 
-export function MessagesList({ messages }: MessagesListProp) {
- const { user } = useAccountContext()
+export function MessagesList() {
+  const { user } = useAccountContext();
+  const { selectedChat } = useWorkSpaceContext();
+  const { data: messages = [], isLoading } = useGetMessagesQuery(selectedChat);
   const msgRef = useCallback((node: any) => {
     if (node) {
       node.scrollIntoView({ smooth: true });
     }
   }, []);
 
-  if (false) {
-    <div className="grid h-[80%]">
-      <Loader />
-    </div>;
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-[80%]">
+        <Loader />
+      </div>
+    );
   }
 
   return (
@@ -34,14 +40,16 @@ export function MessagesList({ messages }: MessagesListProp) {
           <p className="text-center text-gray-500">No messages for this chat</p>
         </div>
       ) : (
-        messages.map((msg, index) => {
+        messages.map((msg: any, index: number) => {
           const lastMsg = messages.length - 1 === index;
           return (
             <div
               key={index}
               ref={lastMsg ? msgRef : null}
               className={`${
-                msg.sender === user.userId ? "justify-self-end" : "justify-self-start"
+                msg.sender === user.userId
+                  ? "justify-self-end"
+                  : "justify-self-start"
               } w-[70%] mb-5`}
             >
               <Message {...msg} />

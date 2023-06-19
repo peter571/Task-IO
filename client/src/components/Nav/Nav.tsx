@@ -33,6 +33,7 @@ export default function Nav() {
             onClick={() => {
               appApi.util.resetApiState();
               localStorage.clear();
+              sessionStorage.clear()
               setUser(null)
               navigate("/");
             }}

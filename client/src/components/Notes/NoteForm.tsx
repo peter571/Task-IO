@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import { useNewNoteMutation } from "../../features/api/noteApi";
 import { useAccountContext } from "../../context/AccountContext";
 import { useParams } from "react-router-dom";
+import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 
 export default function NoteForm({
   setShowNoteForm,
@@ -12,7 +13,7 @@ export default function NoteForm({
   const textRef = useRef<HTMLTextAreaElement>(null);
   const [newNote, { isLoading }] = useNewNoteMutation();
   const { user } = useAccountContext();
-  const { spaceId } = useParams();
+  const { spaceId } = useWorkSpaceContext();
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();

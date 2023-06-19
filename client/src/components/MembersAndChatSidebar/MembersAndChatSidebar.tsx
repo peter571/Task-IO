@@ -13,8 +13,8 @@ import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 
 export default function MembersAndChatSidebar() {
   const navigate = useNavigate();
-  const { spaceId } = useParams();
-  const { userIsAdmin } = useWorkSpaceContext();
+  
+  const { userIsAdmin, spaceId } = useWorkSpaceContext();
   const { data: workspace, isSuccess: spaceLoaded } =
     useGetWorkSpaceQuery(spaceId);
   const { user } = useAccountContext();

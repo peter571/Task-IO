@@ -3,6 +3,7 @@ import React, { SetStateAction, useRef, useState } from "react";
 import { useInviteMemberMutation } from "../../features/api/workspaceApi";
 import { useParams } from "react-router-dom";
 import { useAccountContext } from "../../context/AccountContext";
+import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 
 const emailRegexPattern: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -17,7 +18,7 @@ export default function InviteMember({
   const [errorText, setErrorText] = useState("");
   const [successText, setSuccesText] = useState("");
   const [inviteMember, { isLoading }] = useInviteMemberMutation();
-  const { spaceId } = useParams();
+  const { spaceId } = useWorkSpaceContext();
   const { user } = useAccountContext();
 
   return (

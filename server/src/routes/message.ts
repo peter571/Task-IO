@@ -2,7 +2,6 @@ import express from "express";
 import authenticateToken from "../middleware/auth";
 import { Message } from "../models/messageModel";
 import { teamMessage } from "../models/teamMessageModel";
-import { User } from "../models/authModel";
 
 const router = express.Router();
 

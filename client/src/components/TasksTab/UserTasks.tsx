@@ -4,10 +4,11 @@ import { useAccountContext } from "../../context/AccountContext";
 import { useParams } from "react-router-dom";
 import { TaskProp } from "../../types";
 import Task from "./Task";
+import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 
 export default function UserTasks() {
   const { user } = useAccountContext();
-  const { spaceId } = useParams();
+  const { spaceId } = useWorkSpaceContext();
 
   const {
     data: tasks = [],

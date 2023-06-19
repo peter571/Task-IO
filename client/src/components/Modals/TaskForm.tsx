@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import { useGetWorkSpaceMembersQuery } from "../../features/api/workspaceApi";
 import { useAccountContext } from "../../context/AccountContext";
 import { useNewTaskMutation } from "../../features/api/taskApi";
+import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 
 export default function TaskForm({
   show,
@@ -15,7 +16,7 @@ export default function TaskForm({
   show: boolean | undefined;
   setShowTaskModal: React.Dispatch<React.SetStateAction<undefined | boolean>>;
 }) {
-  const { spaceId } = useParams();
+  const { spaceId } = useWorkSpaceContext();
   const { user } = useAccountContext();
 
   const titleRef = useRef<HTMLInputElement | null>(null);

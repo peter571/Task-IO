@@ -9,9 +9,8 @@ import { useParams } from "react-router-dom";
 export function TextInput() {
   const { user } = useAccountContext();
   const [textMsg, setTextMsg] = useState("");
-  const { selectedChat, selectedUser } = useWorkSpaceContext();
+  const { selectedChat, selectedUser, spaceId } = useWorkSpaceContext();
   const [sendMessage, { isLoading }] = useNewMessageMutation();
-  const { spaceId } = useParams();
 
   const { socket } = useSocket();
 

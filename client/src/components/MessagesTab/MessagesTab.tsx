@@ -10,14 +10,8 @@ import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 import { useGetMessagesQuery } from "../../features/api/messageApi";
 
 export default function MessagesTab() {
-  const { spaceId } = useParams();
-  
-  const { data: spaceMembers = [] } = useGetWorkSpaceMembersQuery(spaceId);
-  const { user } = useAccountContext();
   const { selectedChat } = useWorkSpaceContext();
-  const { data: chatMessages = [] } = useGetMessagesQuery(selectedChat)
-
-  console.log("Messages", chatMessages)
+  
 
   if (!selectedChat)
     return (
@@ -31,8 +25,8 @@ export default function MessagesTab() {
 
   return (
     <div className="w-3/5 h-full flex flex-col">
-      <UserAvatar selectedUser={null} />
-      <MessagesList messages={chatMessages} />
+      <UserAvatar />
+      {selectedChat && <MessagesList />}
       <TextInput />
     </div>
   );

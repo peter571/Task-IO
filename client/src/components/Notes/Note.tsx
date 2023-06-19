@@ -47,16 +47,19 @@ export default function Note(props: NoteProp) {
 
   return (
     <div className="border p-2 rounded-md shadow-md bg-white hover:bg-gray-100 mb-3 relative">
-      <span className="hover:bg-gray-500 rounded-full absolute right-2 top-2 p-1">
-        <MdDeleteOutline
-          role="button"
-          size={15}
-          onClick={() => {
-            setSelectedNote(props._id);
-            setShowDeleteNoteModal(true);
-          }}
-        />
-      </span>
+      {!isEditMode && (
+        <span className="hover:bg-gray-500 rounded-full absolute right-2 top-2 p-1">
+          <MdDeleteOutline
+            role="button"
+            size={15}
+            onClick={() => {
+              setSelectedNote(props._id);
+              setShowDeleteNoteModal(true);
+            }}
+          />
+        </span>
+      )}
+
       <div className="p-2 cursor-pointer" onClick={toggleEditMode}>
         {isEditMode ? (
           <form

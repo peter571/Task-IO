@@ -5,10 +5,11 @@ import { useGetUserChatsQuery } from "../../features/api/chatApi";
 import { useAccountContext } from "../../context/AccountContext";
 import { useParams } from "react-router-dom";
 import NoConversation from "./NoConversation";
+import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 
 export default function Chats() {
   const { user } = useAccountContext();
-  const { spaceId } = useParams();
+  const { spaceId } = useWorkSpaceContext();
   const { data: userChats = [], isSuccess } = useGetUserChatsQuery({
     workspace_id: spaceId,
     userId: user.userId,

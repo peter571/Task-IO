@@ -4,9 +4,10 @@ import { useParams } from "react-router-dom";
 import { useAccountContext } from "../../context/AccountContext";
 import { NoteProp } from "../../types";
 import Note from "./Note";
+import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 
 export default function NotesList() {
-  const { spaceId } = useParams();
+  const { spaceId } = useWorkSpaceContext();
   const { user } = useAccountContext();
   const { data: notes = [], isSuccess } = useGetUserNotesQuery({
     workspace_id: spaceId,

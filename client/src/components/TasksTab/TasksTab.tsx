@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { MODALS, TASKS } from "../../constants";
 
 import TaskForm from "../Modals/TaskForm";
-import TaskModal from "./TaskUpdate";
 import { useAccountContext } from "../../context/AccountContext";
 import TasksList from "./TasksList";
 import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
