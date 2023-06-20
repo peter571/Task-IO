@@ -33,7 +33,7 @@ export default function Login() {
   
       if (location.pathname === "/invite") {
         const payloadInvite = await validateMemberInvite({ token, userId: payload.user.userId }).unwrap();
-        navigate("/spaces/" + payloadInvite._id);
+        navigate("/");
       } else {
         navigate("/");
       }

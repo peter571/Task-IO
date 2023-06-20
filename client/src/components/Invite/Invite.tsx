@@ -28,13 +28,13 @@ export default function Invite() {
             },
           }
         );
-
-        const spaceId = data.workspace_id;
         const userPayload = await fetchUser(data.user_email).unwrap();
         setHasAccount(true);
-        await validateMemberInvite({ token, userId: userPayload._id }).unwrap();
-
-        navigate("/spaces/" + spaceId);
+        await validateMemberInvite({
+          token,
+          userId: userPayload._id,
+        }).unwrap();
+        navigate("/");
       } catch (error) {
         console.log(error);
       }
@@ -42,7 +42,7 @@ export default function Invite() {
 
     fetchData();
   }, []);
-
+ 
   if (loadingUser) {
     return (
       <div className="h-screen flex justify-center items-center bg-gray-200">

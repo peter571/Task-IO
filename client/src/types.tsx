@@ -62,6 +62,12 @@ export interface ProviderProp {
   children: React.ReactNode;
 }
 
+export interface FileType {
+  name: string
+  type: string
+  file_url: string
+}
+
 export interface MessageProp {
   chat_id: string;
   content: string;
@@ -71,6 +77,7 @@ export interface MessageProp {
   updatedAt: string;
   workspace_id: string;
   _id: string;
+  files: FileType[]
 }
 
 export interface SocketMsgProp {

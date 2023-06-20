@@ -86,7 +86,7 @@ router.get("/get-user", async (req, res) => {
 
     return res.status(200).json(user);
   } catch (error) {
-    return res.status(500).json("An error occured! Could not fetch value.");
+    res.status(500).json("An error occured! Could not fetch value.");
   }
 });
 

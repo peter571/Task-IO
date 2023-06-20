@@ -8,7 +8,7 @@ interface ISpace {
 
 const spaceModel = new Schema<ISpace>({
   name: { type: String, required: true },
-  members: [{ type: Schema.Types.ObjectId, ref: "User" }],
+  members: [{ type: Schema.Types.ObjectId, ref: "User", unique: true }],
 
   admin: { type: Schema.Types.ObjectId, required: true, ref: "User" },
 });

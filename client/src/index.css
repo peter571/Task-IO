@@ -10,6 +10,9 @@
   .form__input {
     @apply rounded-lg ring-1 ring-gray-200 outline-none my-1 px-3 focus:ring-1 focus:ring-black placeholder:text-sm;
   }
+  .msg_input {
+    @apply rounded-lg ring-0 ring-gray-200 border-0 bg-slate-100 outline-none my-1 px-3 focus:ring-0 placeholder:text-sm;
+  }
   .btn {
     @apply inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
   }

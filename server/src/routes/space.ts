@@ -99,15 +99,16 @@ router.patch("/validate/add-member", async (req, res) => {
     const decoded = jwt.verify(token, `${process.env.SECRET}`) as JwtPayload;
 
     const foundSpace = await Space.findOne({
+      _id: decoded.workspace_id,
       members: { $in: [userId] },
     });
 
     if (foundSpace) {
-      return res.status(200).json("Email already exists in the array");
+      return res.status(200).json("Member already exists in the array");
     } else {
       await Space.updateOne(
         { _id: decoded.workspace_id },
-        { $push: { members: userId } }
+        { $addToSet: { members: userId } }
       );
       const workspace = await Space.findOne(
         { _id: decoded.workspace_id },

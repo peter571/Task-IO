@@ -1,7 +1,6 @@
 import { Button, Modal } from "flowbite-react";
 import React, { SetStateAction, useRef, useState } from "react";
 import { useInviteMemberMutation } from "../../features/api/workspaceApi";
-import { useParams } from "react-router-dom";
 import { useAccountContext } from "../../context/AccountContext";
 import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 

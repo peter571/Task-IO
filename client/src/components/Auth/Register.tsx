@@ -41,7 +41,7 @@ export default function Register() {
           userId: payload.user.userId,
         }).unwrap();
 
-        navigate("/spaces/" + payloadInvite._id);
+        navigate("/");
       } else {
         navigate("/");
       }
