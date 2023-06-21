@@ -46,11 +46,7 @@ export function MessagesList() {
             <div
               key={index}
               ref={lastMsg ? msgRef : null}
-              className={`${
-                msg.sender === user.userId
-                  ? "justify-self-end"
-                  : "justify-self-start"
-              } w-[70%] mb-5`}
+              className={`justify-self-start w-full mb-5`}
             >
               <Message {...msg} />
             </div>

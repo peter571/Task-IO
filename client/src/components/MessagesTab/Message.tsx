@@ -1,141 +1,171 @@
-import React from "react";
-import noprofile from "../../assets/noprofile.png";
-import { FileType, MessageProp } from "../../types";
+import React, { useEffect, useRef, useState } from "react";
+import { MessageProp } from "../../types";
 import { format } from "timeago.js";
 import { Avatar } from "flowbite-react";
 import { useAccountContext } from "../../context/AccountContext";
-import { FcDocument } from "react-icons/fc";
-import { HiDownload } from "react-icons/hi";
-import { FaCloudDownloadAlt } from "react-icons/fa";
-import { BiDownload } from "react-icons/bi";
-import { saveAs } from "file-saver";
+import FilesDisplay from "./FilesDisplay";
+import { FiMoreHorizontal, FiMoreVertical } from "react-icons/fi";
+import {
+  useDeleteMessageMutation,
+  useEditMessageMutation,
+} from "../../features/api/messageApi";
+import MessageActions from "../Modals/MessageActions";
 
 export default function Message(props: MessageProp) {
   const { user } = useAccountContext();
   const fromSelf = props.sender === user.userId;
-  return (
-    <div className="flex flex-col">
-      <div className={`flex ${fromSelf && "flex-row-reverse"} gap-2`}>
-        <Avatar size="sm" rounded />
-        {props.content.length > 0 ? (
-          <p
-            className={`${
-              fromSelf ? "bg-gray-200 text-black" : "text-white bg-blue-900"
-            } whitespace-normal text-md break-words max-w-[70% rounded-md p-2`}
-          >
-            {props.content}
-          </p>
-        ) : (
-          <FilesDisplay
-            fromSelf={fromSelf}
-            files={props.files}
-            hastText={props.content.length > 0}
-          />
-        )}
-      </div>
-      {props.content.length > 0 && (
-        <FilesDisplay
-          fromSelf={fromSelf}
-          files={props.files}
-          hastText={props.content.length > 0}
-        />
-      )}
-      <p
-        className={`text-sm ml-11 ${
-          fromSelf && "text-right mr-11 float-right"
-        }`}
-      >
-        {format(props.createdAt)}
-      </p>
-    </div>
-  );
-}
+  const [isHovered, setIsHovered] = useState(false);
+  const [showActionsModal, setShowActionsModal] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const [deleteMessage, { isLoading }] = useDeleteMessageMutation();
+  const [editMessage] = useEditMessageMutation();
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [textMsg, setTextMsg] = useState(props.content);
+  const formRef = useRef<HTMLFormElement>(null);
 
-function FilesDisplay({
-  fromSelf,
-  files,
-  hastText,
-}: {
-  fromSelf: boolean;
-  files: FileType[];
-  hastText: boolean;
-}) {
-  function handleDownload(url: string, fileName: string) {
-    // const link = document.createElement("a");
-    // link.href = url;
-    // link.download = fileName;
-    // link.click();
-    saveAs(url, fileName);
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  const handleMoreClick = (
+    event: React.MouseEvent<HTMLSpanElement, MouseEvent>
+  ) => {
+    event.stopPropagation();
+
+    setShowActionsModal((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        modalRef.current &&
+        !modalRef.current.contains(event.target as Node)
+      ) {
+        setShowActionsModal(false);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  async function handleDeleteMessage() {
+    try {
+      await deleteMessage({
+        chatId: props.chat_id,
+        messageId: props._id,
+      }).unwrap();
+      setShowActionsModal(false);
+    } catch (error) {}
+  }
+
+  const toggleEditMode = (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    setIsEditMode((prev) => !prev);
+    setShowActionsModal(false);
+  };
+
+  async function handleSubmitChanges(e: React.FormEvent) {
+    e.preventDefault();
+
+    try {
+      await editMessage({
+        chatId: props.chat_id,
+        messageId: props._id,
+        textMsg,
+      }).unwrap();
+      setIsEditMode(false);
+    } catch (error) {}
   }
 
   return (
-    <div
-      className={`mt-2 flex flex-row flex-wrap ${
-        fromSelf ? "flex-row-reverse" : ""
-      } ${hastText ? "mr-6" : "mr-6"}`}
-    >
-      {files.length > 0 &&
-        files.map((file: FileType, idx: number) => {
-          if (file.type.startsWith("image")) {
-            return (
-              <div className="flex flex-col m-2 w-32">
-                <img
-                  key={idx}
-                  src={file.file_url}
-                  className="h-32 w-32 object-cover float-right hover:opacity-50"
-                />
-                <div
-                  className="flex flex-row gap-2 items-center py-1 hover:text-green-600"
-                  role="button"
-                  onClick={() => handleDownload(file.file_url, file.name)}
-                >
-                  <span>
-                    <BiDownload size={20} className="" />
-                  </span>
-                  <p className="text-sm truncate">{file.name}</p>
-                </div>
-              </div>
-            );
-          } else if (file.type.startsWith("video")) {
-            return (
-              <div className="flex flex-col m-2 w-32">
-                <video
-                  className="h-32 w-32 object-cover float-right"
-                  src={file.file_url}
-                  controls
-                />
-                <div
-                  className="flex flex-row gap-2 items-center py-1 hover:text-green-600"
-                  role="button"
-                  onClick={() => handleDownload(file.file_url, file.name)}
-                >
-                  <span>
-                    <BiDownload size={20} className="" />
-                  </span>
-                  <p className="text-sm truncate">{file.name}</p>
-                </div>
-              </div>
-            );
-          } else if (file.type.startsWith("application")) {
-            return (
-              <div className="flex flex-col m-2 w-32">
-                <div className="h-32 w-32 bg-gray-200 flex items-center justify-center float-right">
-                  <FcDocument size={40} />
-                </div>
-                <div
-                  className="flex flex-row gap-2 items-center py-1 hover:text-green-600"
-                  role="button"
-                  onClick={() => handleDownload(file.file_url, file.name)}
-                >
-                  <span>
-                    <BiDownload size={20} className="" />
-                  </span>
-                  <p className="text-sm truncate">{file.name}</p>
-                </div>
-              </div>
-            );
-          }
-        })}
-    </div>
+    <>
+      {isEditMode ? (
+        <form
+          className="flex flex-col w-full"
+          ref={formRef}
+          onSubmit={handleSubmitChanges}
+        >
+          <textarea
+            className="msg_input rounded basis-3/4"
+            name="message"
+            placeholder="Type message..."
+            onChange={(e) => setTextMsg(e.target.value)}
+            id="msg"
+            rows={3}
+            value={textMsg}
+            style={{ height: "auto" }}
+          ></textarea>
+          <div className="flex justify-end gap-4 py-1">
+            <button
+              type="button"
+              className="bg-gray-500 text-gray-700 text-xs font-bold px-2 py-1 rounded-md"
+              onClick={() => setIsEditMode(false)}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md"
+              onClick={handleSubmitChanges}
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      ) : (
+        <div
+          className={`flex flex-row gap-2 items-start relative hover:bg-gray-50 rounded-md p-2`}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <Avatar color="blue" size="sm" rounded />
+          <div className={`grid place-items-start mr-12`}>
+            {props.content.length > 0 && (
+              <p
+                className={`whitespace-wrap text-md rounded-md p-2 mb-2 ${
+                  fromSelf ? "bg-gray-200 text-black" : "text-white bg-blue-900"
+                }`}
+              >
+                {props.content}
+              </p>
+            )}
+            {props.files.length > 0 && (
+              <FilesDisplay fromSelf={fromSelf} files={props.files} />
+            )}
+            <p
+              className={`text-xs my-1 font-bold ${
+                fromSelf ? "float-right" : "float-left text-left"
+              }`}
+            >
+              {format(props.createdAt)}
+            </p>
+          </div>
+          {fromSelf && isHovered && (
+            <span
+              className="absolute top-2 right-2"
+              role="button"
+              onClick={handleMoreClick}
+            >
+              <FiMoreHorizontal size={20} />
+            </span>
+          )}
+          {showActionsModal && (
+            <MessageActions
+              modalRef={modalRef}
+              handleDeleteMessage={handleDeleteMessage}
+              handleEditMessage={toggleEditMode}
+            />
+          )}
+        </div>
+      )}
+    </>
   );
 }

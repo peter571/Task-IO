@@ -2,6 +2,7 @@ import express from "express";
 import authenticateToken from "../middleware/auth";
 import { Message } from "../models/messageModel";
 import { teamMessage } from "../models/teamMessageModel";
+import mongoose from "mongoose";
 
 const router = express.Router();
 
@@ -36,10 +37,10 @@ router.get("/:chat_id", authenticateToken, async (req, res) => {
   try {
     const messages = await Message.find(
       {
-        chat_id: chat_id
+        chat_id: chat_id,
       },
       { __v: 0 }
-    ).sort({ updatedAt: 1 });
+    ).sort({ createdAt: 1 });
 
     res.status(200).json(messages);
   } catch (error) {
@@ -62,6 +63,46 @@ router.get(
       return res.status(200).json(messages);
     } catch (error) {
       res.status(500).json({ message: `Failed to load messages` });
+    }
+  }
+);
+
+//Delete messaage
+router.delete(
+  "/delete-message/:chatId/:messageId",
+  authenticateToken,
+  async (req, res) => {
+    const { chatId, messageId } = req.params;
+
+    try {
+      await Message.findByIdAndRemove(messageId);
+      res.status(200).json();
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+);
+
+//Update message
+router.patch(
+  "/edit-message/:chatId/:messageId",
+  authenticateToken,
+  async (req, res) => {
+    const { chatId, messageId } = req.params;
+    const { content } = req.body;
+
+    try {
+      if (!mongoose.Types.ObjectId.isValid(messageId))
+        return res.status(404).json();
+
+      const updatedMessage = await Message.findByIdAndUpdate(
+        messageId,
+        { content: content },
+        { new: true }
+      );
+      res.status(201).json(updatedMessage);
+    } catch (error) {
+      res.status(500).json(error);
     }
   }
 );
