@@ -1,10 +1,17 @@
 import React, { MouseEventHandler } from "react";
+import { Socket } from "socket.io-client";
 
 export interface MemberProp {
   email: string;
   name: string;
   _id: string;
   showLastMsg: boolean;
+}
+
+export interface ISocket extends Socket {
+  sessionID?: string;
+  userID?: string;
+  username?: string;
 }
 
 export interface SpaceProp {

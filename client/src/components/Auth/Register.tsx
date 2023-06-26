@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { useAccountContext } from "../../context/AccountContext";
 import { useRegisterMutation } from "../../features/api/authApi";
 import { useValidateMemberInviteMutation } from "../../features/api/workspaceApi";
+import socket from "../../socket/socket";
 
 export default function Register() {
   const initialValues = {
@@ -34,7 +35,10 @@ export default function Register() {
     try {
       const payload = await register(registerDetails).unwrap();
       localStorage.setItem("account_user", JSON.stringify(payload));
-      
+      //
+      socket.auth = { userID: payload.user.userId, sessionID: payload.user.userId}
+      socket.connect()
+
       if (location.pathname === "/invite") {
         const payloadInvite = await validateMemberInvite({
           token,

@@ -6,6 +6,7 @@ import { useNewChatMutation } from "../../features/api/chatApi";
 import { useNavigate } from "react-router-dom";
 import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 import { formatUrlString } from "../../utils/formatUrlString";
+import { useSocket } from "../../context/SocketContext";
 
 export default function Member(props: MemberProp) {
   const { _id } = props;
@@ -13,6 +14,7 @@ export default function Member(props: MemberProp) {
   const { setSelectedChat, setSelectedUser, spaceId } = useWorkSpaceContext();
   const [newChat, { isLoading }] = useNewChatMutation();
   const navigate = useNavigate();
+  const { onlineUsers } = useSocket()
 
   const handleParam = () => {
     const url = new URL(window.location.href);
@@ -38,13 +40,20 @@ export default function Member(props: MemberProp) {
     } catch (error) {}
   }
 
+  function checkMemberIsOnline() {
+    if (onlineUsers.length === 0) return false;
+    const found_user = onlineUsers.find(value => value.userID === props._id)
+    if (!found_user) return false
+    return found_user.connected;
+  }
+
   return (
     <div
       className="bg-gray-200 flex flex-row items-center gap-2 cursor-pointer p-2 rounded-md hover:bg-gray-200 m-2"
       onClick={createNewChat}
       role="button"
     >
-      <Avatar status="online" statusPosition="bottom-right" size="sm" />
+      <Avatar status={checkMemberIsOnline() ? "online" : "offline"} statusPosition="bottom-right" size="sm" />
       <div>
         <h1 className="font-semibold text-sm">
           {props.name}

@@ -3,6 +3,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { appApi } from "../../features/api/api";
 import { useAccountContext } from "../../context/AccountContext";
+import socket from "../../socket/socket";
 
 export default function Nav() {
   const navigate = useNavigate();
@@ -32,9 +33,10 @@ export default function Nav() {
             role="button"
             onClick={() => {
               appApi.util.resetApiState();
-              localStorage.clear();
+              localStorage.removeItem('account_user');
               sessionStorage.clear()
               setUser(null)
+              socket.disconnect()
               navigate("/");
             }}
           >

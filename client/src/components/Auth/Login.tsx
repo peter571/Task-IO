@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { useAccountContext } from "../../context/AccountContext";
 import { useLoginMutation } from "../../features/api/authApi";
 import { useValidateMemberInviteMutation } from "../../features/api/workspaceApi";
+import socket from "../../socket/socket";
 
 export default function Login() {
   const initialValues = {
@@ -30,14 +31,18 @@ export default function Login() {
     e.preventDefault();
     try {
       const payload = await login(loginDetails).unwrap();
-  
+      socket.auth = { userID: payload.user.userId, sessionID: payload.user.userId }
+      socket.connect()
       if (location.pathname === "/invite") {
-        const payloadInvite = await validateMemberInvite({ token, userId: payload.user.userId }).unwrap();
+        const payloadInvite = await validateMemberInvite({
+          token,
+          userId: payload.user.userId,
+        }).unwrap();
         navigate("/");
       } else {
         navigate("/");
       }
-  
+
       localStorage.setItem("account_user", JSON.stringify(payload));
       setUser(payload.user);
       setLoginDetails(initialValues);
@@ -46,7 +51,6 @@ export default function Login() {
       toast.warn("An error occurred. Check credentials!");
     }
   }
-  
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     setLoginDetails({ ...loginDetails, [e.target.name]: e.target.value });
