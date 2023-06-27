@@ -35,6 +35,7 @@ const messageApi = appApi.injectEndpoints({
 export const {
   useNewMessageMutation,
   useGetMessagesQuery,
+  useLazyGetMessagesQuery,
   useDeleteMessageMutation,
   useEditMessageMutation
 } = messageApi;

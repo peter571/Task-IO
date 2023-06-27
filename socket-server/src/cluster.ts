@@ -1,10 +1,8 @@
 import cluster from "cluster";
 import http from "http";
 import { setupMaster } from "@socket.io/sticky";
-import os from 'os'
 
 const WORKERS_COUNT = 4;
-//console.log(os.cpus().length)
 
 if (cluster.isPrimary) {
   console.log(`Master ${process.pid} is running`);

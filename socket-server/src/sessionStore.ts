@@ -1,3 +1,5 @@
+import { Redis } from "ioredis";
+
 abstract class SessionStore {
   abstract findSession(id: string): Promise<string>;
   abstract saveSession(id: string, session: any): void;
@@ -26,13 +28,13 @@ class InMemorySessionStore extends SessionStore {
 }
 
 const SESSION_TTL = 24 * 60 * 60;
-const mapSession = ([userID, username, connected]: any[]): any =>
-  userID ? { userID, username, connected: connected === "true" } : undefined;
+const mapSession = ([userID, connected]: any[]): any =>
+  userID ? { userID, connected: connected === "true" } : undefined;
 
 class RedisSessionStore extends SessionStore {
-  private redisClient: any;
+  private redisClient: Redis;
 
-  constructor(redisClient: any) {
+  constructor(redisClient: Redis) {
     super();
     this.redisClient = redisClient;
   }
@@ -41,21 +43,18 @@ class RedisSessionStore extends SessionStore {
     const result = await this.redisClient.hmget(
       `session:${id}`,
       "userID",
-      "username",
       "connected"
     );
     return mapSession(result);
   }
 
-  saveSession(id: string, { userID, username, connected }: any): void {
+  saveSession(id: string, { userID, connected }: any): void {
     this.redisClient
       .multi()
       .hset(
         `session:${id}`,
         "userID",
         userID,
-        "username",
-        username,
         "connected",
         connected
       )
@@ -79,7 +78,7 @@ class RedisSessionStore extends SessionStore {
     } while (nextIndex !== 0);
     const commands: any[] = [];
     keys.forEach((key: string) => {
-      commands.push(["hmget", key, "userID", "username", "connected"]);
+      commands.push(["hmget", key, "userID", "connected"]);
     });
     const results = await this.redisClient.multi(commands).exec();
     return results

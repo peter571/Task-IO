@@ -1,9 +1,8 @@
 import { createServer } from "http";
 import Redis from "ioredis";
 import { Socket } from "socket.io";
-import socketIORedis from "socket.io-redis";
 import { setupWorker } from "@socket.io/sticky";
-import crypto from "crypto";
+import { RedisSessionStore } from "./sessionStore";
 
 const httpServer = createServer();
 const redisClient = new Redis();
@@ -18,13 +17,7 @@ const io = require("socket.io")(httpServer, {
   }),
 });
 
-const randomId = () => crypto.randomBytes(8).toString("hex");
-
-import { RedisSessionStore } from "./sessionStore";
 const sessionStore = new RedisSessionStore(redisClient);
-
-import { RedisMessageStore } from "./messageStore";
-const messageStore = new RedisMessageStore(redisClient);
 
 interface ISocket extends Socket {
   sessionID?: string;
@@ -89,13 +82,9 @@ io.on("connection", async (socket: ISocket) => {
   });
 
   // forward the private message to the right recipient (and to other tabs of the sender)
-  socket.on("private message", ({ content, to }) => {
-    const message = {
-      content,
-      from: socket.userID,
-      to,
-    };
-    socket.to(to).to(socket.userID!).emit("private message", message);
+  socket.on("private message", (data) => {
+    socket.to(data.receiver).emit("private message", data);
+    socket.emit("private message", data);
   });
 
   // notify users upon disconnection

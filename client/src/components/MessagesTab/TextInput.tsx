@@ -10,8 +10,9 @@ import { FcVideoFile, FcDocument } from "react-icons/fc";
 import Picker, { EmojiClickData } from "emoji-picker-react";
 import { uploadFileToStorage } from "../../firebase/storage_upload";
 import { FileType } from "../../types";
-import { v4 as uuidv4 } from 'uuid';
- // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
+import { v4 as uuidv4 } from "uuid";
+import socket from "../../socket/socket";
+// ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 
 export function TextInput() {
   const { user } = useAccountContext();
@@ -63,11 +64,15 @@ export function TextInput() {
     e.preventDefault();
 
     try {
+      /**Upload files to file storage and get back the urls */
       setUploadingFiles(true);
       const fileUrls = await Promise.all(
         previews.map(async (file: FileType) => {
           try {
-            const url = await uploadFileToStorage(file.file_url, uuidv4() + file.name);
+            const url = await uploadFileToStorage(
+              file.file_url,
+              uuidv4() + file.name
+            );
             return { ...file, file_url: url };
           } catch (error) {
             // Handle the error if needed
@@ -77,6 +82,17 @@ export function TextInput() {
         })
       );
       setUploadingFiles(false);
+
+      /**Emit message to socket */
+      socket.emit("private message", {
+        content: textMsg,
+        receiver: selectedUser,
+        sender: user.userId,
+        workspace_id: spaceId,
+        chat_id: selectedChat,
+        files: fileUrls,
+      });
+      
 
       const payload = await sendMessage({
         content: textMsg,
@@ -188,7 +204,6 @@ export function TextInput() {
           id="msg"
           rows={3}
           value={textMsg}
-          
           style={{ height: "auto" }}
         ></textarea>
 
@@ -200,7 +215,11 @@ export function TextInput() {
             color="success"
             className="w-full"
             type="submit"
-            disabled={(textMsg.length === 0 && previews.length === 0) || isLoading || uploadingFiles}
+            disabled={
+              (textMsg.length === 0 && previews.length === 0) ||
+              isLoading ||
+              uploadingFiles
+            }
           >
             Send
           </Button>

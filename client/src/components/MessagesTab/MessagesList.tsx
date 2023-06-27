@@ -12,15 +12,15 @@ interface MessagesListProp {
 
 export function MessagesList() {
   const { user } = useAccountContext();
-  const { selectedChat } = useWorkSpaceContext();
-  const { data: messages = [], isLoading } = useGetMessagesQuery(selectedChat);
+  const { selectedChat, selectedChatMessages, loadingMessages } = useWorkSpaceContext();
+  //const { data: messages = [], isLoading } = useGetMessagesQuery(selectedChat);
   const msgRef = useCallback((node: any) => {
     if (node) {
       node.scrollIntoView({ smooth: true });
     }
   }, []);
 
-  if (isLoading) {
+  if (loadingMessages) {
     return (
       <div className="flex justify-center items-center h-[80%]">
         <Loader />
@@ -34,14 +34,14 @@ export function MessagesList() {
       className="grid content-start h-[80%] overflow-auto px-3 rounded-sm w-full"
     >
       {/* Display when there is no messages */}
-      {messages.length === 0 ? (
+      {selectedChatMessages.length === 0 ? (
         <div className="flex flex-col justify-center items-center">
           <TbMessages color="gray" size={25} />
           <p className="text-center text-gray-500">No messages for this chat</p>
         </div>
       ) : (
-        messages.map((msg: any, index: number) => {
-          const lastMsg = messages.length - 1 === index;
+        selectedChatMessages.map((msg: any, index: number) => {
+          const lastMsg = selectedChatMessages.length - 1 === index;
           return (
             <div
               key={index}
