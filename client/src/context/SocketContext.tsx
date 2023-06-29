@@ -49,7 +49,7 @@ export const SocketProvider = ({ children }: SocketProvider) => {
 
   useEffect(() => {
     socket.on("connect", () => {
-      if (onlineUsers.length > 0) {
+      if (onlineUsers.length > 0 && user_details) {
         setOnlineUsers((prevUsers) =>
           prevUsers.map((user) =>
             user.userID.toString() === user_details.userId.toString()
@@ -60,13 +60,16 @@ export const SocketProvider = ({ children }: SocketProvider) => {
       }
     });
 
-    socket.on("disconnect", () => {});
+    socket.on("disconnect", (data) => {
+      console.log(data)
+    });
 
     socket.on("users", (users) => {
       setOnlineUsers(users);
     });
 
     socket.on("user connected", (userData) => {
+     
       if (onlineUsers.length > 0) {
         setOnlineUsers((prevUsers) =>
           prevUsers.map((user) =>

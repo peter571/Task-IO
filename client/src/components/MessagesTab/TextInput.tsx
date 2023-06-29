@@ -93,7 +93,6 @@ export function TextInput() {
         files: fileUrls,
       });
       
-
       const payload = await sendMessage({
         content: textMsg,
         receiver: selectedUser,

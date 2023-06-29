@@ -4,7 +4,7 @@ const chatApi = appApi.injectEndpoints({
   endpoints: (build) => ({
     newChat: build.mutation({
       query: (body) => ({ url: "/chats/new-chat", method: "POST", body: body }),
-      invalidatesTags: ["Chats"]
+      invalidatesTags: ["Chats"],
     }),
 
     getUserChats: build.query({

@@ -23,7 +23,7 @@ export default function Member(props: MemberProp) {
   };
 
   async function createNewChat() {
-    changeUserHasNoNewMessage()
+    changeUserHasNoNewMessage();
     if (_id === user.userId) return;
     try {
       const payload = await newChat({
@@ -52,20 +52,24 @@ export default function Member(props: MemberProp) {
   function checkUserHasNewMessage() {
     if (onlineUsers.length === 0) return false;
     const found_user = onlineUsers.find((value) => value.userID === props._id);
-    if (!found_user.hasNewMessage) false;
-    return found_user.hasNewMessage;
+
+    if (found_user && found_user.hasOwnProperty("hasNewMessage")) {
+      return found_user.hasNewMessage;
+    } else {
+      return false;
+    }
   }
 
   function changeUserHasNoNewMessage() {
     setOnlineUsers((prevUsers) => {
       return prevUsers.map((userObj) => {
         if (userObj.userID.toString() === props._id) {
-          return { ...userObj, hasNewMessage: false }
+          return { ...userObj, hasNewMessage: false };
         } else {
-          return userObj
+          return userObj;
         }
-      })
-    })
+      });
+    });
   }
 
   return (

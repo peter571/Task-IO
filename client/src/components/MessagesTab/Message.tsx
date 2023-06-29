@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { MessageProp } from "../../types";
 import { format } from "timeago.js";
 import { Avatar } from "flowbite-react";
@@ -12,6 +12,7 @@ import {
 import MessageActions from "../Modals/MessageActions";
 
 export default function Message(props: MessageProp) {
+  
   const { user } = useAccountContext();
   const fromSelf = props.sender === user.userId;
   const [isHovered, setIsHovered] = useState(false);
@@ -23,13 +24,13 @@ export default function Message(props: MessageProp) {
   const [textMsg, setTextMsg] = useState(props.content);
   const formRef = useRef<HTMLFormElement>(null);
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = useCallback(() => {
     setIsHovered(true);
-  };
+  }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     setIsHovered(false);
-  };
+  }, []);
 
   const handleMoreClick = (
     event: React.MouseEvent<HTMLSpanElement, MouseEvent>
@@ -57,16 +58,20 @@ export default function Message(props: MessageProp) {
   }, []);
 
   async function handleDeleteMessage() {
+    console.log(props._id)
     try {
       await deleteMessage({
         chatId: props.chat_id,
         messageId: props._id,
       }).unwrap();
       setShowActionsModal(false);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const toggleEditMode = (event: React.MouseEvent<HTMLDivElement>) => {
+    console.log(props._id)
     event.stopPropagation();
     setIsEditMode((prev) => !prev);
     setShowActionsModal(false);

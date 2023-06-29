@@ -3,17 +3,13 @@ import Loader from "../Loader/Loader";
 import Message from "./Message";
 import { TbMessages } from "react-icons/tb";
 import { useAccountContext } from "../../context/AccountContext";
-import { useGetMessagesQuery } from "../../features/api/messageApi";
 import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 
-interface MessagesListProp {
-  messages: Array<any>;
-}
 
 export function MessagesList() {
   const { user } = useAccountContext();
-  const { selectedChat, selectedChatMessages, loadingMessages } = useWorkSpaceContext();
-  //const { data: messages = [], isLoading } = useGetMessagesQuery(selectedChat);
+  const { loadingMessages, selectedChatMessages } = useWorkSpaceContext();
+
   const msgRef = useCallback((node: any) => {
     if (node) {
       node.scrollIntoView({ smooth: true });

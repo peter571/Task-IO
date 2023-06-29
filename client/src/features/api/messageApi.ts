@@ -19,6 +19,27 @@ const messageApi = appApi.injectEndpoints({
         url: `/messages/delete-message/${chatId}/${messageId}`,
         method: "DELETE",
       }),
+      onQueryStarted: ({ chatId, messageId }, { dispatch, queryFulfilled }) => {
+        console.log({ chatId, messageId })
+        // Optimistically update the cache
+        const deleteResult = dispatch(
+          messageApi.util.updateQueryData("getMessages", chatId, (draft) => {
+            //
+
+            console.log(chatId, draft)
+          })
+        );
+
+        // Dispatch the deleteMessage action
+        try {
+          queryFulfilled.then(() => {
+            dispatch(messageApi.util.invalidateTags(["Messages"]));
+          });
+        } catch (error) {
+          deleteResult.undo();
+        }
+      },
+
       invalidatesTags: ["Messages"],
     }),
     editMessage: build.mutation({
@@ -27,7 +48,7 @@ const messageApi = appApi.injectEndpoints({
         method: "PATCH",
         body: { content: textMsg },
       }),
-      invalidatesTags: ["Messages"]
+      invalidatesTags: ["Messages"],
     }),
   }),
 });
@@ -37,5 +58,5 @@ export const {
   useGetMessagesQuery,
   useLazyGetMessagesQuery,
   useDeleteMessageMutation,
-  useEditMessageMutation
+  useEditMessageMutation,
 } = messageApi;

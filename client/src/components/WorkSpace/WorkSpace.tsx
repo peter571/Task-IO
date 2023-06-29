@@ -23,6 +23,7 @@ const WorkSpaceContext = React.createContext(
     spaceId: string | null;
     selectedChatMessages: any[];
     loadingMessages: boolean;
+    setSelectedChatMessages: React.Dispatch<React.SetStateAction<any[]>>;
   }
 );
 
@@ -50,19 +51,30 @@ export default function WorkSpace() {
   const { user } = useAccountContext();
   const { data: workspace, isSuccess: spaceLoaded } =
     useGetWorkSpaceQuery(spaceId);
-  const [fetchChatMessages, { isLoading: loadingMessages }] =
-    useLazyGetMessagesQuery();
-  const [selectedChatMessages, setSelectedChatMessages] = useState<any[]>([]);
-  const { onlineUsers, setOnlineUsers } = useSocket()
- 
+  const [
+    fetchChatMessages,
+    { isLoading: loadingMessages, data: messages = [] },
+  ] = useLazyGetMessagesQuery();
+  const [selectedChatMessages, setSelectedChatMessages] =
+    useState<any[]>(messages);
+  const { setOnlineUsers } = useSocket();
 
   useEffect(() => {
+    if (selectedChat) {
+      setSelectedChatMessages(messages);
+    }
+  }, [messages]);
+
+  console.log(selectedChat);
+  /**Fetch chats of the selected ChatID */
+  useEffect(() => {
     (async function () {
+      console.log("2");
       if (selectedChat) {
         try {
-          const payload = await fetchChatMessages(selectedChat, true).unwrap();
-          
-          setSelectedChatMessages(payload);
+          const payload = await fetchChatMessages(selectedChat, false).unwrap();
+
+          //setSelectedChatMessages(payload);
         } catch (error) {}
       }
     })();
@@ -75,31 +87,30 @@ export default function WorkSpace() {
 
   /**Listen to incoming message and update the messages array */
   useEffect(() => {
+    console.log("3");
     socket.on("private message", (data) => {
       //console.log(data)
       /** Update the message list of user if currently on the chat ID */
-      if (selectedChat && selectedChat.toString() === data.chat_id.toString()){
+      if (selectedChat && selectedChat.toString() === data.chat_id.toString()) {
         setSelectedChatMessages((prevMessages) => [...prevMessages, data]);
       } else {
         /**If user is not selected chat(Show the chat ID has a new message) */
         setOnlineUsers((prevUsers) => {
           return prevUsers.map((userObj) => {
             if (userObj.userID.toString() === data.sender.toString()) {
-              return { ...userObj, hasNewMessage: true }
+              return { ...userObj, hasNewMessage: true };
             } else {
-              return userObj
+              return userObj;
             }
-          })
-        })
+          });
+        });
       }
-        
     });
 
     return () => {
       socket.off("private message");
     };
   }, [selectedChat]);
-
 
   return (
     <WorkSpaceContext.Provider
@@ -116,7 +127,7 @@ export default function WorkSpace() {
         spaceId,
         selectedChatMessages,
         loadingMessages,
-       
+        setSelectedChatMessages,
       }}
     >
       <div className="flex flex-row gap-1 divide-x h-screen">

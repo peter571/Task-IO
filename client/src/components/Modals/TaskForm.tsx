@@ -38,7 +38,7 @@ export default function TaskForm({
         assignee: assigneeRef.current?.value,
         workspace_id: spaceId,
       }).unwrap();
-      console.log(payload);
+      setShowTaskModal(undefined);
     } catch (error) {}
   }
 
