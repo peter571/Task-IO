@@ -8,15 +8,15 @@
     @apply flex flex-col min-h-screen align-middle justify-center items-center px-5;
   }
   .form__input {
-    @apply rounded-lg ring-1 ring-gray-200 outline-none my-1 px-3 focus:ring-1 focus:ring-black placeholder:text-sm;
+    @apply rounded-lg ring-0 border-0 outline-none my-1 px-3 text-custom-blue focus:ring-1 focus:ring-custom-blue placeholder:text-sm bg-[#D1D0F9] placeholder:text-custom-blue;
   }
   .msg_input {
     @apply rounded-lg ring-0 ring-gray-200 border-0 bg-slate-100 outline-none my-1 px-3 focus:ring-0 placeholder:text-sm;
   }
   .btn {
-    @apply inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2;
+    @apply inline-flex justify-center rounded-md border drop-shadow-lg border-transparent bg-custom-blue px-4 py-2 text-sm font-medium text-white focus:outline-none;
   }
-  .logo {
+  .bold-title {
     @apply font-extrabold text-3xl cursor-pointer;
   }
   .dialog__panel {
@@ -26,12 +26,12 @@
     @apply flex align-middle items-center justify-center min-h-screen;
   }
   .div-container {
-    @apply flex flex-col gap-4 w-full sm:w-[70%] md:w-[50%] lg:w-[30%];
+    @apply flex flex-col gap-4 w-full sm:w-[70%] md:w-[50%] lg:w-[30%] bg-white p-8 rounded-2xl drop-shadow-xl;
   }
 }
 
 .bg-navbar {
-  @apply bg-slate-50 drop-shadow-lg !important;
+  @apply bg-transparent !important;
 }
 
 @layer base {

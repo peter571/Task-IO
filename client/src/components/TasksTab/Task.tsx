@@ -12,7 +12,6 @@ import {
   useUpdateTaskMutation,
   useUpdateTaskStatusMutation,
 } from "../../features/api/taskApi";
-import { useParams } from "react-router-dom";
 import DeleteTask from "../Modals/DeleteTask";
 import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 
@@ -94,7 +93,7 @@ export default function Task(props: TaskProp) {
   }, [props]);
 
   return (
-    <div className="border p-2 rounded-md shadow-md bg-white hover:bg-gray-100 mb-3 relative">
+    <div className="border-0 p-2 rounded-xl shadow-md w mb-3 relative bg-fade-blue hover:bg-regular-fade">
       {!isEditMode && (
         <span className="hover:bg-gray-500 rounded-full absolute right-2 top-2 p-1">
           <FiMoreVertical
@@ -104,6 +103,7 @@ export default function Task(props: TaskProp) {
               setSelectedTask(props._id);
               setShowDeleteTaskModal(true);
             }}
+            color="white"
           />
         </span>
       )}
@@ -138,15 +138,15 @@ export default function Task(props: TaskProp) {
           </form>
         ) : (
           <>
-            <h1 className="font-bold text-sm">{props.title}</h1>
-            <p className="text-sm my-1">{props.description}</p>
+            <h1 className="font-bold text-sm text-custom-blue">{props.title}</h1>
+            <p className="text-sm my-1 text-custom-blue">{props.description}</p>
             {userIsAdmin && (
-              <p className="text-sm">
+              <p className="text-sm text-custom-blue">
                 Assigned to:{" "}
                 <span className="font-semibold">{props.assignee.name}</span>
               </p>
             )}
-            {!completed && <p>To submit: {props.completion_date}</p>}
+            {!completed && <p className="text-custom-blue">To submit: {props.completion_date}</p>}
           </>
         )}
       </div>
@@ -154,7 +154,7 @@ export default function Task(props: TaskProp) {
         <ToggleSwitch
           disabled={updatingTaskStatus}
           className="my-1"
-          color="green"
+          color="purple"
           checked={completed}
           label={completed ? "Completed ️✅" : "Pending"}
           onChange={async function (checked) {

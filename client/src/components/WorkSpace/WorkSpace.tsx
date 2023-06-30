@@ -65,15 +65,12 @@ export default function WorkSpace() {
     }
   }, [messages]);
 
-  console.log(selectedChat);
   /**Fetch chats of the selected ChatID */
   useEffect(() => {
     (async function () {
-      console.log("2");
       if (selectedChat) {
         try {
           const payload = await fetchChatMessages(selectedChat, false).unwrap();
-
           //setSelectedChatMessages(payload);
         } catch (error) {}
       }
@@ -87,9 +84,7 @@ export default function WorkSpace() {
 
   /**Listen to incoming message and update the messages array */
   useEffect(() => {
-    console.log("3");
     socket.on("private message", (data) => {
-      //console.log(data)
       /** Update the message list of user if currently on the chat ID */
       if (selectedChat && selectedChat.toString() === data.chat_id.toString()) {
         setSelectedChatMessages((prevMessages) => [...prevMessages, data]);
@@ -130,7 +125,7 @@ export default function WorkSpace() {
         setSelectedChatMessages,
       }}
     >
-      <div className="flex flex-row gap-1 divide-x h-screen">
+      <div className="flex flex-row gap-1 divide-x h-screen bg-white">
         <MembersAndChatSidebar />
         <MessagesTab />
         <TasksTab />

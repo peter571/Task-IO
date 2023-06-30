@@ -59,7 +59,7 @@ export default function Login() {
   return (
     <form onSubmit={handleSubmit} className="auth__form">
       <div className="div-container">
-        <h1 className="logo text-center">Login</h1>
+        <h1 className="bold-title text-center text-custom-blue">Login</h1>
         <input
           className="form__input py-2"
           type="email"
@@ -79,10 +79,10 @@ export default function Login() {
         <button type="submit" className="btn" disabled={isLoading}>
           {isLoading ? <Loader /> : "Log in"}
         </button>
-        <p>
+        <p className="text-custom-gray">
           Don't have an account?{" "}
           <span
-            className="text-blue-500"
+            className="text-custom-blue underline"
             role="button"
             onClick={() => changeHasAccount()}
           >

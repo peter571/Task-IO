@@ -1,32 +1,47 @@
 import { Tabs } from "flowbite-react";
 import React, { useState } from "react";
-import { HiAdjustments, HiClipboardList, HiUserCircle } from "react-icons/hi";
-import { MdPendingActions } from "react-icons/md";
 import { FaTasks } from "react-icons/fa";
-import { AiOutlineFileDone } from "react-icons/ai";
 import { TbNotes } from "react-icons/tb";
 import AllTasks, { STATUS } from "./AllTasks";
 import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 import UserTasks from "./UserTasks";
 import Notes from "../Notes/Notes";
+import type { CustomFlowbiteTheme } from "flowbite-react";
+
+const customTheme: CustomFlowbiteTheme["tab"] = {
+  tablist: {
+    tabitem: {
+      styles: {
+        underline: {
+          active: {
+            on: "bg-transparent rounded-t-lg border-b-2 border-custom-blue text-custom-blue",
+          },
+        },
+      },
+    },
+  },
+};
 
 export default function TasksList() {
   const { userIsAdmin } = useWorkSpaceContext();
-  const [status, setStatus] = useState<STATUS | string>("all-tasks")
+  const [status, setStatus] = useState<STATUS | string>("all-tasks");
 
-  
   return (
-    <Tabs.Group aria-label="Tabs with icons" style="underline" className="mt-2">
+    <Tabs.Group
+      theme={customTheme}
+      aria-label="Tabs with icons"
+      style="underline"
+      className="mt-2"
+    >
       <Tabs.Item
-        className="h-full"
-        active
+        className="h-full active:text-custom-blue"
         icon={FaTasks}
         title={userIsAdmin ? "All tasks" : "My tasks"}
       >
         {userIsAdmin && (
           <select
             onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-              setStatus(e.target.value)
+              setStatus(e.target.value);
             }}
             className="cursor-pointer form__input"
             name="status"

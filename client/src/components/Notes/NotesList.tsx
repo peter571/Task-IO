@@ -5,20 +5,27 @@ import { useAccountContext } from "../../context/AccountContext";
 import { NoteProp } from "../../types";
 import Note from "./Note";
 import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
+import Loader from "../Loader/Loader";
 
 export default function NotesList() {
   const { spaceId } = useWorkSpaceContext();
   const { user } = useAccountContext();
-  const { data: notes = [], isSuccess } = useGetUserNotesQuery({
+  const {
+    data: notes = [],
+    isLoading,
+  } = useGetUserNotesQuery({
     workspace_id: spaceId,
     userId: user.userId,
   });
 
   return (
     <div className="my-2">
-      {isSuccess && notes.map((note: NoteProp, idx: number) => (
-        <Note key={idx} {...note} />
-      ))}
+      {isLoading && <Loader />}
+      {!isLoading &&
+        notes.length > 0 &&
+        notes.map((note: NoteProp, idx: number) => (
+          <Note key={idx} {...note} />
+        ))}
     </div>
   );
 }

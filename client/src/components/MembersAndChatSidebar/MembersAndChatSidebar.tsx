@@ -13,7 +13,7 @@ import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 
 export default function MembersAndChatSidebar() {
   const navigate = useNavigate();
-  
+
   const { userIsAdmin, spaceId } = useWorkSpaceContext();
   const { data: workspace, isSuccess: spaceLoaded } =
     useGetWorkSpaceQuery(spaceId);
@@ -25,14 +25,12 @@ export default function MembersAndChatSidebar() {
   return (
     <div className="flex flex-col gap-4 h-full bg-[#EAF1FB] w-1/5">
       <div className="basis-1/8 flex flex-row items-center">
-        <h1 className="logo p-3" onClick={() => navigate("/")}>
-          <BiHome />
+        <h1 className="bold-title p-3" onClick={() => navigate("/")}>
+          <BiHome color="#6368D9" />
         </h1>
-        <h2 className="text-sm font-bold">
-          {user && user.name}
-        </h2>
+        <h2 className="text-sm font-bold text-custom-blue">{user && user.name}</h2>
       </div>
-      <h1 className="font-bold basis-1/8 px-3">
+      <h1 className="font-bold basis-1/8 px-3 bold-title text-custom-blue">
         {spaceLoaded && workspace.name}
       </h1>
       <div className="basis-3/4 flex flex-col gap-2 overflow-auto relative">

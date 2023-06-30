@@ -25,8 +25,8 @@ export default function App() {
   }, [location]);
 
   return (
-    <div className="">
-      {location.pathname === "/" && <Nav />}
+    <div className="bg-fade-blue">
+      {location.pathname === "/" && isAuthenticated && <Nav />}
       {location.pathname === "/invite" && <Nav />}
 
       <Routes>

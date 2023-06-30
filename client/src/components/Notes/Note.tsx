@@ -46,7 +46,7 @@ export default function Note(props: NoteProp) {
   }, []);
 
   return (
-    <div className="border p-2 rounded-md shadow-md bg-white hover:bg-gray-100 mb-3 relative">
+    <div className="border-0 p-2 rounded-md shadow-md bg-fade-blue hover:bg-regular-fade mb-3 relative">
       {!isEditMode && (
         <span className="hover:bg-gray-500 rounded-full absolute right-2 top-2 p-1">
           <MdDeleteOutline
@@ -56,6 +56,7 @@ export default function Note(props: NoteProp) {
               setSelectedNote(props._id);
               setShowDeleteNoteModal(true);
             }}
+            color="white"
           />
         </span>
       )}
@@ -87,8 +88,8 @@ export default function Note(props: NoteProp) {
           </form>
         ) : (
           <>
-            <h1 className="font-bold text-base">{title}</h1>
-            <p className="text-sm">{text}</p>
+            <h1 className="font-bold text-base text-custom-blue">{title}</h1>
+            <p className="text-sm text-custom-blue">{text}</p>
           </>
         )}
       </div>

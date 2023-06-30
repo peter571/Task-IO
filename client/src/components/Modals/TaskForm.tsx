@@ -49,10 +49,12 @@ export default function TaskForm({
         setShowTaskModal(undefined);
       }}
     >
-      <Modal.Header>New task</Modal.Header>
+      <Modal.Header>
+        <span className="text-custom-blue">New task</span>
+      </Modal.Header>
       <Modal.Body>
         <form className="mt-2 flex flex-col" onSubmit={handleSubmit}>
-          <label htmlFor="members">Select assignee:</label>
+          <label className="text-custom-blue" htmlFor="members">Select assignee:</label>
           <select
             ref={assigneeRef}
             className="cursor-pointer form__input"

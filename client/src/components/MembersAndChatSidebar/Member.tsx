@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 import { formatUrlString } from "../../utils/formatUrlString";
 import { useSocket } from "../../context/SocketContext";
+import { useGetMessagesQuery } from "../../features/api/messageApi";
 
 export default function Member(props: MemberProp) {
   const { _id } = props;
@@ -81,17 +82,17 @@ export default function Member(props: MemberProp) {
       <Avatar
         status={checkMemberIsOnline() ? "online" : "offline"}
         statusPosition="bottom-right"
-        size="sm"
+        size="xs"
       />
       <div>
         <h1 className="font-semibold text-sm">
           {props.name}
           {_id === user.userId && "(you)"}
         </h1>
-        {props.showLastMsg && <p className="text-xs">Last message</p>}
+        {/* {props.showLastMsg && <p className="text-xs">Last message</p>} */}
       </div>
       {checkUserHasNewMessage() && (
-        <div className="absolute top-2 right-2 bg-red-700 font-semibold rounded-md">
+        <div className="absolute top-2 right-2 bg-[#E459CE] font-semibold rounded-md">
           <p className="text-xs p-1 text-white"></p>
         </div>
       )}

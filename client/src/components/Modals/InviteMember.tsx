@@ -22,7 +22,9 @@ export default function InviteMember({
 
   return (
     <Modal show={show} onClose={() => setOpenInviteMemberModal(undefined)}>
-      <Modal.Header>Invite new member to team</Modal.Header>
+      <Modal.Header>
+        <span className="text-custom-blue">Invite new member to team</span>
+      </Modal.Header>
       <Modal.Body>
         {successText && (
           <h1 className="text-green-500 font-bold bg-green-200 w-1/2 p-3 my-1 rounded-md">
@@ -48,7 +50,8 @@ export default function InviteMember({
         )}
       </Modal.Body>
       <Modal.Footer className="">
-        <Button
+        <button
+          type="button"
           onClick={async () => {
             if (
               emailRef.current?.value &&
@@ -74,9 +77,10 @@ export default function InviteMember({
             }
           }}
           disabled={isLoading}
+          className="btn"
         >
           Invite
-        </Button>
+        </button>
       </Modal.Footer>
     </Modal>
   );

@@ -10,7 +10,15 @@ module.exports = {
       fontFamily: {
         'poppins': ['Poppins', 'sans-serif']
       },
+      colors: {
+        'custom-blue': '#6368D9',
+        'fade-blue': '#AFB5ED',
+        'custom-gray': '#9C98A1',
+        'regular-fade': '#D1D0F9',
+        'custom-white': '#F6F2FF'
+      }
     },
+   
   },
   plugins: [
     require('flowbite/plugin'),

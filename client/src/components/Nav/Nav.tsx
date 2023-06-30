@@ -13,7 +13,7 @@ export default function Nav() {
     <Navbar rounded className="fixed w-full bg-navbar">
       <Navbar.Brand>
         <span
-          className="self-center whitespace-nowrap text-xl font-semibold"
+          className="self-center whitespace-nowrap text-2xl font-semibold text-[#E459CE]"
           role="button"
           onClick={() => navigate("/")}
         >
@@ -26,19 +26,24 @@ export default function Nav() {
         label={<Avatar className="cursor-pointer" rounded />}
         dismissOnClick={true}
       >
-        {user && <Dropdown.Item>{user.name}</Dropdown.Item>}
+        {user && (
+          <Dropdown.Item>
+            <span className="text-custom-blue">{user.name}</span>
+          </Dropdown.Item>
+        )}
         <Dropdown.Item>
           {" "}
           <span
             role="button"
             onClick={() => {
               appApi.util.resetApiState();
-              localStorage.removeItem('account_user');
-              sessionStorage.clear()
-              setUser(null)
-              socket.disconnect()
+              localStorage.removeItem("account_user");
+              sessionStorage.clear();
+              setUser(null);
+              socket.disconnect();
               navigate("/");
             }}
+            className="text-custom-blue"
           >
             {" "}
             Sign out

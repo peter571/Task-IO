@@ -40,7 +40,10 @@ router.get("/:chat_id", authenticateToken, async (req, res) => {
         chat_id: chat_id,
       },
       { __v: 0 }
-    ).sort({ createdAt: 1 });
+    )
+      .sort({ createdAt: 1 })
+      .populate("receiver", { __v: 0, password: 0 })
+      .populate("sender", { __v: 0, password: 0 });
 
     res.status(200).json(messages);
   } catch (error) {

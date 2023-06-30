@@ -5,7 +5,7 @@ export interface MemberProp {
   email: string;
   name: string;
   _id: string;
-  showLastMsg: boolean;
+  showLastMsg?: boolean;
 }
 
 export interface ISocket extends Socket {
@@ -79,8 +79,8 @@ export interface MessageProp {
   chat_id: string;
   content: string;
   createdAt: string;
-  receiver: string;
-  sender: string;
+  receiver: MemberProp;
+  sender: MemberProp;
   updatedAt: string;
   workspace_id: string;
   _id: string;

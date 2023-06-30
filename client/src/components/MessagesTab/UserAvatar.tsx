@@ -15,9 +15,9 @@ export function UserAvatar() {
       });
 
   return (
-    <div className="border-b-2 mb-2 bg-gray-200 p-3 flex flex-row items-center gap-2">
+    <div className="border-b-2 mb-2 bg-custom-white p-3 flex flex-row items-center gap-2">
       <Avatar size="sm" />
-      <h1 className="font-extrabold text-md">{name}</h1>
+      <h1 className="font-extrabold text-md text-custom-blue">{name}</h1>
     </div>
   );
 }

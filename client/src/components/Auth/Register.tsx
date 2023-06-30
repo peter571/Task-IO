@@ -65,7 +65,7 @@ export default function Register() {
   return (
     <form onSubmit={handleSubmit} className="auth__form">
       <div className="div-container">
-        <h1 className="logo text-center">Register</h1>
+        <h1 className="bold-title text-center text-custom-blue">Register</h1>
         <input
           className="form__input py-2"
           type="text"
@@ -102,10 +102,10 @@ export default function Register() {
         <button type="submit" className="btn" disabled={isLoading}>
           {isLoading ? <Loader /> : "Register"}
         </button>
-        <p>
+        <p className="text-custom-gray">
           Already have an account?{" "}
           <span
-            className="text-blue-500"
+            className="text-custom-blue underline"
             role="button"
             onClick={() => changeHasAccount()}
           >

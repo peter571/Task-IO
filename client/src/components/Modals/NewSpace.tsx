@@ -39,9 +39,14 @@ export default function NewSpace({
 
   return (
     <Modal show={show} onClose={() => setOpenNewSpaceModal(undefined)}>
-      <Modal.Header>Invite new member to team</Modal.Header>
+      <Modal.Header>
+        <span className="text-custom-blue">Invite new member to team</span>
+      </Modal.Header>
       <Modal.Body>
-        <form className="div-container w-full py-4 space-y-6" onSubmit={handleSubmit}>
+        <form
+          className="div-container w-full py-4 space-y-6"
+          onSubmit={handleSubmit}
+        >
           <input
             placeholder="Enter company name..."
             className="form__input py-2"

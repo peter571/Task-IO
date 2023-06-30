@@ -4,7 +4,7 @@ import { format } from "timeago.js";
 import { Avatar } from "flowbite-react";
 import { useAccountContext } from "../../context/AccountContext";
 import FilesDisplay from "./FilesDisplay";
-import { FiMoreHorizontal, FiMoreVertical } from "react-icons/fi";
+import { FiMoreHorizontal } from "react-icons/fi";
 import {
   useDeleteMessageMutation,
   useEditMessageMutation,
@@ -14,7 +14,7 @@ import MessageActions from "../Modals/MessageActions";
 export default function Message(props: MessageProp) {
   
   const { user } = useAccountContext();
-  const fromSelf = props.sender === user.userId;
+  const fromSelf = props.sender._id === user.userId;
   const [isHovered, setIsHovered] = useState(false);
   const [showActionsModal, setShowActionsModal] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
@@ -58,7 +58,7 @@ export default function Message(props: MessageProp) {
   }, []);
 
   async function handleDeleteMessage() {
-    console.log(props._id)
+    console.log(props._id);
     try {
       await deleteMessage({
         chatId: props.chat_id,
@@ -66,12 +66,12 @@ export default function Message(props: MessageProp) {
       }).unwrap();
       setShowActionsModal(false);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   }
 
   const toggleEditMode = (event: React.MouseEvent<HTMLDivElement>) => {
-    console.log(props._id)
+    console.log(props._id);
     event.stopPropagation();
     setIsEditMode((prev) => !prev);
     setShowActionsModal(false);
@@ -131,12 +131,17 @@ export default function Message(props: MessageProp) {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <Avatar color="blue" size="sm" rounded />
+          <Avatar color="blue" size="sm" rounded></Avatar>
           <div className={`grid place-items-start mr-12`}>
+            <h1 className="text-sm font-semibold my-1 text-black">
+              {fromSelf ? "Me" : props.receiver.name}
+            </h1>
             {props.content.length > 0 && (
               <p
                 className={`whitespace-wrap text-md rounded-md p-2 mb-2 ${
-                  fromSelf ? "bg-gray-200 text-black" : "text-white bg-blue-900"
+                  fromSelf
+                    ? "bg-regular-fade text-custom-blue"
+                    : "text-custom-white bg-custom-blue"
                 }`}
               >
                 {props.content}
@@ -146,9 +151,7 @@ export default function Message(props: MessageProp) {
               <FilesDisplay fromSelf={fromSelf} files={props.files} />
             )}
             <p
-              className={`text-xs my-1 font-bold ${
-                fromSelf ? "float-right" : "float-left text-left"
-              }`}
+              className="text-xs my-1 font-bold text-custom-gray"
             >
               {format(props.createdAt)}
             </p>
