@@ -3,13 +3,19 @@ import Redis from "ioredis";
 import { Socket } from "socket.io";
 import { setupWorker } from "@socket.io/sticky";
 import { RedisSessionStore } from "./sessionStore";
+import dotenv from "dotenv";
+dotenv.config();
 
 const httpServer = createServer();
-const redisClient = new Redis();
+const redisClient = new Redis(
+  Number(process.env.PORT),
+  process.env.HOST.toString()
+);
+
 
 const io = require("socket.io")(httpServer, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: process.env.NODE_ENV === 'production' ? "https://tasks-manager-io.netlify.app" : "http://localhost:5173",
   },
   adapter: require("socket.io-redis")({
     pubClient: redisClient,

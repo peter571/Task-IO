@@ -2,7 +2,7 @@
   "name": "socket-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/cluster.ts",
   "scripts": {
     "start": "node dist/cluster.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/cluster.js\"",
@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@socket.io/sticky": "^1.0.3",
+    "dotenv": "^16.3.1",
     "ioredis": "^5.3.2",
     "socket.io": "^4.7.0",
     "socket.io-redis": "^6.1.1"

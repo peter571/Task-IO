@@ -1,8 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { Server } from "socket.io";
-import type { Socket } from "socket.io";
 import authRoutes from "./routes/auth";
 import taskRoutes from "./routes/task";
 import messageRoutes from "./routes/message";
@@ -10,7 +8,7 @@ import spaceRoutes from "./routes/space";
 import chatsRoutes from "./routes/chat";
 import noteRoutes from "./routes/note";
 import { connectDB } from "./database/database";
-import Redis from "ioredis";
+
 
 dotenv.config();
 const app = express();
