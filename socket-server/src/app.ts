@@ -12,10 +12,12 @@ const redisClient = new Redis(
   process.env.HOST.toString()
 );
 
-
 const io = require("socket.io")(httpServer, {
   cors: {
-    origin: process.env.NODE_ENV === 'production' ? "https://tasks-manager-io.netlify.app" : "http://localhost:5173",
+    origin:
+      process.env.NODE_ENV === "production"
+        ? "https://tasks-manager-io.netlify.app"
+        : "http://localhost:5173",
   },
   adapter: require("socket.io-redis")({
     pubClient: redisClient,

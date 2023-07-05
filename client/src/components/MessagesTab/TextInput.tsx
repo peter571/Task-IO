@@ -82,16 +82,6 @@ export function TextInput() {
         })
       );
       setUploadingFiles(false);
-
-      /**Emit message to socket */
-      socket.emit("private message", {
-        content: textMsg,
-        receiver: selectedUser,
-        sender: user.userId,
-        workspace_id: spaceId,
-        chat_id: selectedChat,
-        files: fileUrls,
-      });
       
       const payload = await sendMessage({
         content: textMsg,
@@ -101,6 +91,9 @@ export function TextInput() {
         chat_id: selectedChat,
         files: fileUrls,
       }).unwrap();
+      
+       /**Emit message to socket */
+       socket.emit("private message", payload);
 
       setTextMsg("");
       setPreviews([]);
