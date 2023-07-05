@@ -8,7 +8,7 @@ dotenv.config();
 
 const httpServer = createServer();
 const redisClient = new Redis(
-  Number(process.env.PORT),
+  Number(process.env.PORT_NUMBER),
   process.env.HOST.toString()
 );
 

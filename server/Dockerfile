@@ -1,18 +1,30 @@
+# Build stage
+FROM node AS builder
+WORKDIR /app
+
+COPY package.json .
+COPY package-lock.json .
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+# Production stage
 FROM node
 ENV NODE_ENV=production
 
 WORKDIR /app
 
-COPY ["package.json", "package-lock.json*", "./"]
+COPY package.json .
+COPY package-lock.json .
 
 RUN npm install --production
 
-COPY . .
+COPY --from=builder /app/dist ./dist
 
-# for typescript
-RUN npm run build
-
-COPY .env ./dist/
+#COPY .env ./dist/
 
 EXPOSE 5000
-CMD ["node" "dist/app.js"]
+CMD ["node", "dist/app.js"]

@@ -3,7 +3,10 @@ import { getTokenFromLocalStorage } from "../../utils/getToken";
 
 export const appApi = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl:  import.meta.env.MODE === 'production' ? "https://chat-app-vpct.onrender.com/" : "http://localhost:5000/",
+    baseUrl:
+      import.meta.env.MODE === "production"
+        ? "https://task-io-api-2pqqdimvsq-uc.a.run.app/"
+        : "http://localhost:5000/",
     prepareHeaders: (headers, { getState }) => {
       const token = getTokenFromLocalStorage(); // Token retrieval logic
       if (token) {
@@ -12,6 +15,6 @@ export const appApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Users', "Spaces", "Messages", "Chats", "Tasks", "Notes"],
+  tagTypes: ["Users", "Spaces", "Messages", "Chats", "Tasks", "Notes"],
   endpoints: () => ({}),
 });
