@@ -91,7 +91,7 @@ io.on("connection", async (socket: ISocket) => {
 
   // forward the private message to the right recipient (and to other tabs of the sender)
   socket.on("private message", (data) => {
-    socket.to(data.receiver).emit("private message", data);
+    socket.to(data.receiver._id).emit("private message", data);
     //socket.emit("private message", data);
   });
 

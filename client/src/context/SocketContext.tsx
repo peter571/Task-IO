@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { ProviderProp } from "../types";
 import socket from "../socket/socket";
-import { useAccountContext } from "./AccountContext";
 import { Socket } from "socket.io-client";
 import { getUserDetails } from "../utils/getUserDetails";
 
@@ -99,7 +98,7 @@ export const SocketProvider = ({ children }: SocketProvider) => {
       socket.off("users");
       socket.off("user connected");
       socket.off("user disconnected");
-      //socket.off("private message");
+
     };
   }, [user_details, onlineUsers]);
 

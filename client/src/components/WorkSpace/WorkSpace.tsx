@@ -92,7 +92,7 @@ export default function WorkSpace() {
         /**If user is not selected chat(Show the chat ID has a new message) */
         setOnlineUsers((prevUsers) => {
           return prevUsers.map((userObj) => {
-            if (userObj.userID.toString() === data.sender.toString()) {
+            if (userObj.userID.toString() === data.sender._id.toString()) {
               return { ...userObj, hasNewMessage: true };
             } else {
               return userObj;

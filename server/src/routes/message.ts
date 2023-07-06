@@ -9,9 +9,12 @@ const router = express.Router();
 // Add new message
 router.post("/new-message", authenticateToken, async (req, res) => {
   try {
-    const newMessage = new Message(req.body);
-    await newMessage.save();
-    res.status(201).json(newMessage);
+    const newMessage = await new Message(req.body).save();
+
+    const msg = await (
+      await newMessage.populate("sender", { __v: 0, password: 0 })
+    ).populate("receiver", { __v: 0, password: 0 });
+    res.status(201).json(msg);
   } catch (error) {
     console.log(error);
     res.status(500).json(error);

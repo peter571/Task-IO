@@ -1,18 +1,16 @@
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
-import { useSocket } from "../../context/SocketContext";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "flowbite-react";
 import { useAccountContext } from "../../context/AccountContext";
 import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
 import { useNewMessageMutation } from "../../features/api/messageApi";
 import { AiOutlinePlus } from "react-icons/ai";
 import { MdCancel, MdOutlineEmojiEmotions } from "react-icons/md";
-import { FcVideoFile, FcDocument } from "react-icons/fc";
+import { FcDocument } from "react-icons/fc";
 import Picker, { EmojiClickData } from "emoji-picker-react";
 import { uploadFileToStorage } from "../../firebase/storage_upload";
 import { FileType } from "../../types";
 import { v4 as uuidv4 } from "uuid";
 import socket from "../../socket/socket";
-// ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 
 export function TextInput() {
   const { user } = useAccountContext();

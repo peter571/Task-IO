@@ -40,7 +40,7 @@ export default function NewSpace({
   return (
     <Modal show={show} onClose={() => setOpenNewSpaceModal(undefined)}>
       <Modal.Header>
-        <span className="text-custom-blue">Invite new member to team</span>
+        <span className="text-custom-blue">Create new space</span>
       </Modal.Header>
       <Modal.Body>
         <form
