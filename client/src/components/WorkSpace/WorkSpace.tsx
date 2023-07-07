@@ -93,7 +93,7 @@ export default function WorkSpace() {
         setOnlineUsers((prevUsers) => {
           if (prevUsers.length === 0) return prevUsers;
           return prevUsers.map((userObj) => {
-            if (userObj.userID.toString() === data.sender._id.toString()) {
+            if (userObj?.userID === data?.sender._id) {
               return { ...userObj, hasNewMessage: true };
             } else {
               return userObj;
