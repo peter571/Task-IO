@@ -14,7 +14,7 @@
     @apply rounded-lg ring-0 ring-gray-200 border-0 bg-slate-100 outline-none my-1 px-3 focus:ring-0 placeholder:text-sm;
   }
   .btn {
-    @apply inline-flex justify-center rounded-md border drop-shadow-lg border-transparent bg-custom-blue px-4 py-2 text-sm font-medium text-white focus:outline-none;
+    @apply inline-flex justify-center rounded-md border drop-shadow-lg border-transparent bg-custom-blue px-4 py-2 text-sm font-medium text-white focus:outline-none bg-opacity-80 hover:bg-opacity-100;
   }
   .bold-title {
     @apply font-extrabold text-3xl cursor-pointer;

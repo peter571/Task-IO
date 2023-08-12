@@ -24,7 +24,7 @@ RUN npm install --production
 
 COPY --from=builder /app/dist ./dist
 
-COPY .env ./dist/
+#COPY .env ./dist/
 
 EXPOSE 7000
 CMD ["node", "dist/cluster.js"]

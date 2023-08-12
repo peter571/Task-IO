@@ -9,3 +9,5 @@ export { default as Login } from "./Auth/Login";
 export { default as Register } from "./Auth/Register";
 export { default as Invite } from "./Invite/Invite";
 export { default as Notes } from "./Notes/Notes"
+export { default as ForgotPassword } from "./Auth/ForgotPassword";
+export { default as ResetPassword } from "./Auth/ResetPassword";

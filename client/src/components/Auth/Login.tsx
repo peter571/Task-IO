@@ -19,10 +19,6 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  if (location.pathname === "/invite") {
-    console.log("Invite page.");
-  }
-
   const { changeHasAccount, setUser } = useAccountContext();
   const [loginDetails, setLoginDetails] = useState<LoginValues>(initialValues);
   const [login, { isLoading }] = useLoginMutation();
@@ -31,8 +27,11 @@ export default function Login() {
     e.preventDefault();
     try {
       const payload = await login(loginDetails).unwrap();
-      socket.auth = { userID: payload.user.userId, sessionID: payload.user.userId }
-      socket.connect()
+      socket.auth = {
+        userID: payload.user.userId,
+        sessionID: payload.user.userId,
+      };
+      socket.connect();
       if (location.pathname === "/invite") {
         const payloadInvite = await validateMemberInvite({
           token,
@@ -79,12 +78,23 @@ export default function Login() {
         <button type="submit" className="btn" disabled={isLoading}>
           {isLoading ? <Loader /> : "Log in"}
         </button>
+        <p
+          role="button"
+          className="text-custom-gray hover:text-custom-blue hover:underline"
+          onClick={() => {
+            navigate("/forgot-password");
+          }}
+        >
+          Forgot password?
+        </p>
         <p className="text-custom-gray">
           Don't have an account?{" "}
           <span
             className="text-custom-blue underline"
             role="button"
-            onClick={() => changeHasAccount()}
+            onClick={() => {
+              navigate("/register");
+            }}
           >
             Register
           </span>

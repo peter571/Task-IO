@@ -36,8 +36,11 @@ export default function Register() {
       const payload = await register(registerDetails).unwrap();
       localStorage.setItem("account_user", JSON.stringify(payload));
       //
-      socket.auth = { userID: payload.user.userId, sessionID: payload.user.userId}
-      socket.connect()
+      socket.auth = {
+        userID: payload.user.userId,
+        sessionID: payload.user.userId,
+      };
+      socket.connect();
 
       if (location.pathname === "/invite") {
         const payloadInvite = await validateMemberInvite({
@@ -102,12 +105,23 @@ export default function Register() {
         <button type="submit" className="btn" disabled={isLoading}>
           {isLoading ? <Loader /> : "Register"}
         </button>
+        <p
+          role="button"
+          className="text-custom-gray hover:text-custom-blue hover:underline"
+          onClick={() => {
+            navigate("/forgot-password");
+          }}
+        >
+          Forgot password?
+        </p>
         <p className="text-custom-gray">
           Already have an account?{" "}
           <span
             className="text-custom-blue underline"
             role="button"
-            onClick={() => changeHasAccount()}
+            onClick={() => {
+              navigate("/login");
+            }}
           >
             Log in
           </span>

@@ -8,6 +8,8 @@ import {
   Login,
   Register,
   Invite,
+  ForgotPassword,
+  ResetPassword,
 } from "./components";
 import { ToastContainer } from "react-toastify";
 import { authVerify } from "./utils/verifyToken";
@@ -30,20 +32,19 @@ export default function App() {
       {location.pathname === "/invite" && <Nav />}
 
       <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route
           path="/"
           element={
-            isAuthenticated ? (
-              <ProtectedRoute user={isAuthenticated} redirectPath={"/"}>
-                <Spaces />
-              </ProtectedRoute>
-            ) : !hasAccount ? (
-              <Login />
-            ) : (
-              <Register />
-            )
+            <ProtectedRoute user={isAuthenticated} redirectPath={"/login"}>
+              <Spaces />
+            </ProtectedRoute>
           }
         />
+
         <Route
           path="/spaces/:space"
           element={

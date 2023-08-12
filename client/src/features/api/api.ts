@@ -5,7 +5,7 @@ export const appApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl:
       import.meta.env.MODE === "production"
-        ? "https://task-io-api-2pqqdimvsq-uc.a.run.app/"
+        ? `${import.meta.env.VITE_SERVER_URL}/`
         : "http://localhost:5000/",
     prepareHeaders: (headers, { getState }) => {
       const token = getTokenFromLocalStorage(); // Token retrieval logic
