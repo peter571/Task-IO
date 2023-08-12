@@ -8,7 +8,7 @@ dotenv.config();
 
 const httpServer = createServer();
 
-const redisClient = new Redis();
+const redisClient = new Redis(`${process.env.REDIS_HOST}`);
 
 const io = require("socket.io")(httpServer, {
   cors: {
