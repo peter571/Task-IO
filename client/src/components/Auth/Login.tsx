@@ -7,6 +7,8 @@ import { useAccountContext } from "../../context/AccountContext";
 import { useLoginMutation } from "../../features/api/authApi";
 import { useValidateMemberInviteMutation } from "../../features/api/workspaceApi";
 import socket from "../../socket/socket";
+import { useAppDispatch } from "../../hooks/redux";
+import { setCredentials } from "../../features/api/authSlice";
 
 export default function Login() {
   const initialValues = {
@@ -18,7 +20,7 @@ export default function Login() {
   const [validateMemberInvite] = useValidateMemberInviteMutation();
   const navigate = useNavigate();
   const location = useLocation();
-
+  const dispatch = useAppDispatch();
   const { changeHasAccount, setUser } = useAccountContext();
   const [loginDetails, setLoginDetails] = useState<LoginValues>(initialValues);
   const [login, { isLoading }] = useLoginMutation();
@@ -27,6 +29,9 @@ export default function Login() {
     e.preventDefault();
     try {
       const payload = await login(loginDetails).unwrap();
+      dispatch(
+        setCredentials({ user: { ...payload.user }, token: payload.accessToken })
+      );
       socket.auth = {
         userID: payload.user.userId,
         sessionID: payload.user.userId,
@@ -41,12 +46,11 @@ export default function Login() {
       } else {
         navigate("/");
       }
-
-      localStorage.setItem("account_user", JSON.stringify(payload));
       setUser(payload.user);
       setLoginDetails(initialValues);
       toast.success("Successfully Logged In.");
     } catch (error) {
+      console.log(error)
       toast.warn("An error occurred. Check credentials!");
     }
   }
@@ -66,6 +70,8 @@ export default function Login() {
           placeholder="Enter email"
           onChange={handleChange}
           required
+          minLength={2}
+          maxLength={320}
         />
         <input
           className="form__input py-2"
@@ -74,6 +80,8 @@ export default function Login() {
           placeholder="Password"
           onChange={handleChange}
           required
+          minLength={8}
+          maxLength={32}
         />
         <button type="submit" className="btn" disabled={isLoading}>
           {isLoading ? <Loader /> : "Log in"}

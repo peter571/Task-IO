@@ -4,10 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { appApi } from "../../features/api/api";
 import { useAccountContext } from "../../context/AccountContext";
 import socket from "../../socket/socket";
+import { logOut } from "../../features/api/authSlice";
+import { useLogoutMutation } from "../../features/api/authApi";
 
 export default function Nav() {
   const navigate = useNavigate();
   const { user, setUser } = useAccountContext();
+  const [logoutCookies] = useLogoutMutation()
 
   return (
     <Navbar rounded className="fixed w-full bg-navbar">
@@ -37,11 +40,11 @@ export default function Nav() {
             role="button"
             onClick={() => {
               appApi.util.resetApiState();
-              localStorage.removeItem("account_user");
-              sessionStorage.clear();
+              logoutCookies({})
+              logOut({})
               setUser(null);
               socket.disconnect();
-              navigate("/");
+              navigate("/login");
             }}
             className="text-custom-blue"
           >

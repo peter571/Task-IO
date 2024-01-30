@@ -11,3 +11,4 @@ export { default as Invite } from "./Invite/Invite";
 export { default as Notes } from "./Notes/Notes"
 export { default as ForgotPassword } from "./Auth/ForgotPassword";
 export { default as ResetPassword } from "./Auth/ResetPassword";
+export { default as PersistAuth } from "./PersistAuth/index"

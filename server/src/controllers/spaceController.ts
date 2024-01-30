@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { sendMail } from "../utils/sendMail";
+import { sendInviteMail } from "../utils/sendInviteMail";
 import { Space } from "../models/spaceModel";
+import { RequestWithUserInfo } from "../types";
 
 export const createSpace = async (req: Request, res: Response) => {
   const newSpace = new Space(req.body);
@@ -14,10 +15,13 @@ export const createSpace = async (req: Request, res: Response) => {
   }
 };
 
-export const getUserSpaces = async (req: Request, res: Response) => {
+export const getUserSpaces = async (req: RequestWithUserInfo, res: Response) => {
   const { userId } = req.params;
+  const requestedUserId = req.userId;
 
   try {
+    if (requestedUserId !== userId)
+      return res.status(403).json({ message: "Unauthorised" });
     const userSpaces = await Space.find({ members: userId }, { __v: 0 });
     res.status(200).json(userSpaces);
   } catch (error) {
@@ -57,7 +61,7 @@ export const inviteMember = async (req: Request, res: Response) => {
     const subject = "Invite to join " + workspace?.name;
     const url_link = "http://localhost:5173/invite?token=" + token;
 
-    await sendMail(from, to, url_link, subject)
+    await sendInviteMail(from, to, url_link, subject)
       .then(() => {
         res.status(200).json();
       })

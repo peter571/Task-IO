@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import {
   Spaces,
@@ -12,23 +12,17 @@ import {
   ResetPassword,
 } from "./components";
 import { ToastContainer } from "react-toastify";
-import { authVerify } from "./utils/verifyToken";
 import "react-toastify/dist/ReactToastify.css";
-import { useAccountContext } from "./context/AccountContext";
+import { useAppSelector } from "./hooks/redux";
+import { selectCurrentToken } from "./features/api/authSlice";
 
 export default function App() {
-  const { hasAccount } = useAccountContext();
   const location = useLocation();
-  const isAuthenticated = authVerify();
-
-  useEffect(() => {
-    const authenticate = authVerify();
-    localStorage.setItem("isAuthenticated", JSON.stringify(authenticate));
-  }, [location]);
-
+  const token = useAppSelector(selectCurrentToken)
+  
   return (
     <div className="bg-fade-blue">
-      {location.pathname === "/" && isAuthenticated && <Nav />}
+      {location.pathname === "/" && token && <Nav />}
       {location.pathname === "/invite" && <Nav />}
 
       <Routes>
@@ -39,7 +33,7 @@ export default function App() {
         <Route
           path="/"
           element={
-            <ProtectedRoute user={isAuthenticated} redirectPath={"/login"}>
+            <ProtectedRoute redirectPath={"/login"}>
               <Spaces />
             </ProtectedRoute>
           }
@@ -48,7 +42,7 @@ export default function App() {
         <Route
           path="/spaces/:space"
           element={
-            <ProtectedRoute user={isAuthenticated} redirectPath={"/"}>
+            <ProtectedRoute redirectPath={"/"}>
               <WorkSpace />
             </ProtectedRoute>
           }

@@ -1,5 +1,5 @@
 import express from "express";
-import authenticateToken from "../middleware/auth";
+import verifyJWT from "../middleware/verifyJWT";
 import {
   createTask,
   updateTaskStatus,
@@ -11,11 +11,11 @@ import {
 
 const router = express.Router();
 
-router.post("/new-task", authenticateToken, createTask);
-router.patch("/update-task-status/:taskId", authenticateToken, updateTaskStatus);
-router.patch("/update-task/:task_id", authenticateToken, updateTaskDetails);
-router.delete("/delete-task/:id", authenticateToken, deleteTask);
-router.get("/user/:workspace_id/:userId", authenticateToken, fetchUserTasks);
-router.get("/:workspace_id", authenticateToken, getAllTasksInWorkspace);
+router.post("/new-task", verifyJWT, createTask);
+router.patch("/update-task-status/:taskId", verifyJWT, updateTaskStatus);
+router.patch("/update-task/:task_id", verifyJWT, updateTaskDetails);
+router.delete("/delete-task/:id", verifyJWT, deleteTask);
+router.get("/user/:workspace_id/:userId", verifyJWT, fetchUserTasks);
+router.get("/:workspace_id", verifyJWT, getAllTasksInWorkspace);
 
 export default router;

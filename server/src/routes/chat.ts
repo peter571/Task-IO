@@ -1,13 +1,13 @@
 import express from "express";
-import authenticateToken from "../middleware/auth";
+import verifyJWT from "../middleware/verifyJWT";
 import { createNewChat, getUserChats } from "../controllers/chatsController";
 
 const router = express.Router();
 
 // Create a new chat
-router.post("/new-chat", authenticateToken, createNewChat);
+router.post("/new-chat", verifyJWT, createNewChat);
 
 // Get user chats
-router.get("/:workspaceId/:userId", authenticateToken, getUserChats);
+router.get("/:workspaceId/:userId", verifyJWT, getUserChats);
 
 export default router;

@@ -1,25 +1,54 @@
-import React from "react";
+import React, { useState, useRef } from "react";
 import Loader from "../Loader/Loader";
 import { useNavigate } from "react-router-dom";
+import { useSendResetEmailMutation } from "../../features/api/authApi";
 
 export default function ForgotPassword() {
-  const isLoading = false;
   const navigate = useNavigate();
+  const [emailSent, setEmailSent] = useState(false);
+  const emailRef = useRef<HTMLInputElement | null>(null);
+  const [sendResetEmail, { isLoading }] = useSendResetEmailMutation();
+
+  const handleSubmit = async () => {
+    try {
+      if (emailRef.current) {
+        await sendResetEmail(emailRef.current.value)
+          .unwrap()
+          .then(() => {
+            setEmailSent(true);
+          });
+        emailRef.current.value = "";
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
   return (
     <form className="auth__form">
       <div className="div-container">
-        {/* <h1 className="bold-title text-center text-custom-blue">
-          Forgot password
-        </h1> */}
         <input
           className="form__input py-2"
           type="email"
           name="name"
-          //onChange={handleChange}
+          ref={emailRef}
           placeholder="Enter you email address..."
+          onFocus={() => {
+            setEmailSent(false);
+          }}
           required
         />
-        <button type="submit" className="btn" disabled={isLoading}>
+        {emailSent && (
+          <p className="text-green-700">
+            You will receive a reset email if user with that email exist!
+          </p>
+        )}
+        <button
+          onClick={handleSubmit}
+          type="button"
+          className="btn"
+          disabled={isLoading}
+        >
           {isLoading ? <Loader /> : "Submit"}
         </button>
         <p

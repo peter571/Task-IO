@@ -1,4 +1,4 @@
-export async function sendMail(
+export async function sendInviteMail(
   from: string,
   to: string,
   url_link: string,

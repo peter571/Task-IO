@@ -1,5 +1,5 @@
 import express from "express";
-import authenticateToken from "../middleware/auth";
+import verifyJWT from "../middleware/verifyJWT";
 import {
   createNote,
   getUserNotes,
@@ -10,19 +10,19 @@ import {
 const router = express.Router();
 
 // Create new note
-router.post("/new-note", authenticateToken, createNote);
+router.post("/new-note", verifyJWT, createNote);
 
 // Get user notes
 router.get(
   "/user-notes/:workspace_id/:userId",
-  authenticateToken,
+  verifyJWT,
   getUserNotes
 );
 
 // Update notes
-router.patch("/update-note/:id", authenticateToken, updateNote);
+router.patch("/update-note/:id", verifyJWT, updateNote);
 
 // Delete note
-router.delete("/delete-note/:id", authenticateToken, deleteNote);
+router.delete("/delete-note/:id", verifyJWT, deleteNote);
 
 export default router;

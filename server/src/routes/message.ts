@@ -1,5 +1,5 @@
 import express from "express";
-import authenticateToken from "../middleware/auth";
+import verifyJWT from "../middleware/verifyJWT";
 import {
   addNewMessage,
   getMessages,
@@ -11,23 +11,23 @@ import {
 
 const router = express.Router();
 
-router.post("/new-message", authenticateToken, addNewMessage);
-router.get("/:chat_id", authenticateToken, getMessages);
+router.post("/new-message", verifyJWT, addNewMessage);
+router.get("/:chat_id", verifyJWT, getMessages);
 router.delete(
   "/delete-message/:messageId",
-  authenticateToken,
+  verifyJWT,
   deleteMessage
 );
 router.patch(
   "/edit-message/:messageId",
-  authenticateToken,
+  verifyJWT,
   editMessage
 );
 
-router.post("/team-message", authenticateToken, addTeamMessage);
+router.post("/team-message", verifyJWT, addTeamMessage);
 router.get(
   "/get-team-messages/:teamId",
-  authenticateToken,
+  verifyJWT,
   getTeamMessages
 );
 

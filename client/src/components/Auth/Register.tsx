@@ -7,6 +7,8 @@ import { useAccountContext } from "../../context/AccountContext";
 import { useRegisterMutation } from "../../features/api/authApi";
 import { useValidateMemberInviteMutation } from "../../features/api/workspaceApi";
 import socket from "../../socket/socket";
+import { useAppDispatch } from "../../hooks/redux";
+import { setCredentials } from "../../features/api/authSlice";
 
 export default function Register() {
   const initialValues = {
@@ -20,6 +22,7 @@ export default function Register() {
   const [validateMemberInvite] = useValidateMemberInviteMutation();
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useAppDispatch()
 
   if (location.pathname === "/invite") {
     console.log("Invite page.");
@@ -34,8 +37,9 @@ export default function Register() {
     e.preventDefault();
     try {
       const payload = await register(registerDetails).unwrap();
-      localStorage.setItem("account_user", JSON.stringify(payload));
-      //
+      dispatch(
+        setCredentials({ user: { ...payload }, token: payload.accessToken })
+      );
       socket.auth = {
         userID: payload.user.userId,
         sessionID: payload.user.userId,
@@ -52,7 +56,6 @@ export default function Register() {
       } else {
         navigate("/");
       }
-
       setUser(payload.user);
       setRegisterDetails(initialValues);
       toast.success("Successfully Logged In");
@@ -76,6 +79,8 @@ export default function Register() {
           onChange={handleChange}
           placeholder="Username"
           required
+          minLength={2}
+          maxLength={20}
         />
         <input
           className="form__input py-2"
@@ -84,6 +89,7 @@ export default function Register() {
           onChange={handleChange}
           placeholder="Enter email"
           required
+          maxLength={320}
         />
 
         <input
@@ -93,6 +99,8 @@ export default function Register() {
           onChange={handleChange}
           placeholder="Password"
           required
+          minLength={8}
+          maxLength={32}
         />
         <input
           className="form__input py-2"
@@ -101,6 +109,8 @@ export default function Register() {
           onChange={handleChange}
           placeholder="Confirm password"
           required
+          minLength={8}
+          maxLength={32}
         />
         <button type="submit" className="btn" disabled={isLoading}>
           {isLoading ? <Loader /> : "Register"}
