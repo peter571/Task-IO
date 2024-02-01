@@ -10,10 +10,12 @@ export default function Spaces() {
     undefined
   );
   const { user } = useAccountContext();
+  
   const { data: userWorkSpaces = [], isLoading } = useGetUserWorkSpacesQuery({
     userId: user.userId,
     user_email: user.email,
   });
+  console.log(user, userWorkSpaces.length)
 
   return (
     <div className="screen-wrapper">

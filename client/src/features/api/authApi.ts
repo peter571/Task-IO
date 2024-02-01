@@ -44,7 +44,7 @@ const authApi = appApi.injectEndpoints({
       query: () => ({
         url: '/auth/logout',
         method: "POST"
-      })
+      }),
     }),
 
     //Get user
