@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { sendInviteMail } from "../utils/sendInviteMail";
-import { Space } from "../models/spaceModel";
-import { RequestWithUserInfo } from "../types";
+import { sendInviteMail } from "@utils/sendInviteMail";
+import { Space } from "@models/spaceModel";
+import { RequestWithUserInfo } from "src/express";
 
 export const createSpace = async (req: Request, res: Response) => {
   const newSpace = new Space(req.body);

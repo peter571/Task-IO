@@ -1,11 +1,10 @@
 import React from "react";
-import { useGetUserNotesQuery } from "../../features/api/noteApi";
-import { useParams } from "react-router-dom";
-import { useAccountContext } from "../../context/AccountContext";
-import { NoteProp } from "../../types";
-import Note from "./Note";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
-import Loader from "../Loader/Loader";
+import { useGetUserNotesQuery } from "features/api/noteApi";
+import { useAccountContext } from "context/AccountContext";
+import { NoteProp } from "@/types";
+import Note from "components/Notes/Note";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
+import Loader from "components/Loader/Loader";
 
 export default function NotesList() {
   const { spaceId } = useWorkSpaceContext();

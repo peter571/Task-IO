@@ -1,5 +1,5 @@
 import express from "express";
-import verifyJWT from "../middleware/verifyJWT";
+import verifyJWT from "@middlewares/verifyJWT";
 import {
   addNewMessage,
   getMessages,
@@ -7,7 +7,7 @@ import {
   editMessage,
   addTeamMessage,
   getTeamMessages,
-} from "../controllers/messageController";
+} from "@controllers/messageController";
 
 const router = express.Router();
 

@@ -11,11 +11,11 @@ import {
   ForgotPassword,
   ResetPassword,
   PersistAuth,
-} from "./components";
+} from "@/components";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useAppSelector } from "./hooks/redux";
-import { selectCurrentToken } from "./features/api/authSlice";
+import { useAppSelector } from "hooks/redux";
+import { selectCurrentToken } from "features/api/authSlice";
 
 export default function App() {
   const location = useLocation();

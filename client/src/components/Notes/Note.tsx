@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
-import { NoteProp } from "../../types";
-import { useUpdateNoteMutation } from "../../features/api/noteApi";
+import { NoteProp } from "@/types";
+import { useUpdateNoteMutation } from "features/api/noteApi";
 import { MdDeleteOutline } from "react-icons/md";
-import DeleteNote from "../Modals/DeleteNote";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
+import DeleteNote from "components/Modals/DeleteNote";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
 
 export default function Note(props: NoteProp) {
   const [isEditMode, setIsEditMode] = useState(false);

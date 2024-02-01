@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import Redis from "ioredis";
-import { RedisSessionStore } from "./sessionStore";
+import { RedisSessionStore } from "@src/sessionStore";
 import { NextFunction } from "express";
 
 interface ISocket extends Socket {

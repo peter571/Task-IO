@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
-import { ISocket } from "../types";
+import { ISocket } from "@/types";
 
 const URL =
   import.meta.env.MODE === "production"

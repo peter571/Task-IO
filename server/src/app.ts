@@ -1,7 +1,8 @@
+import "module-alias/register";
 import { createServer } from 'http';
-import { setupApp } from './appSetup';
-import { setupSocket } from './socket';
-import { connectDB } from './database/database';
+import { setupApp } from '@src/appSetup';
+import { setupSocket } from '@src/socket';
+import { connectDB } from '@database/database';
 
 (async () => {
   try {

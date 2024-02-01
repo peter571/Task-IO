@@ -1,5 +1,5 @@
-import { Avatar } from "flowbite-react";
 import React from "react";
+import { Avatar } from "flowbite-react";
 
 interface UserAvatarProp {
   selectedUser: any;

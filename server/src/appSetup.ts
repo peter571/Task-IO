@@ -1,15 +1,15 @@
-// app.ts
+import "module-alias/register";
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import corsOptions from "./config/corsOptions";
-import authRoutes from "./routes/auth";
-import taskRoutes from "./routes/task";
-import messageRoutes from "./routes/message";
-import spaceRoutes from "./routes/space";
-import chatsRoutes from "./routes/chat";
-import noteRoutes from "./routes/note";
+import corsOptions from "@config/corsOptions";
+import authRoutes from "@routes/auth";
+import taskRoutes from "@routes/task";
+import messageRoutes from "@routes/message";
+import spaceRoutes from "@routes/space";
+import chatsRoutes from "@routes/chat";
+import noteRoutes from "@routes/note";
 
 export function setupApp(): express.Application {
   dotenv.config();

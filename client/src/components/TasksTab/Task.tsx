@@ -6,14 +6,14 @@ import React, {
   FormEvent,
 } from "react";
 import { FiMoreVertical } from "react-icons/fi";
-import { TaskProp } from "../../types";
+import { TaskProp } from "@/types";
 import { ToggleSwitch } from "flowbite-react";
 import {
   useUpdateTaskMutation,
   useUpdateTaskStatusMutation,
-} from "../../features/api/taskApi";
-import DeleteTask from "../Modals/DeleteTask";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
+} from "features/api/taskApi";
+import DeleteTask from "components/Modals/DeleteTask";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
 
 interface EditTaskFormData {
   title: string;

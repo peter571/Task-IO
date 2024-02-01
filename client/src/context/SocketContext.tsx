@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ProviderProp } from "../types";
-import socket from "../socket/socket";
+import { ProviderProp } from "@/types";
+import socket from "socket/socket";
 import { Socket } from "socket.io-client";
-import { useAccountContext } from "./AccountContext";
+import { useAccountContext } from "context/AccountContext";
 
 interface GlobalSocket {
   socket: Socket | null;

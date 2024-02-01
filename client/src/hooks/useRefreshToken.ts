@@ -1,5 +1,5 @@
-import { useAccountContext } from "../context/AccountContext";
-import axios from "../features/api/axios";
+import { useAccountContext } from "context/AccountContext";
+import axios from "features/api/axios";
 
 const useRefreshToken = () => {
   const { setUser } = useAccountContext();

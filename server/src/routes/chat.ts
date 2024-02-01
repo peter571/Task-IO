@@ -1,6 +1,6 @@
 import express from "express";
-import verifyJWT from "../middleware/verifyJWT";
-import { createNewChat, getUserChats } from "../controllers/chatsController";
+import verifyJWT from "@middlewares/verifyJWT";
+import { createNewChat, getUserChats } from "@controllers/chatsController";
 
 const router = express.Router();
 

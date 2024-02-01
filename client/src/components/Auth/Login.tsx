@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import Loader from "../Loader/Loader";
-import { LoginValues } from "../../types";
+import Loader from "components/Loader/Loader";
+import { LoginValues } from "@/types";
 import { toast } from "react-toastify";
-import { useAccountContext } from "../../context/AccountContext";
-import { useLoginMutation } from "../../features/api/authApi";
-import { useValidateMemberInviteMutation } from "../../features/api/workspaceApi";
-import socket from "../../socket/socket";
-import { useAppDispatch } from "../../hooks/redux";
-import { setCredentials } from "../../features/api/authSlice";
+import { useAccountContext } from "context/AccountContext";
+import { useLoginMutation } from "features/api/authApi";
+import { useValidateMemberInviteMutation } from "features/api/workspaceApi";
+import socket from "socket/socket";
+import { useAppDispatch } from "hooks/redux";
+import { setCredentials } from "features/api/authSlice";
 
 export default function Login() {
   const initialValues = {

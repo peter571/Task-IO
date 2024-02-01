@@ -1,17 +1,12 @@
-import { UserAvatar } from "./UserAvatar";
-import { MessagesList } from "./MessagesList";
-import { TextInput } from "./TextInput";
-import React, { useEffect } from "react";
+import React from "react";
+import { UserAvatar } from "components/MessagesTab/UserAvatar";
+import { MessagesList } from "components/MessagesTab/MessagesList";
+import { TextInput } from "components/MessagesTab/TextInput";
 import { TiMessages } from "react-icons/ti";
-import { useGetWorkSpaceMembersQuery } from "../../features/api/workspaceApi";
-import { useParams } from "react-router-dom";
-import { useAccountContext } from "../../context/AccountContext";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
-import { useGetMessagesQuery } from "../../features/api/messageApi";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
 
 export default function MessagesTab() {
   const { selectedChat } = useWorkSpaceContext();
-  
 
   if (!selectedChat)
     return (

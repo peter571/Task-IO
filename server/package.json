@@ -35,9 +35,24 @@
     "express-rate-limit": "^6.9.0",
     "ioredis": "^5.3.2",
     "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.3",
     "mongoose": "^6.6.1",
     "socket.io": "^4.5.2",
     "socket.io-redis": "^6.1.1",
     "uuid": "^9.0.0"
+  },
+  "_moduleAliases": {
+    "@src": "dist",
+    "@database": "dist/database",
+    "@models": "dist/models",
+    "@middlewares": "dist/middlewares",
+    "@config": "dist/config",
+    "@utils": "dist/utils",
+    "@services": "dist/services",
+    "@routes": "dist/routes",
+    "@controllers": "dist/controllers",
+    "@firebase": "dist/firebase",
+    "@webhook": "dist/webhook",
+    "@subscribers": "dist/subscribers"
   }
 }

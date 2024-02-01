@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ChatModel } from "../models/chatModel";
+import { ChatModel } from "@models/chatModel";
 
 export async function createNewChat(req: Request, res: Response) {
   const { userone, usertwo, workspace_id } = req.body;

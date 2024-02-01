@@ -1,7 +1,7 @@
 import React from "react";
 import { BiDownload } from "react-icons/bi";
 import { FcDocument } from "react-icons/fc";
-import { FileType } from "../../types";
+import { FileType } from "@/types";
 import saveAs from "file-saver";
 
 export default function FilesDisplay({

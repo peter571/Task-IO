@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 import jwt, { VerifyErrors } from "jsonwebtoken";
 import * as bcrypt from "bcryptjs";
-import { User } from "../models/authModel";
-import config from "../config/variables";
-import { sendResetMail } from "../utils/sendResetEmail";
+import { User } from "@models/authModel";
+import config from "@config/variables";
+import { sendResetMail } from "@utils/sendResetEmail";
 
 // @desc Login
 // @route POST /auth

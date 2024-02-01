@@ -1,11 +1,11 @@
 import React from "react";
 import { Accordion } from "flowbite-react";
-import Member from "./Member";
-import { useGetUserChatsQuery } from "../../features/api/chatApi";
-import { useAccountContext } from "../../context/AccountContext";
-import NoConversation from "./NoConversation";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
-import Loader from "../Loader/Loader";
+import Member from "components/MembersAndChatSidebar/Member";
+import { useGetUserChatsQuery } from "features/api/chatApi";
+import { useAccountContext } from "context/AccountContext";
+import NoConversation from "components/MembersAndChatSidebar/NoConversation";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
+import Loader from "components/Loader/Loader";
 
 export default function Chats() {
   const { user } = useAccountContext();

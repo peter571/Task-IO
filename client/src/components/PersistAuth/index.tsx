@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import useRefreshToken from "../../hooks/useRefreshToken";
+import { useEffect, useState } from "react";
+import useRefreshToken from "hooks/useRefreshToken";
 import { Outlet } from "react-router-dom";
 import {
   selectCurrentToken,
   setCredentials,
-} from "../../features/api/authSlice";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import socket from "../../socket/socket";
-import Loader from "../Loader/Loader";
+} from "features/api/authSlice";
+import { useAppDispatch, useAppSelector } from "hooks/redux";
+import socket from "socket/socket";
+import Loader from "components/Loader/Loader";
 
 const PersistAuth = () => {
   const [isLoading, setIsLoading] = useState(true);

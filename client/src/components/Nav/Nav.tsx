@@ -1,11 +1,11 @@
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import React from "react";
+import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
-import { appApi } from "../../features/api/api";
-import { useAccountContext } from "../../context/AccountContext";
-import socket from "../../socket/socket";
-import { logOut } from "../../features/api/authSlice";
-import { useLogoutMutation } from "../../features/api/authApi";
+import { appApi } from "features/api/api";
+import { useAccountContext } from "context/AccountContext";
+import socket from "socket/socket";
+import { logOut } from "features/api/authSlice";
+import { useLogoutMutation } from "features/api/authApi";
 
 export default function Nav() {
   const navigate = useNavigate();

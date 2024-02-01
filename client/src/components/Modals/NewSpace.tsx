@@ -1,9 +1,9 @@
 import { Modal } from "flowbite-react";
 import React, { SetStateAction, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAccountContext } from "../../context/AccountContext";
-import { useCreateWorkSpaceMutation } from "../../features/api/workspaceApi";
-import Loader from "../Loader/Loader";
+import { useAccountContext } from "context/AccountContext";
+import { useCreateWorkSpaceMutation } from "features/api/workspaceApi";
+import Loader from "components/Loader/Loader";
 
 export default function NewSpace({
   show,

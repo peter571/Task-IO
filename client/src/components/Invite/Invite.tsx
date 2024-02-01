@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
-import { useValidateMemberInviteMutation } from "../../features/api/workspaceApi";
-import { useLazyGetUserQuery } from "../../features/api/authApi";
+import { useValidateMemberInviteMutation } from "features/api/workspaceApi";
+import { useLazyGetUserQuery } from "features/api/authApi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Register from "../Auth/Register";
-import { useAccountContext } from "../../context/AccountContext";
-import Login from "../Auth/Login";
-import Loader from "../Loader/Loader";
+import Register from "components/Auth/Register";
+import { useAccountContext } from "context/AccountContext";
+import Login from "components/Auth/Login";
+import Loader from "components/Loader/Loader";
 
 export default function Invite() {
   const urlParams = new URLSearchParams(window.location.search);

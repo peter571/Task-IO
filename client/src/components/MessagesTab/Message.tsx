@@ -1,15 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { MessageProp } from "../../types";
+import { MessageProp } from "@/types";
 import { format } from "timeago.js";
 import { Avatar } from "flowbite-react";
-import { useAccountContext } from "../../context/AccountContext";
-import FilesDisplay from "./FilesDisplay";
+import { useAccountContext } from "context/AccountContext";
+import FilesDisplay from "components/MessagesTab/FilesDisplay";
 import { FiMoreHorizontal } from "react-icons/fi";
 import {
   useDeleteMessageMutation,
   useEditMessageMutation,
-} from "../../features/api/messageApi";
-import MessageActions from "../Modals/MessageActions";
+} from "features/api/messageApi";
+import MessageActions from "components/Modals/MessageActions";
 
 export default function Message(props: MessageProp) {
   

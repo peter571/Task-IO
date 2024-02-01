@@ -1,16 +1,16 @@
 import React, { useState } from "react";
-import Space from "./Space";
-import { useGetUserWorkSpacesQuery } from "../../features/api/workspaceApi";
-import { useAccountContext } from "../../context/AccountContext";
-import NewSpace from "../Modals/NewSpace";
-import Loader from "../Loader/Loader";
+import Space from "components/Spaces/Space";
+import { useGetUserWorkSpacesQuery } from "features/api/workspaceApi";
+import { useAccountContext } from "context/AccountContext";
+import NewSpace from "components/Modals/NewSpace";
+import Loader from "components/Loader/Loader";
 
 export default function Spaces() {
   const [showSpaceModal, setOpenNewSpaceModal] = useState<boolean | undefined>(
     undefined
   );
   const { user } = useAccountContext();
-  
+
   const { data: userWorkSpaces = [], isLoading } = useGetUserWorkSpacesQuery({
     userId: user.userId,
     user_email: user.email,

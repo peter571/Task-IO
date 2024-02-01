@@ -1,11 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { MODALS, TASKS } from "../../constants";
-
-import TaskForm from "../Modals/TaskForm";
-import { useAccountContext } from "../../context/AccountContext";
-import TasksList from "./TasksList";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
+import React, { useState } from "react";
+import TaskForm from "components/Modals/TaskForm";
+import TasksList from "components/TasksTab/TasksList";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
 
 export default function TasksTab() {
   const { userIsAdmin } = useWorkSpaceContext();

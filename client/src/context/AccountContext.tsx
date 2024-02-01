@@ -1,7 +1,7 @@
 import { createContext, useState, useContext } from "react";
-import { ProviderProp } from "../types";
-import { selectCurrentToken, selectCurrentUser } from "../features/api/authSlice";
-import { useAppSelector } from "../hooks/redux";
+import { ProviderProp } from "@/types";
+import { selectCurrentUser } from "features/api/authSlice";
+import { useAppSelector } from "hooks/redux";
 
 interface AccountProp {
   hasAccount: boolean;
@@ -9,9 +9,6 @@ interface AccountProp {
   user: any;
   setUser: React.Dispatch<React.SetStateAction<any>>;
   setHasAccount: React.Dispatch<React.SetStateAction<boolean>>;
-  // persist: boolean
-  // setPersist: React.Dispatch<any>
-
 }
 
 const AccountContext = createContext<AccountProp>({} as AccountProp);

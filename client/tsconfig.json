@@ -14,7 +14,21 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "app/*": ["./src/app/*"],
+      "components/*": ["./src/components/*"],
+      "assets/*": ["./src/assets/*"],
+      "context/*": ["./src/context/*"],
+      "features/*": ["./src/features/*"],
+      "firebaseapp/*": ["./src/firebase/*"],
+      "hooks/*": ["./src/hooks/*"],
+      "socket/*": ["./src/socket/*"],
+      "utils/*": ["./src/utils/*"],
+      "types/*": ["./src/types/*"]
+    }
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
