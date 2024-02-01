@@ -81,11 +81,11 @@ class RedisSessionStore extends SessionStore {
       commands.push(["hmget", key, "userID", "connected"]);
     });
     const results = await this.redisClient.multi(commands).exec();
-    return results
-      .map(([err, session]: [Error, any[]]) =>
+    return results ? results
+      .map(([err, session]: any) =>
         err ? undefined : mapSession(session)
       )
-      .filter((v: any) => !!v);
+      .filter((v: any) => !!v) : [];
   }
 }
 

@@ -4,6 +4,5 @@ A full stack web application that helps teams to collaborate effecciently. The w
 #### Client
 >Frontend built with react-typescript, redux toolkit query and tailwind CSS.
 #### Server
-> Backend microservices serving the frontend with api endpoints. Built with node JS, typescript, express and mongo DB.
-#### Socket server
-> Redis socket server that hold sessions for online users and enable realtime messaging between users in the application.
+> Backend with api endpoints. Built with node JS, typescript, express and mongo DB.
+> Redis socket Io that hold sessions for online users and enable realtime messaging between users in the application.

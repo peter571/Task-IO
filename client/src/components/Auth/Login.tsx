@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Loader from "../Loader/Loader";
 import { LoginValues } from "../../types";
 import { toast } from "react-toastify";
