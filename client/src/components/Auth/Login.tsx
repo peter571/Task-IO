@@ -30,7 +30,10 @@ export default function Login() {
     try {
       const payload = await login(loginDetails).unwrap();
       dispatch(
-        setCredentials({ user: { ...payload.user }, token: payload.accessToken })
+        setCredentials({
+          user: { ...payload.user },
+          token: payload.accessToken,
+        })
       );
       socket.auth = {
         userID: payload.user.userId,
@@ -46,11 +49,11 @@ export default function Login() {
       } else {
         navigate("/");
       }
-      setUser(payload.user);
+      setUser({ ...payload.user, accesToken: payload.accessToken });
       setLoginDetails(initialValues);
       toast.success("Successfully Logged In.");
     } catch (error) {
-      console.log(error)
+      console.log(error);
       toast.warn("An error occurred. Check credentials!");
     }
   }

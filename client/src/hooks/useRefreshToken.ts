@@ -9,9 +9,9 @@ const useRefreshToken = () => {
       withCredentials: true,
     });
     setUser({
-      ...response.data,
+      ...response.data.user,
     });
-    return response.data.accessToken;
+    return response.data;
   };
   return refresh;
 };
