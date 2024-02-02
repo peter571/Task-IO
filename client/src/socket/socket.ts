@@ -1,10 +1,11 @@
 import { io } from "socket.io-client";
 import { ISocket } from "@/types";
+import config from "config";
 
 const URL =
   import.meta.env.MODE === "production"
-    ? `${import.meta.env.VITE_SOCKET_URL}`
-    : "http://localhost:5000";
+    ? config.LIVE_API_URL
+    : config.DEV_API_URL;
 
 const socket: ISocket = io(URL, {
   autoConnect: false,

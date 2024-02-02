@@ -27,7 +27,8 @@
       "hooks/*": ["./src/hooks/*"],
       "socket/*": ["./src/socket/*"],
       "utils/*": ["./src/utils/*"],
-      "types/*": ["./src/types/*"]
+      "types/*": ["./src/types/*"],
+      "config/*": ["./config/*"]
     }
   },
   "include": ["src"],

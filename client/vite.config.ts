@@ -17,7 +17,8 @@ export default defineConfig({
       hooks: `${path.resolve(__dirname, "./src/hooks/")}`,
       socket: `${path.resolve(__dirname, "./src/socket/")}`,
       utils: `${path.resolve(__dirname, "./src/utils/")}`,
-      types: `${path.resolve(__dirname, "./src/types/")}`
+      types: `${path.resolve(__dirname, "./src/types/")}`,
+      config: `${path.resolve(__dirname, "./config/")}`,
     },
   },
 });

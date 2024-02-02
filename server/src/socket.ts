@@ -2,6 +2,8 @@ import { Server, Socket } from "socket.io";
 import Redis from "ioredis";
 import { RedisSessionStore } from "@src/sessionStore";
 import { NextFunction } from "express";
+import dotenv from "dotenv";
+dotenv.config();
 
 interface ISocket extends Socket {
   sessionID?: string;
@@ -10,7 +12,10 @@ interface ISocket extends Socket {
 }
 
 export function setupSocket(httpServer: any): Server {
-  const redisClient = new Redis({ port: 6379, host: "127.0.0.1" });
+  const redisClient =
+    process.env.NODE_ENV === "development"
+      ? new Redis({ port: 6379, host: "127.0.0.1" })
+      : new Redis(`${process.env.REDIS_HOST}`);
   const io = require("socket.io")(httpServer, {
     cors: {
       origin:
