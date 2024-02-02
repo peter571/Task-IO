@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from "react";
+import React from "react";
 import { Socket } from "socket.io-client";
 
 export interface MemberProp {

@@ -1,5 +1,7 @@
 import { createContext, useState, useContext } from "react";
-import { ProviderProp } from "../types";
+import { ProviderProp } from "@/types";
+import { selectCurrentUser } from "features/api/authSlice";
+import { useAppSelector } from "hooks/redux";
 
 interface AccountProp {
   hasAccount: boolean;
@@ -17,9 +19,11 @@ export const useAccountContext = () => {
 
 export const AccountProvider = ({ children }: ProviderProp) => {
   const [hasAccount, setHasAccount] = useState(false);
-  const [user, setUser] = useState(null);
+  const userData = useAppSelector(selectCurrentUser)
+  const [user, setUser] = useState(userData);
 
   const changeHasAccount = () => setHasAccount((prev) => !prev);
+ 
 
   return (
     <AccountContext.Provider

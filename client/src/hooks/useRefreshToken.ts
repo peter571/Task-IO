@@ -1,5 +1,5 @@
-import { useAccountContext } from "../context/AccountContext";
-import axios from "../features/api/axios";
+import { useAccountContext } from "context/AccountContext";
+import axios from "features/api/axios";
 
 const useRefreshToken = () => {
   const { setUser } = useAccountContext();
@@ -9,9 +9,9 @@ const useRefreshToken = () => {
       withCredentials: true,
     });
     setUser({
-      ...response.data,
+      ...response.data.user,
     });
-    return response.data.accessToken;
+    return response.data;
   };
   return refresh;
 };

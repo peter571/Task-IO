@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { Message } from "../models/messageModel";
-import { teamMessage } from "../models/teamMessageModel";
+import { Message } from "@models/messageModel";
+import { teamMessage } from "@models/teamMessageModel";
 import mongoose from "mongoose";
 
 export const addNewMessage = async (req: Request, res: Response) => {

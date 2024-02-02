@@ -1,8 +1,8 @@
 import { Button, Modal } from "flowbite-react";
 import React, { SetStateAction, useRef, useState } from "react";
-import { useInviteMemberMutation } from "../../features/api/workspaceApi";
-import { useAccountContext } from "../../context/AccountContext";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
+import { useInviteMemberMutation } from "features/api/workspaceApi";
+import { useAccountContext } from "context/AccountContext";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
 
 const emailRegexPattern: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

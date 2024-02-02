@@ -1,6 +1,6 @@
 import { Response, NextFunction, RequestHandler } from "express";
 import jwt from "jsonwebtoken";
-import { RequestWithUserInfo } from "../types";
+import { RequestWithUserInfo } from "src/express";
 
 interface UserInfo {
   userInfo: {

@@ -1,12 +1,10 @@
 import React from "react";
-import { useGetWorkSpaceMembersQuery } from "../../features/api/workspaceApi";
-import { useParams } from "react-router-dom";
-import { useAccountContext } from "../../context/AccountContext";
-import Member from "./Member";
+import { useGetWorkSpaceMembersQuery } from "features/api/workspaceApi";
+import { useAccountContext } from "context/AccountContext";
+import Member from "components/MembersAndChatSidebar/Member";
 import { Accordion } from "flowbite-react";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
-import Loader from "../Loader/Loader";
-import { MemberProp } from "../../types";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
+import Loader from "components/Loader/Loader";
 
 export default function AllWorkSpaceMembers() {
   const { spaceId } = useWorkSpaceContext();

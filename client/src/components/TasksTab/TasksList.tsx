@@ -2,10 +2,10 @@ import { Tabs } from "flowbite-react";
 import React, { useState } from "react";
 import { FaTasks } from "react-icons/fa";
 import { TbNotes } from "react-icons/tb";
-import AllTasks, { STATUS } from "./AllTasks";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
-import UserTasks from "./UserTasks";
-import Notes from "../Notes/Notes";
+import AllTasks, { STATUS } from "components/TasksTab/AllTasks";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
+import UserTasks from "components/TasksTab/UserTasks";
+import Notes from "components/Notes/Notes";
 import type { CustomFlowbiteTheme } from "flowbite-react";
 
 const customTheme: CustomFlowbiteTheme["tab"] = {

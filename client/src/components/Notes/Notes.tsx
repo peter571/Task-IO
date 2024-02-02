@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { MdEditNote } from "react-icons/md";
-import NoteForm from "./NoteForm";
-import NotesList from "./NotesList";
+import NoteForm from "components/Notes/NoteForm";
+import NotesList from "components/Notes/NotesList";
 
 export default function Notes() {
   const [showNoteForm, setShowNoteForm] = useState(false);

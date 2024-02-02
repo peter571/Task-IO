@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
-import { useValidateMemberInviteMutation } from "../../features/api/workspaceApi";
-import { useLazyGetUserQuery } from "../../features/api/authApi";
+import { useValidateMemberInviteMutation } from "features/api/workspaceApi";
+import { useLazyGetUserQuery } from "features/api/authApi";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Register from "../Auth/Register";
-import { useAccountContext } from "../../context/AccountContext";
-import Login from "../Auth/Login";
-import Loader from "../Loader/Loader";
+import Register from "components/Auth/Register";
+import { useAccountContext } from "context/AccountContext";
+import Login from "components/Auth/Login";
+import Loader from "components/Loader/Loader";
+import config from "config";
 
 export default function Invite() {
   const urlParams = new URLSearchParams(window.location.search);
@@ -20,14 +21,15 @@ export default function Invite() {
     const fetchData = async () => {
       try {
         //Validate token
-        const { data } = await axios.get(
-          "http://localhost:5000/spaces/validate-token",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const url =
+          import.meta.env.MODE === "production"
+            ? config.LIVE_API_URL
+            : config.DEV_API_URL;
+        const { data } = await axios.get(`${url}/spaces/validate-token`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         const userPayload = await fetchUser(data.user_email).unwrap();
         setHasAccount(true);
         await validateMemberInvite({
@@ -42,7 +44,7 @@ export default function Invite() {
 
     fetchData();
   }, []);
- 
+
   if (loadingUser) {
     return (
       <div className="h-screen flex justify-center items-center bg-gray-200">

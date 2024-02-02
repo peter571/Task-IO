@@ -1,16 +1,16 @@
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import React from "react";
+import { Avatar, Dropdown, Navbar } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
-import { appApi } from "../../features/api/api";
-import { useAccountContext } from "../../context/AccountContext";
-import socket from "../../socket/socket";
-import { logOut } from "../../features/api/authSlice";
-import { useLogoutMutation } from "../../features/api/authApi";
+import { appApi } from "features/api/api";
+import { useAccountContext } from "context/AccountContext";
+import socket from "socket/socket";
+import { logOut } from "features/api/authSlice";
+import { useLogoutMutation } from "features/api/authApi";
 
 export default function Nav() {
   const navigate = useNavigate();
   const { user, setUser } = useAccountContext();
-  const [logoutCookies] = useLogoutMutation()
+  const [logoutCookies] = useLogoutMutation();
 
   return (
     <Navbar rounded className="fixed w-full bg-navbar">
@@ -40,11 +40,14 @@ export default function Nav() {
             role="button"
             onClick={() => {
               appApi.util.resetApiState();
-              logoutCookies({})
-              logOut({})
+              logoutCookies({});
+              logOut({});
               setUser(null);
+              localStorage.clear();
+              sessionStorage.clear();
               socket.disconnect();
               navigate("/login");
+              window.location.reload()
             }}
             className="text-custom-blue"
           >

@@ -10,16 +10,17 @@ import {
   Invite,
   ForgotPassword,
   ResetPassword,
-} from "./components";
+  PersistAuth,
+} from "@/components";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useAppSelector } from "./hooks/redux";
-import { selectCurrentToken } from "./features/api/authSlice";
+import { useAppSelector } from "hooks/redux";
+import { selectCurrentToken } from "features/api/authSlice";
 
 export default function App() {
   const location = useLocation();
-  const token = useAppSelector(selectCurrentToken)
-  
+  const token = useAppSelector(selectCurrentToken);
+
   return (
     <div className="bg-fade-blue">
       {location.pathname === "/" && token && <Nav />}
@@ -30,23 +31,25 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute redirectPath={"/login"}>
-              <Spaces />
-            </ProtectedRoute>
-          }
-        />
+        <Route element={<PersistAuth />}>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute redirectPath={"/login"}>
+                <Spaces />
+              </ProtectedRoute>
+            }
+          />
 
-        <Route
-          path="/spaces/:space"
-          element={
-            <ProtectedRoute redirectPath={"/"}>
-              <WorkSpace />
-            </ProtectedRoute>
-          }
-        />
+          <Route
+            path="/spaces/:space"
+            element={
+              <ProtectedRoute redirectPath={"/login"}>
+                <WorkSpace />
+              </ProtectedRoute>
+            }
+          />
+        </Route>
         <Route path="*" element={<p>There's nothing here: 404!</p>} />
         <Route path="/invite" element={<Invite />} />
       </Routes>

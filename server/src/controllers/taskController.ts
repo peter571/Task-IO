@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Task } from "../models/taskModel";
+import { Task } from "@models/taskModel";
 import * as mongoose from "mongoose";
 
 export const createTask = async (req: Request, res: Response) => {

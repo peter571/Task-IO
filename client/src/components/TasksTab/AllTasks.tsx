@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useLazyGetWorkSpaceTasksQuery } from "../../features/api/taskApi";
-import Task from "./Task";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
-import Loader from "../Loader/Loader";
+import { useLazyGetWorkSpaceTasksQuery } from "features/api/taskApi";
+import Task from "components/TasksTab/Task";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
+import Loader from "components/Loader/Loader";
 
 export type STATUS = "all-tasks" | "completed" | "pending";
 

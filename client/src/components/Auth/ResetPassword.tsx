@@ -1,6 +1,6 @@
 import React from "react";
-import Loader from "../Loader/Loader";
-import { useResetPasswordMutation } from "../../features/api/authApi";
+import Loader from "components/Loader/Loader";
+import { useResetPasswordMutation } from "features/api/authApi";
 import { useNavigate } from "react-router-dom";
 
 export default function ResetPassword() {

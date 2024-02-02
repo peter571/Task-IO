@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
-import Loader from "../Loader/Loader";
+import Loader from "components/Loader/Loader";
 import { useNavigate } from "react-router-dom";
-import { useSendResetEmailMutation } from "../../features/api/authApi";
+import { useSendResetEmailMutation } from "features/api/authApi";
 
 export default function ForgotPassword() {
   const navigate = useNavigate();

@@ -7,8 +7,8 @@ import {
   logout,
   forgotPassword,
   resetPassword,
-} from "../controllers/authController";
-import loginLimiter from "../middleware/loginLimiter";
+} from "@controllers/authController";
+import loginLimiter from "@middlewares/loginLimiter";
 
 const router = express.Router();
 

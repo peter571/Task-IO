@@ -1,11 +1,11 @@
 import express from "express";
-import verifyJWT from "../middleware/verifyJWT";
+import verifyJWT from "@middlewares/verifyJWT";
 import {
   createNote,
   getUserNotes,
   updateNote,
   deleteNote,
-} from "../controllers/noteController";
+} from "@controllers/noteController";
 
 const router = express.Router();
 

@@ -1,7 +1,6 @@
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { selectCurrentToken } from "../../features/api/authSlice";
-import { useAppSelector } from "../../hooks/redux";
+import { useAccountContext } from "context/AccountContext";
 
 interface RoutesProps {
   redirectPath: string;
@@ -9,9 +8,9 @@ interface RoutesProps {
 }
 
 const ProtectedRoute = ({ redirectPath = "/", children }: RoutesProps) => {
-  const token = useAppSelector(selectCurrentToken);
+  const { user } = useAccountContext();
 
-  if (!token) {
+  if (!user) {
     return <Navigate to={redirectPath} replace />;
   }
 

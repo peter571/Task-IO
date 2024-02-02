@@ -1,9 +1,9 @@
 import React, { useCallback } from "react";
-import Loader from "../Loader/Loader";
-import Message from "./Message";
+import Loader from "components/Loader/Loader";
+import Message from "components/MessagesTab/Message";
 import { TbMessages } from "react-icons/tb";
-import { useAccountContext } from "../../context/AccountContext";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
+import { useAccountContext } from "context/AccountContext";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
 
 
 export function MessagesList() {

@@ -1,6 +1,6 @@
 import express from "express";
-import verifyJWT from "../middleware/verifyJWT";
-import * as spaceController from "../controllers/spaceController";
+import verifyJWT from "@middlewares/verifyJWT";
+import * as spaceController from "@controllers/spaceController";
 
 const router = express.Router();
 

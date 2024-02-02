@@ -1,7 +1,7 @@
 import { Button, Modal } from "flowbite-react";
 import React, { SetStateAction } from "react";
-import { useDeleteTaskMutation } from "../../features/api/taskApi";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
+import { useDeleteTaskMutation } from "features/api/taskApi";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
 
 export default function DeleteTask({
   show,

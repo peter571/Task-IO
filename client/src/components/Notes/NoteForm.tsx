@@ -1,8 +1,7 @@
 import React, { useRef } from "react";
-import { useNewNoteMutation } from "../../features/api/noteApi";
-import { useAccountContext } from "../../context/AccountContext";
-import { useParams } from "react-router-dom";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
+import { useNewNoteMutation } from "features/api/noteApi";
+import { useAccountContext } from "context/AccountContext";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
 
 export default function NoteForm({
   setShowNoteForm,

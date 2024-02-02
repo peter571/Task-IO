@@ -1,9 +1,9 @@
-import React, { useRef } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import { SpacePropRender } from "../../types";
+import { SpacePropRender } from "@/types";
 import { FaLongArrowAltRight } from "react-icons/fa";
-import { formatTitle } from "../../utils/formatTitle";
-import { formatUrlString } from "../../utils/formatUrlString";
+import { formatTitle } from "utils/formatTitle";
+import { formatUrlString } from "utils/formatUrlString";
 
 export default function Space(props: SpacePropRender) {
   const navigate = useNavigate();

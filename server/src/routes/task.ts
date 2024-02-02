@@ -1,5 +1,5 @@
 import express from "express";
-import verifyJWT from "../middleware/verifyJWT";
+import verifyJWT from "@middlewares/verifyJWT";
 import {
   createTask,
   updateTaskStatus,
@@ -7,7 +7,7 @@ import {
   deleteTask,
   fetchUserTasks,
   getAllTasksInWorkspace,
-} from "../controllers/taskController";
+} from "@controllers/taskController";
 
 const router = express.Router();
 

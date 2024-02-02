@@ -1,30 +1,32 @@
 import React, { useContext, useEffect, useState } from "react";
-import MembersAndChatSidebar from "../MembersAndChatSidebar/MembersAndChatSidebar";
-import MessagesTab from "../MessagesTab/MessagesTab";
-import TasksTab from "../TasksTab/TasksTab";
-import { useAccountContext } from "../../context/AccountContext";
-import { useGetWorkSpaceQuery } from "../../features/api/workspaceApi";
+import MembersAndChatSidebar from "components/MembersAndChatSidebar/MembersAndChatSidebar";
+import MessagesTab from "components/MessagesTab/MessagesTab";
+import TasksTab from "components/TasksTab/TasksTab";
+import { useAccountContext } from "context/AccountContext";
+import { useGetWorkSpaceQuery } from "features/api/workspaceApi";
 import { useParams } from "react-router-dom";
-import socket from "../../socket/socket";
-import { useLazyGetMessagesQuery } from "../../features/api/messageApi";
-import { useSocket } from "../../context/SocketContext";
+import socket from "socket/socket";
+import { useLazyGetMessagesQuery } from "features/api/messageApi";
+import { useSocket } from "context/SocketContext";
+
+interface WorkSpaceContextProp {
+  selectedChat: string;
+  setSelectedChat: React.Dispatch<React.SetStateAction<string>>;
+  selectedUser: string | null;
+  setSelectedUser: React.Dispatch<React.SetStateAction<string | null>>;
+  userIsAdmin: boolean;
+  setSelectedTask: React.Dispatch<React.SetStateAction<string | null>>;
+  selectedTaskId: string | null;
+  selectedNoteId: string | null;
+  setSelectedNote: React.Dispatch<React.SetStateAction<string | null>>;
+  spaceId: string | null;
+  selectedChatMessages: any[];
+  loadingMessages: boolean;
+  setSelectedChatMessages: React.Dispatch<React.SetStateAction<any[]>>;
+}
 
 const WorkSpaceContext = React.createContext(
-  {} as {
-    selectedChat: string;
-    setSelectedChat: React.Dispatch<React.SetStateAction<string>>;
-    selectedUser: string | null;
-    setSelectedUser: React.Dispatch<React.SetStateAction<string | null>>;
-    userIsAdmin: boolean;
-    setSelectedTask: React.Dispatch<React.SetStateAction<string | null>>;
-    selectedTaskId: string | null;
-    selectedNoteId: string | null;
-    setSelectedNote: React.Dispatch<React.SetStateAction<string | null>>;
-    spaceId: string | null;
-    selectedChatMessages: any[];
-    loadingMessages: boolean;
-    setSelectedChatMessages: React.Dispatch<React.SetStateAction<any[]>>;
-  }
+  {} as WorkSpaceContextProp
 );
 
 export const useWorkSpaceContext = () => {

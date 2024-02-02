@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { sendInviteMail } from "../utils/sendInviteMail";
-import { Space } from "../models/spaceModel";
-import { RequestWithUserInfo } from "../types";
+import { sendInviteMail } from "@utils/sendInviteMail";
+import { Space } from "@models/spaceModel";
+import { RequestWithUserInfo } from "src/express";
+import configVariables from "@config/variables";
 
 export const createSpace = async (req: Request, res: Response) => {
   const newSpace = new Space(req.body);
@@ -56,10 +57,11 @@ export const inviteMember = async (req: Request, res: Response) => {
       { expiresIn: "1d" }
     );
 
-    const from = "peterkoech1624@gmail.com";
+    const from = configVariables.from_email;
     const to = user_email;
     const subject = "Invite to join " + workspace?.name;
-    const url_link = "http://localhost:5173/invite?token=" + token;
+    const originUrl = process.env.NODE_ENV == "development" ? configVariables.dev_url : configVariables.live_url
+    const url_link = `${originUrl}/invite?token=${token}`;
 
     await sendInviteMail(from, to, url_link, subject)
       .then(() => {

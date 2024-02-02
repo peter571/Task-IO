@@ -1,4 +1,4 @@
-import { appApi } from "./api";
+import { appApi } from "features/api/api";
 
 const messageApi = appApi.injectEndpoints({
   endpoints: (build) => ({

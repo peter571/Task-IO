@@ -1,5 +1,5 @@
-import { SpaceProp } from "../../types";
-import { appApi } from "./api";
+import { SpaceProp } from "@/types";
+import { appApi } from "features/api/api";
 
 const workspaceApi = appApi.injectEndpoints({
   endpoints: (build) => ({

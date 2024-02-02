@@ -1,5 +1,5 @@
-import { LoginValues, RegisterValues } from "../../types";
-import { appApi } from "./api";
+import { LoginValues, RegisterValues } from "@/types";
+import { appApi } from "features/api/api";
 
 const authApi = appApi.injectEndpoints({
   endpoints: (build) => ({
@@ -44,7 +44,7 @@ const authApi = appApi.injectEndpoints({
       query: () => ({
         url: '/auth/logout',
         method: "POST"
-      })
+      }),
     }),
 
     //Get user

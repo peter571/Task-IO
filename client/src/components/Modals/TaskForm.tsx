@@ -1,13 +1,12 @@
-import { useRef, useState } from "react";
-import { STATE, Status } from "../../constants";
-import { MemberProp, TaskProp } from "../../types";
-import Loader from "../Loader/Loader";
+import { useRef } from "react";
+import { STATE } from "@/constants";
+import { MemberProp } from "@/types";
+import Loader from "components/Loader/Loader";
 import { Modal } from "flowbite-react";
-import { useParams } from "react-router-dom";
-import { useGetWorkSpaceMembersQuery } from "../../features/api/workspaceApi";
-import { useAccountContext } from "../../context/AccountContext";
-import { useNewTaskMutation } from "../../features/api/taskApi";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
+import { useGetWorkSpaceMembersQuery } from "features/api/workspaceApi";
+import { useAccountContext } from "context/AccountContext";
+import { useNewTaskMutation } from "features/api/taskApi";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
 
 export default function TaskForm({
   show,

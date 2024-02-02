@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Loader from "../../components/Loader/Loader";
-import { RegisterValues } from "../../types";
+import Loader from "components/Loader/Loader";
+import { RegisterValues } from "@/types";
 import { toast } from "react-toastify";
-import { useAccountContext } from "../../context/AccountContext";
-import { useRegisterMutation } from "../../features/api/authApi";
-import { useValidateMemberInviteMutation } from "../../features/api/workspaceApi";
-import socket from "../../socket/socket";
-import { useAppDispatch } from "../../hooks/redux";
-import { setCredentials } from "../../features/api/authSlice";
+import { useAccountContext } from "context/AccountContext";
+import { useRegisterMutation } from "features/api/authApi";
+import { useValidateMemberInviteMutation } from "features/api/workspaceApi";
+import socket from "socket/socket";
+import { useAppDispatch } from "hooks/redux";
+import { setCredentials } from "features/api/authSlice";
 
 export default function Register() {
   const initialValues = {

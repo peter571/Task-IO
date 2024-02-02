@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import Loader from "../Loader/Loader";
-import { LoginValues } from "../../types";
+import { useLocation, useNavigate } from "react-router-dom";
+import Loader from "components/Loader/Loader";
+import { LoginValues } from "@/types";
 import { toast } from "react-toastify";
-import { useAccountContext } from "../../context/AccountContext";
-import { useLoginMutation } from "../../features/api/authApi";
-import { useValidateMemberInviteMutation } from "../../features/api/workspaceApi";
-import socket from "../../socket/socket";
-import { useAppDispatch } from "../../hooks/redux";
-import { setCredentials } from "../../features/api/authSlice";
+import { useAccountContext } from "context/AccountContext";
+import { useLoginMutation } from "features/api/authApi";
+import { useValidateMemberInviteMutation } from "features/api/workspaceApi";
+import socket from "socket/socket";
+import { useAppDispatch } from "hooks/redux";
+import { setCredentials } from "features/api/authSlice";
 
 export default function Login() {
   const initialValues = {
@@ -30,7 +30,10 @@ export default function Login() {
     try {
       const payload = await login(loginDetails).unwrap();
       dispatch(
-        setCredentials({ user: { ...payload.user }, token: payload.accessToken })
+        setCredentials({
+          user: { ...payload.user },
+          token: payload.accessToken,
+        })
       );
       socket.auth = {
         userID: payload.user.userId,
@@ -46,11 +49,11 @@ export default function Login() {
       } else {
         navigate("/");
       }
-      setUser(payload.user);
+      setUser({ ...payload.user, accesToken: payload.accessToken });
       setLoginDetails(initialValues);
       toast.success("Successfully Logged In.");
     } catch (error) {
-      console.log(error)
+      console.log(error);
       toast.warn("An error occurred. Check credentials!");
     }
   }

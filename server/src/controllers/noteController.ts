@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Note } from "../models/noteModel";
+import { Note } from "@models/noteModel";
 import mongoose from "mongoose";
 
 export const createNote = async (req: Request, res: Response) => {

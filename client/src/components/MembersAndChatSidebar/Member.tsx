@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { MemberProp } from "../../types";
-import { useAccountContext } from "../../context/AccountContext";
+import React from "react";
+import { MemberProp } from "@/types";
+import { useAccountContext } from "context/AccountContext";
 import { Avatar, Badge } from "flowbite-react";
-import { useNewChatMutation } from "../../features/api/chatApi";
+import { useNewChatMutation } from "features/api/chatApi";
 import { useNavigate } from "react-router-dom";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
-import { formatUrlString } from "../../utils/formatUrlString";
-import { useSocket } from "../../context/SocketContext";
-import { useGetMessagesQuery } from "../../features/api/messageApi";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
+import { formatUrlString } from "utils/formatUrlString";
+import { useSocket } from "context/SocketContext";
 
 export default function Member(props: MemberProp) {
   const { _id } = props;

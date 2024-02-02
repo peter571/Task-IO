@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { BiHome } from "react-icons/bi";
-import { useNavigate, useParams } from "react-router-dom";
-import { useAccountContext } from "../../context/AccountContext";
+import { useNavigate} from "react-router-dom";
+import { useAccountContext } from "context/AccountContext";
 import {
-  useGetWorkSpaceMembersQuery,
   useGetWorkSpaceQuery,
-} from "../../features/api/workspaceApi";
-import InviteMember from "../Modals/InviteMember";
-import AllWorkSpaceMembers from "./AllWorkSpaceMembers";
-import Chats from "./Chats";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
+} from "features/api/workspaceApi";
+import InviteMember from "components/Modals/InviteMember";
+import AllWorkSpaceMembers from "components/MembersAndChatSidebar/AllWorkSpaceMembers";
+import Chats from "components/MembersAndChatSidebar/Chats";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
 
 export default function MembersAndChatSidebar() {
   const navigate = useNavigate();

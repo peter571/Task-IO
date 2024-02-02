@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import { ProviderProp } from "../types";
-import socket from "../socket/socket";
+import { ProviderProp } from "@/types";
+import socket from "socket/socket";
 import { Socket } from "socket.io-client";
-import { getUserDetails } from "../utils/getUserDetails";
+import { useAccountContext } from "context/AccountContext";
 
 interface GlobalSocket {
   socket: Socket | null;
   onlineUsers: any[];
   hasNewMessage: boolean;
-  setOnlineUsers: React.Dispatch<React.SetStateAction<any[]>>
+  setOnlineUsers: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 interface SocketProvider extends ProviderProp {}
@@ -21,14 +21,15 @@ export function useSocket() {
 
 export const SocketProvider = ({ children }: SocketProvider) => {
   const [onlineUsers, setOnlineUsers] = useState<any[]>([]);
-  const [user_details] = useState(getUserDetails());
-  const [hasNewMessage, setHasNewMessage] = useState(false)
+
+  const { user } = useAccountContext();
+  const [hasNewMessage, setHasNewMessage] = useState(false);
 
   useEffect(() => {
-    if (user_details) {
+    if (user) {
       socket.auth = {
-        sessionID: user_details.userId,
-        userID: user_details.userId,
+        sessionID: user.userId,
+        userID: user.userId,
       };
       socket.connect();
     }
@@ -48,10 +49,10 @@ export const SocketProvider = ({ children }: SocketProvider) => {
 
   useEffect(() => {
     socket.on("connect", () => {
-      if (onlineUsers.length > 0 && user_details) {
+      if (onlineUsers.length > 0 && user) {
         setOnlineUsers((prevUsers) =>
           prevUsers.map((user) =>
-            user.userID.toString() === user_details.userId.toString()
+            user.userID.toString() === user.userId.toString()
               ? { ...user, connected: true }
               : user
           )
@@ -60,7 +61,7 @@ export const SocketProvider = ({ children }: SocketProvider) => {
     });
 
     socket.on("disconnect", (data) => {
-      console.log(data)
+      console.log(data);
     });
 
     socket.on("users", (users) => {
@@ -68,7 +69,6 @@ export const SocketProvider = ({ children }: SocketProvider) => {
     });
 
     socket.on("user connected", (userData) => {
-     
       if (onlineUsers.length > 0) {
         setOnlineUsers((prevUsers) =>
           prevUsers.map((user) =>
@@ -98,12 +98,13 @@ export const SocketProvider = ({ children }: SocketProvider) => {
       socket.off("users");
       socket.off("user connected");
       socket.off("user disconnected");
-
     };
-  }, [user_details, onlineUsers]);
+  }, [user, onlineUsers]);
 
   return (
-    <SocketContext.Provider value={{ socket, onlineUsers, hasNewMessage, setOnlineUsers }}>
+    <SocketContext.Provider
+      value={{ socket, onlineUsers, hasNewMessage, setOnlineUsers }}
+    >
       {children}
     </SocketContext.Provider>
   );

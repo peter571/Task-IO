@@ -1,4 +1,4 @@
-import { appApi } from "./api";
+import { appApi } from "features/api/api";
 
 const chatApi = appApi.injectEndpoints({
   endpoints: (build) => ({

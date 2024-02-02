@@ -1,9 +1,10 @@
 import axios from "axios";
+import config from "config";
 
 const BASE_URL: string =
   import.meta.env.MODE === "production"
-    ? `${import.meta.env.VITE_SERVER_URL}/`
-    : "http://localhost:5000/";
+    ? config.LIVE_API_URL
+    : config.DEV_API_URL;
 
 export default axios.create({
   baseURL: BASE_URL,

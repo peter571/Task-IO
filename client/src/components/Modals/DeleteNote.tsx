@@ -1,8 +1,7 @@
 import { Button, Modal } from "flowbite-react";
 import React, { SetStateAction } from "react";
-import { useDeleteTaskMutation } from "../../features/api/taskApi";
-import { useWorkSpaceContext } from "../WorkSpace/WorkSpace";
-import { useDeleteNoteMutation } from "../../features/api/noteApi";
+import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
+import { useDeleteNoteMutation } from "features/api/noteApi";
 
 export default function DeleteNote({
   show,
@@ -32,7 +31,7 @@ export default function DeleteNote({
               }
               setShowDeleteNoteModal(undefined);
             } catch (error) {
-                console.log(error)
+              console.log(error);
             }
           }}
         >
