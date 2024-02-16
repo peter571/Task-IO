@@ -84,7 +84,7 @@ export default function WorkSpace() {
       setUserIsAdmin(user.userId.toString() === workspace.admin.toString());
   }, [spaceLoaded]);
 
-  /**Listen to incoming message and update the messages array */
+  // /**Listen to incoming message and update the messages array */
   useEffect(() => {
     socket.on("private message", (data) => {
       /** Update the message list of user if currently on the chat ID */
@@ -108,7 +108,8 @@ export default function WorkSpace() {
     return () => {
       socket.off("private message");
     };
-  }, [selectedChat]);
+  }, []);
+
 
   return (
     <WorkSpaceContext.Provider

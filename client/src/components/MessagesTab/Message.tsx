@@ -12,7 +12,6 @@ import {
 import MessageActions from "components/Modals/MessageActions";
 
 export default function Message(props: MessageProp) {
-  
   const { user } = useAccountContext();
   const fromSelf = props.sender._id === user.userId;
   const [isHovered, setIsHovered] = useState(false);
@@ -58,7 +57,6 @@ export default function Message(props: MessageProp) {
   }, []);
 
   async function handleDeleteMessage() {
-    console.log(props._id);
     try {
       await deleteMessage({
         chatId: props.chat_id,
@@ -71,7 +69,6 @@ export default function Message(props: MessageProp) {
   }
 
   const toggleEditMode = (event: React.MouseEvent<HTMLDivElement>) => {
-    console.log(props._id);
     event.stopPropagation();
     setIsEditMode((prev) => !prev);
     setShowActionsModal(false);
@@ -150,9 +147,7 @@ export default function Message(props: MessageProp) {
             {props.files.length > 0 && (
               <FilesDisplay fromSelf={fromSelf} files={props.files} />
             )}
-            <p
-              className="text-xs my-1 font-bold text-custom-gray"
-            >
+            <p className="text-xs my-1 font-bold text-custom-gray">
               {format(props.createdAt)}
             </p>
           </div>

@@ -20,16 +20,15 @@ const messageApi = appApi.injectEndpoints({
         method: "DELETE",
       }),
       onQueryStarted: ({ chatId, messageId }, { dispatch, queryFulfilled }) => {
-        console.log({ chatId, messageId })
+        console.log({ chatId, messageId });
         // Optimistically update the cache
         const deleteResult = dispatch(
           messageApi.util.updateQueryData("getMessages", chatId, (draft) => {
-            //
-
-            console.log(chatId, draft)
+            // draft.messages = draft.messages.filter(
+            //   (message) => message._id !== messageId
+            // );
           })
         );
-
         // Dispatch the deleteMessage action
         try {
           queryFulfilled.then(() => {
@@ -39,7 +38,6 @@ const messageApi = appApi.injectEndpoints({
           deleteResult.undo();
         }
       },
-
       invalidatesTags: ["Messages"],
     }),
     editMessage: build.mutation({

@@ -21,7 +21,6 @@ export const addNewMessage = async (req: Request, res: Response) => {
 
 export const getMessages = async (req: Request, res: Response) => {
   const { chat_id } = req.params;
-
   try {
     const messages = await Message.find(
       {
@@ -32,7 +31,6 @@ export const getMessages = async (req: Request, res: Response) => {
       .sort({ createdAt: 1 })
       .populate("receiver", { __v: 0, password: 0 })
       .populate("sender", { __v: 0, password: 0 });
-
     res.status(200).json(messages);
   } catch (error) {
     res.status(500).json(error);
@@ -41,7 +39,6 @@ export const getMessages = async (req: Request, res: Response) => {
 
 export const deleteMessage = async (req: Request, res: Response) => {
   const { messageId } = req.params;
-
   try {
     await Message.findByIdAndRemove(messageId);
     res.status(200).json();
@@ -53,10 +50,9 @@ export const deleteMessage = async (req: Request, res: Response) => {
 export const editMessage = async (req: Request, res: Response) => {
   const { messageId } = req.params;
   const { content } = req.body;
-
   try {
     if (!mongoose.Types.ObjectId.isValid(messageId))
-      return res.status(404).json();
+      return res.status(404).json({ message: "Message not found" });
 
     const updatedMessage = await Message.findByIdAndUpdate(
       messageId,
@@ -65,6 +61,7 @@ export const editMessage = async (req: Request, res: Response) => {
     );
     res.status(201).json(updatedMessage);
   } catch (error) {
+    console.log(error)
     res.status(500).json(error);
   }
 };

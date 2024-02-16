@@ -8,7 +8,7 @@ import { useWorkSpaceContext } from "components/WorkSpace/WorkSpace";
 
 export function MessagesList() {
   const { user } = useAccountContext();
-  const { loadingMessages, selectedChatMessages } = useWorkSpaceContext();
+  const { loadingMessages, selectedChatMessages, selectedChat } = useWorkSpaceContext();
 
   const msgRef = useCallback((node: any) => {
     if (node) {

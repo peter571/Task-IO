@@ -14,12 +14,12 @@ const router = express.Router();
 router.post("/new-message", verifyJWT, addNewMessage);
 router.get("/:chat_id", verifyJWT, getMessages);
 router.delete(
-  "/delete-message/:messageId",
+  "/delete-message/:chatId/:messageId",
   verifyJWT,
   deleteMessage
 );
 router.patch(
-  "/edit-message/:messageId",
+  "/edit-message/:chatId/:messageId",
   verifyJWT,
   editMessage
 );
